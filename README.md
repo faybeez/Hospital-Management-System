@@ -1,1 +1,1 @@
-# hospital_management_system_SC2002
+# Hospital Management System
