@@ -1,7 +1,5 @@
 package com.hms;
 
-import java.beans.Transient;
-import java.io.ByteArrayInputStream;
 import java.util.Scanner;
 
 import com.hms.users.User;

@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 
 public class Appointment {
     //enum
-    enum Status {
+    public enum Status {
 
     }
 
@@ -15,4 +15,36 @@ public class Appointment {
     private String typeOfService;
     private String consultNotes;
     private Prescription prescription;
+
+    public Appointment() {
+
+    }
+
+    public void setStatus(Status s) {
+        status = s;
+    }
+
+    public void setDate(LocalDateTime d) {
+        date = d;
+    }
+
+    public void setPatientID(int Pid) {
+        patientID = Pid;
+    }
+
+    public void setDoctorID(int Did) {
+        doctorID = Did;
+    }
+
+    public void setTypeOfService(String ToS) {
+        typeOfService = ToS;
+    }
+
+    public void setConsultNotes(String Cn) {
+        consultNotes = Cn;
+    }
+
+    public void setPrescription(Prescription p) {
+        prescription = p;
+    }
 }

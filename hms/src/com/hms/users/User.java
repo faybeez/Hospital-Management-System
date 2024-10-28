@@ -1,5 +1,6 @@
 package com.hms.users;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public class User implements Serializable {
     // enums
@@ -75,16 +76,17 @@ public class User implements Serializable {
     public int userCount = 0;
 
     private String name;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private Gender gender;
     private BloodType bloodType;
     private String userName;
     private String password;
 
     //constructor
+    //for LocalDate, string in format of YEAR-MONTH-DAY eg "2024-01-12";
     public User(String name, String dateOfBirth, Gender gender, BloodType bloodType, String userName, String password) {
         this.name = name;
-        this.dateOfBirth = dateOfBirth;
+        this.dateOfBirth = LocalDate.parse(dateOfBirth);
         this.gender = gender;
         this.bloodType = bloodType;
         this.userName = userName;
@@ -97,7 +99,7 @@ public class User implements Serializable {
         return this.name;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
     }
 
@@ -111,7 +113,7 @@ public class User implements Serializable {
 
     //set methods
 
-    //print details method
+    //print details method NOT DONE -- RECHANGE
     public void printUserDetails() {
         System.out.println(name + dateOfBirth + gender.toString() + bloodType.toString() + userName + password);
     }
