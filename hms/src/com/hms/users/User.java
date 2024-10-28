@@ -75,6 +75,7 @@ public class User implements Serializable {
     //userCount
     public int userCount = 0;
 
+    private int id;
     private String name;
     private LocalDate dateOfBirth;
     private Gender gender;
@@ -83,8 +84,12 @@ public class User implements Serializable {
     private String password;
 
     //constructor
+    public User(){
+        
+    }
     //for LocalDate, string in format of YEAR-MONTH-DAY eg "2024-01-12";
-    public User(String name, String dateOfBirth, Gender gender, BloodType bloodType, String userName, String password) {
+    public User(int id, String name, String dateOfBirth, Gender gender, BloodType bloodType, String userName, String password) {
+        this.id = id;
         this.name = name;
         this.dateOfBirth = LocalDate.parse(dateOfBirth);
         this.gender = gender;
@@ -95,6 +100,11 @@ public class User implements Serializable {
     }
 
     //get methods
+
+    public int getID() {
+        return id;
+    }
+
     public String getName() {
         return this.name;
     }
@@ -109,6 +119,14 @@ public class User implements Serializable {
 
     public BloodType getBloodType() {
         return this.bloodType;
+    }
+
+    public String getUsername() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     //set methods
