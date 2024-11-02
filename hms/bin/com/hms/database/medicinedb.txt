@@ -1,0 +1,11 @@
+medicine|initialstock|lowstock
+Paracetamol| 100| 20
+Ibuprofen| 50| 10
+Amoxicillin| 75 | 15
+Lisinopril|120|75
+Aspirin| 80| 20
+Insulin|150|100
+Penicillamine|60|20
+Chlorpheniramine|140|130
+Aciclovir|50|30
+Amoxicillin|100|40
