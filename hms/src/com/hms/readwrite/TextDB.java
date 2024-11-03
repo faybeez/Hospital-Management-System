@@ -24,7 +24,7 @@ public class TextDB {
     public static final String SEPARATOR = "|";
 
     // an example of reading
-	public ArrayList readUsers(String filename) throws IOException {
+	public ArrayList<User> readUsers(String filename) throws IOException {
 		// read String from text file
 		File myFile = new File(filename);
     Scanner sc = new Scanner(myFile);

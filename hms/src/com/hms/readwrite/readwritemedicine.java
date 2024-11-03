@@ -11,13 +11,11 @@ import java.util.StringTokenizer;
 public class readwritemedicine {
    public static final String SEPARATOR = "|";
 
-  
-
-   public ArrayList <Medicine> Inventory(String filename) throws IOException {
+   public ArrayList<Medicine> Inventory(String filename) throws IOException {
       File myFile = new File(filename);
       Scanner sc = new Scanner(myFile);
 
-      ArrayList <Medicine> inventory=new ArrayList<>();
+      ArrayList<Medicine> inventory = new ArrayList<>();
 
       for(inventory = new ArrayList(); sc.hasNextLine(); inventory.add(medicine)) {
        
