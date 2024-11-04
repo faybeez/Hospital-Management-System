@@ -1,7 +1,11 @@
 package com.hms.readwrite;
 
 
+
 import java.io.File;
+import com.hms.Medicine;
+
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,31 +15,31 @@ import java.util.StringTokenizer;
 public class readwritemedicine {
    public static final String SEPARATOR = "|";
 
-   public ArrayList<Medicine> Inventory(String filename) throws IOException {
+   public ArrayList<Medicine> medList(String filename) throws IOException {
       File myFile = new File(filename);
       Scanner sc = new Scanner(myFile);
 
-      ArrayList<Medicine> inventory = new ArrayList<>();
+      ArrayList<Medicine> medList = new ArrayList<>();
 
-      for(inventory = new ArrayList(); sc.hasNextLine(); inventory.add(medicine)) {
+      while(sc.hasNextLine()) {
        
          String line = sc.nextLine();
-         StringTokenizer star = new StringTokenizer(line, "|");
-
-         String medicinename = star.nextToken().trim();
-         int initalstock = Integer.parseInt(star.nextToken().trim());
+         StringTokenizer star = new StringTokenizer(line, SEPARATOR);
+         
+         String medname = star.nextToken().trim();
+         int med_id = Integer.parseInt(star.nextToken().trim());
+         int stock = Integer.parseInt(star.nextToken().trim());
          int lowstock = Integer.parseInt(star.nextToken().trim());
          
-         Medicine medicine=new Medicine(medicinename, initialstock,lowstock);
-         
+         Medicine medicine=new Medicine(medname,med_id,stock,lowstock);
+         medList.add(medicine);
+       
       
       }
 
       sc.close();
-      return inventory;
+      return medList;
    }
 
-   public void saveUsers(String var1, List var2) throws IOException {
-      throw new Error("Unresolved compilation problem: \n\tThe method write(String, List) is undefined for the type TextDB\n");
-   }
+ 
 }
