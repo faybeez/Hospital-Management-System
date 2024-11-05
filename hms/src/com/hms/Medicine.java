@@ -29,6 +29,9 @@ public class Medicine {
 		return stock;
 	}
 	
+	public void setStock(int stock) {
+		this.stock=stock;
+	}
 	public int getLowstock() {
 		return lowstock;
 	}

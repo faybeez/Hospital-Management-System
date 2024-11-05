@@ -34,7 +34,7 @@ public class readwritemedicine {
          Medicine medicine=new Medicine(medname,med_id,stock,lowstock);
          medList.add(medicine);
        
-      
+   
       }
 
       sc.close();
