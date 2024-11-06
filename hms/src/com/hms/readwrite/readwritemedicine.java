@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import com.hms.items.Medicine;
 
+/*
 public class readwritemedicine {
    public static final String SEPARATOR = "|";
 
@@ -39,3 +41,4 @@ public class readwritemedicine {
       throw new Error("Unresolved compilation problem: \n\tThe method write(String, List) is undefined for the type TextDB\n");
    }
 }
+   */

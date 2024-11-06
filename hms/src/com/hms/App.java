@@ -19,7 +19,7 @@ public class App {
 
         TextDB textdb = new TextDB();
         
-        String filename = "src\\com\\hms\\database\\users.txt";
+        String filename = "hms\\src\\com\\hms\\database\\userlogindb.txt";
         ArrayList<User> userArray = new ArrayList<User>();
         userArray = textdb.readUsers(filename);
         User user = userArray.get(0);
