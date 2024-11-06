@@ -19,8 +19,11 @@ public class Prescription {
         prescriptionAmount.add(amount);
         prescriptionNotes.add(notes);
     }
-    public void deleteMedicine(String medicine) {
-        
+    public void deleteMedicine(int index) {
+        System.out.printf("Removing %s from the prescription...", medicineList.get(index - 1));
+        medicineList.remove(index - 1);
+        prescriptionAmount.remove(index - 1);
+        prescriptionNotes.remove(index - 1);
     }
 
     public void readPrescription() {

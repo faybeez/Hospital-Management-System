@@ -3,9 +3,6 @@ package com.hms.readwrite;
 
 
 import java.io.File;
-import com.hms.Medicine;
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

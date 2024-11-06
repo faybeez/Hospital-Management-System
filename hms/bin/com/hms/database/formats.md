@@ -13,4 +13,5 @@
 ## Medicine
 
 -
+200 : Appointment
 201 : Prescription
