@@ -15,6 +15,9 @@ import java.time.format.*;
 import com.hms.users.User.Gender;
 import com.hms.users.User.BloodType;
 import com.hms.users.Administrator;
+import com.hms.users.Pharmacist;
+import com.hms.users.Doctor;
+import com.hms.users.Patient;
 import com.hms.users.User;
 
 
@@ -51,11 +54,17 @@ public class TextDB {
               user = new Administrator(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
               break;
           case 101:
-              user = new Administrator(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
+              user = new Doctor(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
+              break;
+          case 102:
+              user = new Patient(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
+              break;
+          case 103:
+              user = new Pharmacist(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
               break;
       }
 
-      // add to Professors list
+      // add to user list
       userArray.add(user);
 		}
 		sc.close();
