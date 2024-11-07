@@ -15,6 +15,9 @@ import java.time.format.*;
 import com.hms.users.User.Gender;
 import com.hms.users.User.BloodType;
 import com.hms.users.Administrator;
+import com.hms.users.Pharmacist;
+import com.hms.users.Doctor;
+import com.hms.users.Patient;
 import com.hms.users.User;
 
 
@@ -51,11 +54,17 @@ public class TextDB {
               user = new Administrator(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
               break;
           case 101:
-              user = new Administrator(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
+              user = new Doctor(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
+              break;
+          case 102:
+              user = new Patient(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
+              break;
+          case 103:
+              user = new Pharmacist(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
               break;
       }
 
-      // add to Professors list
+      // add to user list
       userArray.add(user);
 		}
 		sc.close();
@@ -87,7 +96,7 @@ public void saveUsers(String filename, List al) throws IOException {
 			write(filename,alw);
 	}
 
-  /** Write fixed content to the given file.
+  /** Write fixed content to the given file. **/
   public static void write(String fileName, List data) throws IOException  {
     PrintWriter out = new PrintWriter(new FileWriter(fileName));
 
@@ -100,7 +109,7 @@ public void saveUsers(String filename, List al) throws IOException {
       out.close();
     }
   }
-
+/**
      Read the contents of the given file.
   public static List read(String fileName) throws IOException {
 	List data = new ArrayList() ;
@@ -115,6 +124,7 @@ public void saveUsers(String filename, List al) throws IOException {
     }
     return data;
   }
-    */
+  **/
 
 }
+

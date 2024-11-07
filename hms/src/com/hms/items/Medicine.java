@@ -1,4 +1,4 @@
-package com.hms;
+package com.hms.items;
 
 public class Medicine {
 	private String medname;

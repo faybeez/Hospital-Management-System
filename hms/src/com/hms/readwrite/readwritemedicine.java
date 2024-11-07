@@ -3,15 +3,12 @@ package com.hms.readwrite;
 
 
 import java.io.File;
-import com.hms.Medicine;
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-
+import com.hms.items.Medicine;
 public class readwritemedicine {
    public static final String SEPARATOR = "|";
 
@@ -43,3 +40,4 @@ public class readwritemedicine {
 
  
 }
+   

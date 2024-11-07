@@ -9,12 +9,10 @@ import org.junit.Test;
 public class AppTest {
     @Test
     public void test() {
-        String data = "testname" +
-            "\ntestDoB" +
-            "\ntestuser" +
-            "\ntestpass";
-        System.setIn(new ByteArrayInputStream(data.getBytes()));
-
-        assertEquals(2, 1+1);
+        assertEquals(2, 2);
+    }
+    @Test
+    public void test2() {
+        assertEquals(2, 1);
     }
 }

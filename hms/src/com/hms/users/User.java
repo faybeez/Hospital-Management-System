@@ -74,6 +74,7 @@ public class User implements Serializable {
 
     //userCount
     public int userCount = 0;
+    private static final int stripPrefix = 10000000;
 
     private int id;
     private String name;
@@ -134,6 +135,24 @@ public class User implements Serializable {
     //print details method NOT DONE -- RECHANGE
     public void printUserDetails() {
         System.out.println(name + dateOfBirth + gender.toString() + bloodType.toString() + userName + password);
+    }
+
+    public String getDesignation() {
+        int i = id / stripPrefix;
+
+        switch(i) {
+            case 100:
+                return "Administrator";
+            case 101:
+                return "Doctor";
+            case 102:
+                return "Patient";
+            case 103:
+                return "Pharmacist";
+            default:
+                return "Error";
+        }
+
     }
 
     // consider implementing in an interface instead?

@@ -1,5 +1,7 @@
-package com.hms;
+package com.hms.items;
 import java.io.IOException;
+
+import com.hms.Inventory;
 
 public class InventoryTesting {
 	public static void main(String[]args)
