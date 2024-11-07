@@ -5,13 +5,15 @@ public class Medicine {
 	private int med_id;
 	private int stock;
 	private int lowstock;
+	private double price;
 	
-	public Medicine(String medname, int med_id, int stock, int lowstock)
+	public Medicine(String medname, int med_id, int stock, int lowstock,double price)
 	{	
 		this.medname=medname;
 		this.med_id=med_id;
 		this.stock=stock;
 		this.lowstock=lowstock;
+		this.price=price;
 	}
 	
 	
@@ -34,6 +36,18 @@ public class Medicine {
 	}
 	public int getLowstock() {
 		return lowstock;
+	}
+
+
+
+	public double getPrice() {
+		return price;
+	}
+
+
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	
 	

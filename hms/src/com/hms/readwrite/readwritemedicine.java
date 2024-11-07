@@ -27,8 +27,9 @@ public class readwritemedicine {
          int med_id = Integer.parseInt(star.nextToken().trim());
          int stock = Integer.parseInt(star.nextToken().trim());
          int lowstock = Integer.parseInt(star.nextToken().trim());
+         double price = Double.parseDouble(star.nextToken().trim());
          
-         Medicine medicine=new Medicine(medname,med_id,stock,lowstock);
+         Medicine medicine=new Medicine(medname,med_id,stock,lowstock,price);
          medList.add(medicine);
        
    
