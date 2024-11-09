@@ -108,10 +108,18 @@ public class User implements Serializable {
     public String getName() {
         return this.name;
     }
+    public void setName(String newName) {
+		// TODO Auto-generated method stub
+		
+	}
 
     public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
     }
+    public void setDateOfBirth(String newDob) {
+		// TODO Auto-generated method stub
+		
+	}
 
     public Gender getGender() {
         return this.gender;
@@ -124,10 +132,19 @@ public class User implements Serializable {
     public String getUsername() {
         return userName;
     }
+    public void setUsername(String username) {
+  		// TODO Auto-generated method stub
+  		
+  	}
+   
 
     public String getPassword() {
         return password;
     }
+    public void setPassword(String password2) {
+		// TODO Auto-generated method stub
+		
+	}
 
     //set methods
 
@@ -140,4 +157,21 @@ public class User implements Serializable {
     public void viewAppointmentRecords(int id) {
 
     }
+	public void setBloodType(String bloodType2) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void setGender(String gender1) {
+		// TODO Auto-generated method stub
+		
+	}
+	public String getRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+
+	
+	
 }
