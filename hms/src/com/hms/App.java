@@ -1,6 +1,7 @@
 package com.hms;
 
 import java.util.Scanner;
+import java.nio.file.SecureDirectoryStream;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
@@ -62,4 +63,32 @@ public class App {
 
         sc.close();
     }
+
+    public static void patientActions(User p) {
+
+        //print current tasks?
+
+        int choice = -1;
+
+        System.out.println("What would you like to do?");
+        System.out.println("1. View medical record");
+        System.out.println("2. Update contact information");
+        System.out.println("3. View all current Appointments");
+        System.out.println("4. Schedule a new Appointment");
+        System.out.println("5. Reschedule an existing Appointment");
+        System.out.println("6. Reschedule an existing Appointment");
+        System.out.println("7. Cancel an Appointment");
+        System.out.println("8. View past Appointment details");
+
+        //switch
+        switch (choice) {
+            case 1:
+                
+                break;
+        
+            default:
+                break;
+        }
+
+    } 
 }
