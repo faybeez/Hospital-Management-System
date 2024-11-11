@@ -10,11 +10,13 @@ import java.util.Scanner;
 
 public class Inventory {
 	 private ArrayList<Medicine> medicineList;
+	 private ArrayList<Replenishment> replenishment;
 	 private String filename = "hms/src/com/hms/database/medicinedb.txt" ;
 	 
 	 public Inventory()
 	 {
 		 medicineList = new ArrayList<>();
+		 replenishment = new ArrayList<>();
 	 }
 	
 	 
@@ -131,7 +133,69 @@ public class Inventory {
 		    }
 		    System.out.println("Medicine does not exist");
 		}
-	
-	 // havent add application outcome record
-	 //havent add submit replenishment request
-}
+	 
+	 public void submitRequest(int medID, int quantity) {
+		    for (Medicine medicine : medicineList) {
+		        if (medicine.getMed_id() == medID) {
+		        	String status = "Pending";
+		            Replenishment newRequest = new Replenishment(medID, quantity,status);
+		            replenishment.add(newRequest); 
+		            System.out.println("Request submitted for Medicine ID: " + medID);
+		            return; 
+		        }
+		    }
+		    System.out.println("Medicine does not exist. ");
+		}
+
+	 public void displayRequests() {	
+		int success=0;
+	    System.out.println("Pending Replenishment Requests:");
+		    for (Replenishment request : replenishment) {
+		      
+		        if (request.getStatus().equals("Pending")) {
+		            System.out.println("Medicine ID: " + request.getMedID() + 
+		                               ", Replenishment Quantity: " + request.getQuantity() );
+		            success=1;
+		            
+		        }
+		    }
+
+		  
+		    if (success==0)
+		    {
+		    	System.out.println("No pending requests");
+		    }
+		}
+
+	 
+	 public void approveRequest(int medID) {
+		   
+		    for (Replenishment request : replenishment) {
+
+		        if (request.getMedID() == medID && request.getStatus().equals("Pending")) {
+		          
+		            for (Medicine medicine : medicineList) {
+
+		                if (medicine.getMed_id() == medID) {
+		                   
+		                    int updatedStock = medicine.getStock() + request.getQuantity();
+		                    medicine.setStock(updatedStock);
+		                    request.setStatus("Approved");
+
+		                    System.out.println("Updated stock for medicine ID: " + medID);
+		                    return; 
+		                }
+		            }
+
+		            System.out.println("Medicine does not exist");
+		            return;
+		        }
+		    }
+
+		
+		    System.out.println("Process failed");
+		}
+   
+		}
+
+

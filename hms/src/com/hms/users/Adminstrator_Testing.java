@@ -83,7 +83,10 @@ public class Adminstrator_Testing {
 
                     break;
                 case 5:
-                    //yet to implement
+                    inventory.displayRequests();
+                    System.out.println("What med ID do you want to replenish?");
+                    int med_ID = sc.nextInt();
+                    inventory.approveRequest(med_ID);
                     break;
                 case 6:
                     // appointments

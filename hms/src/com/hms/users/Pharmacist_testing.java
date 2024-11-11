@@ -41,10 +41,15 @@ public class Pharmacist_testing {
                     inventory.displayMedications();
                     break;
                 case 4:
-                    //yet to implement
+                	System.out.println("Submit Replenishment Request");
+                    System.out.print("Enter the medicine ID to reduce stock: ");
+                    int medId1 = sc.nextInt();
+                    System.out.print("Enter the amount to replenish: ");
+                    int quantity = sc.nextInt();
+                    inventory.submitRequest(medId1, quantity);
                     break;
                 case 5:
-                    // yet to implement
+                    // yet to implement tasks
                     break;
                 case 6:
                     System.out.println("Logging out..");
