@@ -9,9 +9,11 @@ public class AppointmentManager {
     public void addAppointment(Appointment a) {
         Appts.add(a);
     }
+    
     public void deleteAppointment(int index) {
         Appts.remove(index - 1);
     }
+
     public void PrintAppointmentsFromPatientID(int id) {
         Iterator<Appointment> apptIterator = Appts.iterator();
         Appointment temp;

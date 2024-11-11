@@ -39,11 +39,11 @@ public class UserManagerTest {
 
     }
 
+    //testing printAllUsers and Subusers
     public static void main(String[] args) {
         UserManager um = new UserManager();
 
         um.printSubUsers("Pharmacist");
-
 
     }
 

@@ -76,13 +76,13 @@ public class User implements Serializable {
     public int userCount = 0;
     private static final int stripPrefix = 10000000;
 
-    private int id;
-    private String name;
-    private LocalDate dateOfBirth;
-    private Gender gender;
-    private BloodType bloodType;
-    private String userName;
-    private String password;
+    protected int id;
+    protected String name;
+    protected LocalDate dateOfBirth;
+    protected Gender gender;
+    protected BloodType bloodType;
+    protected String userName;
+    protected String password;
 
     //constructor
     public User(){
