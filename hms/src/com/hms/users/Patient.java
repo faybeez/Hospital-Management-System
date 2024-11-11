@@ -1,6 +1,7 @@
 package com.hms.users;
 
 import com.hms.items.Appointment;
+import com.hms.items.AppointmentManager;
 
 import java.util.Scanner;
 import java.time.LocalDate;
@@ -13,38 +14,14 @@ public class Patient extends User {
         super(id, name, dateOfBirth, gender, bloodType, userName, password);
     }
     
-    public void viewAppointments() {
-        
+    public void viewAppointments(AppointmentManager m) {
+        m.PrintAppointmentsFromPatientID(id);
     }
 
     public Appointment makeAppointmentRequest(int doctorID){
-        String TOS;
         LocalDate date = LocalDate.of(1990,1,1);
         LocalTime time = LocalTime.of(1,1);
-        int choice;
         Scanner sc = new Scanner(System.in);
-        
-        System.out.println("Type of services:");
-        System.out.println("1. Consultation");
-        System.out.println("2. Follow-up");
-        System.out.println("3. X-ray");
-
-        choice = sc.nextInt();
-
-        switch (choice) {
-            case 1:
-                TOS = "Consultation";
-                break;
-            case 2:
-                TOS = "Follow-up";
-                break;
-            case 3:
-                TOS = "X-ray";
-                break;
-            default:
-                TOS = "";
-                break;
-        }
 
         System.out.print("Date of Appointment (maximum 6 days from current date in YYYY-MM-DD):");
         
@@ -73,7 +50,7 @@ public class Patient extends User {
             break;
         }
 
-        Appointment a = new Appointment(this.id, doctorID, TOS, date, time);
+        Appointment a = new Appointment(this.id, doctorID, date, time);
         sc.close();
         return a;
     }

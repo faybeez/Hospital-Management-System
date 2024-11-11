@@ -30,7 +30,7 @@ public class UserManagerTest {
     }
 
     //testing getUserFromUsername
-    public static void test2(String[] args) {
+    public static void main(String[] args) {
         UserManager um = new UserManager();
         User u = um.getUserFromUsername("jonas1");
 
@@ -39,8 +39,7 @@ public class UserManagerTest {
 
     }
 
-    //testing printAllUsers and Subusers
-    public static void main(String[] args) {
+    public static void test3(String[] args) {
         UserManager um = new UserManager();
 
         um.printSubUsers("Pharmacist");

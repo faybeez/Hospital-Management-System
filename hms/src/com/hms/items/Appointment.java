@@ -44,11 +44,10 @@ public class Appointment {
     private String prescriptionID;
 
     //string in form of YYYY-MM-DDTHH:MM:SS where SS defaults to 00
-    public Appointment(int pID, int dID, String typeofservice, LocalDate date, LocalTime time) {
+    public Appointment(int pID, int dID, LocalDate date, LocalTime time) {
         id = AppointmentIdentifier + AppointmentNumber;
         patientID = pID;
         doctorID = dID;
-        typeOfService = typeofservice;
         this.date = date;
         this.time = time;
         status = Status.Confirmed;

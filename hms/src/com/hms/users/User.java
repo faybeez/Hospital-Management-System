@@ -109,10 +109,18 @@ public class User implements Serializable {
     public String getName() {
         return this.name;
     }
+    public void setName(String newName) {
+		// TODO Auto-generated method stub
+		
+	}
 
     public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
     }
+    public void setDateOfBirth(String newDob) {
+		// TODO Auto-generated method stub
+		
+	}
 
     public Gender getGender() {
         return this.gender;
@@ -125,16 +133,30 @@ public class User implements Serializable {
     public String getUsername() {
         return userName;
     }
+    public void setUsername(String username) {
+  		// TODO Auto-generated method stub
+  		
+  	}
+   
 
     public String getPassword() {
         return password;
     }
+    public void setPassword(String password2) {
+		// TODO Auto-generated method stub
+		
+	}
 
     //set methods
 
     //print details method NOT DONE -- RECHANGE
     public void printUserDetails() {
-        System.out.println(name + dateOfBirth + gender.toString() + bloodType.toString() + userName + password);
+        System.out.println("Name: " + name);
+        System.out.println("Date of Birth: " + dateOfBirth.toString());
+        System.out.println("Gender: " + gender.toString());
+        System.out.println("Blood Type: " + bloodType.toString());
+        System.out.println("Username: " + userName);
+        System.out.println("Password: " + password);
     }
 
     public String getDesignation() {
@@ -159,4 +181,21 @@ public class User implements Serializable {
     public void viewAppointmentRecords(int id) {
 
     }
+	public void setBloodType(String bloodType2) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void setGender(String gender1) {
+		// TODO Auto-generated method stub
+		
+	}
+	public String getRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+
+	
+	
 }
