@@ -1,6 +1,7 @@
 package com.hms;
 
 import com.hms.items.AppointmentManager;
+import com.hms.users.StaffManager;
 import com.hms.users.User;
 import com.hms.users.UserManager;
 import java.util.NoSuchElementException;
@@ -11,6 +12,7 @@ public class App {
 
         UserManager usermanager = new UserManager();
         AppointmentManager apptmanager = new AppointmentManager();
+        Inventory inventory = new Inventory();
         Scanner sc = new Scanner(System.in);
         String username;
         String password;
@@ -236,78 +238,107 @@ public class App {
     public static void adminActions (User p)    {
 
         //print current tasks?
+        int choice;
+        Scanner sc = new Scanner(System.in); 
+        StaffManager staffManager = new StaffManager();
 
-        int choice = -1;
+        do {
+            System.out.println("1. Manage hospital staff");
+            System.out.println("2. Display a list of staff");
+            System.out.println("3. View medication inventory");
+            System.out.println("4. Manage medication inventory");
+            System.out.println("5. Approve replenishment requests");
+            System.out.println("6. View all appointments");
+            System.out.println("7. See current tasks");
+            System.out.println("8. Log out");
+            System.out.println("");
+            choice = sc.nextInt();
 
-        System.out.println("What would you like to do?");
-        System.out.println("1. View and Manage Hospital Staff");
-        System.out.println("2. Filter by Role");
-        System.out.println("3. View Appointment Datails");
-        System.out.println("4. View and Manage Medicine Inventory"); 
-        System.out.println("5. Update Low Stock Level Alert Line");
-        System.out.println("6. Approve Replenish Request");
+            switch (choice) {
+                case 1:
+                    System.out.println("Managing hospital staff:");
+                    System.out.println("1. Add staff member");
+                    System.out.println("2. Update staff member");
+                    System.out.println("3. Remove staff member");
+                    System.out.print("Enter your choice: ");
+                    int secondChoice = sc.nextInt();
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Key in your choice: ");
-        choice = sc.nextInt(); 
+                    if (secondChoice == 1) {
+                        User user1 = staffManager.staffInfo();
+                        staffManager.addStaff(user1);
+                    } else if (secondChoice == 2) {
+                        System.out.print("Enter the ID: ");
+                        int id = sc.nextInt();
+                        staffManager.updateStaff(id);
+                    } else if (secondChoice == 3) {
+                        System.out.print("Enter the ID: ");
+                        int id = sc.nextInt();
+                        staffManager.removeStaff(id);
+                    }
+                    break;
+                case 2:
+                    System.out.println("Filter by 1. Role, 2. Gender, 3. Age");
+                    int filter = sc.nextInt();
+                    staffManager.displayStaff(filter);
+                    break;
+                case 3:
+                    inventory.displayMedications();
+                    break;
+                case 4:
+                    // manage medication inventory
+                    System.out.println("Enter your choice: ");
+                    System.out.println("1. Add new medication: ");
+                    System.out.println("2. Remove an existing medicine ");
+                    System.out.println("3. Update initial stocks ");
+                    System.out.println("4. Update low stock level quantity ");
+                    int secondChoice1 = sc.nextInt();
+
+                    if (secondChoice1 == 1) {
+                        inventory.addMedicine();
+                    } else if (secondChoice1 == 2) {
+                        System.out.println("Enter the id of the medicine you want to remove:");
+                        int med_id = sc.nextInt();
+                        inventory.removeMedicine(med_id);
+                    } else if (secondChoice1 == 3) {
+                        System.out.println("Enter the medicine ID: ");
+                        int id = sc.nextInt();
+                        System.out.println("Update the new initial stock: ");
+                        int stock = sc.nextInt();
+                        inventory.updateInitialStock(id, stock);
+                    } else if (secondChoice1 == 4) {
+                        System.out.println("Enter the medicine ID: ");
+                        int id = sc.nextInt();
+                        System.out.println("Update the new low stock: ");
+                        int lowstock = sc.nextInt();
+                        inventory.updateLowStock(id, lowstock); 
+                    }
+
+                    break;
+                case 5:
+                    inventory.displayRequests();
+                    System.out.println("What med ID do you want to replenish?");
+                    int med_ID = sc.nextInt();
+                    inventory.approveRequest(med_ID);
+                    break;
+                case 6:
+                    // appointments
+              
+                    break;
+                    
+                case 7:
+                    // put method call for tasks
+              
+                    break;
+                case 8:
+                    System.out.println("Logging out..");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        } while (choice != 7);
+
+       
         
-        //switch
-        switch (choice) {
-            case 1:
-                System.out.println("What would you like to do?");
-                System.out.println("Add Staff Members");
-                System.out.println("Updating Staff Members");
-                System.out.println("Remove Staff Members");
-                int choice2 = sc.nextInt();
-                switch (choice2)    {
-                    case 1:
-                        System.out.println("add staff member");
-                        break;
-                    case 2:
-                        System.out.println("update staff member");
-                        break;
-                    case 3: 
-                        System.out.println("remove staff member");
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 2:
-                System.out.println("What would you like to filter by?");
-                System.out.println("Role?");
-                System.out.println("Gender");
-                System.out.println("Age");
-                choice2 = sc.nextInt();
-                switch (choice2)    {
-                    case 1:
-                        System.out.println("role");
-                        break;
-                    case 2:
-                        System.out.println("gender");
-                        break;
-                    case 3: 
-                        System.out.println("age");
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 3:
-                System.out.println("voew appointment details");
-                break;
-            case 4: 
-                System.out.println("view and manage medicine invertory");
-                break;    
-            case 5:
-                System.out.println("update low stock level alert line");
-            case 6: 
-                System.out.println("approve replenish,emt request");
-            default:
-                break;
-        }
-
-    } 
-
+    }
 }
 
