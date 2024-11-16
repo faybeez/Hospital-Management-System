@@ -59,17 +59,23 @@ public class MedicalRecord {
     public void printMedicalRecord(AppointmentManager aptm) {
 
         //print top part of medical record
+        System.out.println("Name: " + name);
+        System.out.println("Date of Birth: " + dateOfBirth.toString());
+        System.out.println("Gender: " + gender.toString());
+        System.out.println("Blood Type: " + bloodType.toString());
+        System.out.println("Email Address: " + emailAddress);
+        System.out.println("Contact Number: " + contactNumber);
 
         ArrayList<Appointment> apts = aptm.getPatientAppts(id, Status.Completed);
         Iterator<Appointment> i = apts.iterator();
         Appointment a;
-
+        System.out.println("------------------PAST DIAGNOSES------------------");
         while(i.hasNext()) {
             a = i.next();
             System.out.println("Date of Diagnosis: " + a.getDate().toString());
             System.out.println("Diagnosis        : " + a.getDiagnosis());
-            System.out.println("Treatment        :" + a.getTreatment());
-            System.out.println("-------------------------------------------------");
+            System.out.println("Treatment        : " + a.getTreatment());
+            System.out.println("--------------------------------------------------");
         }
     }
 }

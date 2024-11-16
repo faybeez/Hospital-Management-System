@@ -19,6 +19,7 @@ import java.util.Collections;
 public class App {
     public static final String userDB = "hms/src/com/hms/database/userlogindb.txt";
     public static final String apptDB = "hms/src/com/hms/database/appointmentdb.txt";
+    public static final String schedulerDB = "hms/src/com/hms/database/schedulerdb.txt";
     public static void main(String[] args) throws Exception {
 
         UserManager usermanager = new UserManager();
@@ -72,6 +73,7 @@ public class App {
         }
         //logout actions
         usermanager.saveUsers();
+        apptmanager.saveAppts();
 
        /* User test = new User(1001, sc.nextLine(), sc.nextLine(), Gender.FEMALE, BloodType.ABMINUS, sc.nextLine(), sc.nextLine());
         //test.printUserDetails();
@@ -117,7 +119,7 @@ public class App {
 
             Scanner sc = new Scanner(System.in);
             System.out.println("Key in your choice: ");
-            choice = sc.nextInt(); 
+            choice = Integer.valueOf(sc.nextLine()); 
         
 
             //switch
@@ -132,13 +134,13 @@ public class App {
                     System.out.println("Which information would you like to update?");
                     System.out.println("1. Email Address");
                     System.out.println("2. Phone Number");
-                    choice2 = sc.nextInt();
+                    choice2 = Integer.valueOf(sc.nextLine());
                     switch (choice2) {
                         case 1:
                             System.out.println("Enter your new email address: ");
                             email = sc.nextLine();
                             mr.setEmailAddress(email);
-                            System.out.println("Phone number has been changed!");
+                            System.out.println("Email Address has been changed!");
                             break;
                         case 2:
                             System.out.println("Enter your new phone number: ");
@@ -157,21 +159,21 @@ public class App {
                     System.out.println("Write the doctor's name you'd like to view the appointment slots of:");
 
                     try {
-                        d = (Doctor)usermanager.getUserFromUsername(sc.nextLine());
+                        d = (Doctor)usermanager.getUserFromName(sc.nextLine());
                     } catch (Exception e) {
                         System.out.println(e);
                         break;
                     }
 
                     System.out.println("Printing Doctor " + d.getName() + "'s Schedule...");
-                    d.getSchedule().printSchedule();
+                    d.printSchedule();
                     break;
                 case 4: 
                     System.out.println("Schedule an appointment");
                     usermanager.printSubUsers("Doctor");
                     System.out.println("Write the doctor's name you'd like to make an appointment with:");
                     try {
-                        d = (Doctor)usermanager.getUserFromUsername(sc.nextLine());
+                        d = (Doctor)usermanager.getUserFromName(sc.nextLine());
                     } catch (Exception e) {
                         System.out.println(e);
                         break;
@@ -188,7 +190,7 @@ public class App {
                     apptmanager.printAppts(appt, usermanager);
 
                     System.out.println("Which appointment would you like to reschedule? (Number 1-x)");
-                    choice2 = sc.nextInt();
+                    choice2 = Integer.valueOf(sc.nextLine());
                     
                     if(choice2 > appt.size()){
                         System.out.println("Invalid number!");
@@ -207,7 +209,7 @@ public class App {
                     apptmanager.printAppts(appt, usermanager);
 
                     System.out.println("Which appointment would you like to cancel? (Number 1-x)");
-                    choice2 = sc.nextInt();
+                    choice2 = Integer.valueOf(sc.nextLine());
 
                     if(choice2 > appt.size()){
                         System.out.println("Invalid number!");
@@ -261,7 +263,7 @@ public class App {
 
             Scanner sc = new Scanner(System.in);
             System.out.println("Key in your choice: ");
-            choice = sc.nextInt(); 
+            choice = Integer.valueOf(sc.nextLine()); 
             
             //switch
             switch (choice) {
@@ -275,7 +277,7 @@ public class App {
                     System.out.println("2. Add new pescription");
                     System.out.println("3. Add new treatment plans");
                     System.out.println("Key in your choice: ");
-                    choice2 = sc.nextInt(); 
+                    choice2 = Integer.valueOf(sc.nextLine()); 
                     switch (choice2) {
                         case 1:
                             System.out.println("add new diagnoses");
@@ -363,7 +365,7 @@ public class App {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Key in your choice: ");
-        choice = sc.nextInt(); 
+        choice = Integer.valueOf(sc.nextLine()); 
     
         //switch
         switch (choice) {
@@ -403,7 +405,7 @@ public class App {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Key in your choice: ");
-        choice = sc.nextInt(); 
+        choice = Integer.valueOf(sc.nextLine()); 
         
         //switch
         switch (choice) {
@@ -412,7 +414,7 @@ public class App {
                 System.out.println("Add Staff Members");
                 System.out.println("Updating Staff Members");
                 System.out.println("Remove Staff Members");
-                int choice2 = sc.nextInt();
+                int choice2 = Integer.valueOf(sc.nextLine());
                 switch (choice2)    {
                     case 1:
                         System.out.println("add staff member");
@@ -432,7 +434,7 @@ public class App {
                 System.out.println("Role?");
                 System.out.println("Gender");
                 System.out.println("Age");
-                choice2 = sc.nextInt();
+                choice2 = Integer.valueOf(sc.nextLine());
                 switch (choice2)    {
                     case 1:
                         System.out.println("role");

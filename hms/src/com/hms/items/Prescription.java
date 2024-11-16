@@ -28,7 +28,27 @@ public class Prescription {
         return medicineList;
     }
 
-    public ArrayList<>
+    public ArrayList<Integer> getPrescriptionAmount() {
+        return prescriptionAmount;
+    }
+
+    public ArrayList<String> getPrescriptionNotes() {
+        return prescriptionNotes;
+    }
+    public ArrayList<String> savePrescription() {
+        Iterator<String> medIterator = medicineList.iterator();
+        Iterator<Integer> pAmtIterator = prescriptionAmount.iterator();
+        Iterator<String> pNotesIterator = prescriptionNotes.iterator();
+        ArrayList<String> S = new ArrayList<String>();
+
+        //String out = new String();
+        
+        while(medIterator.hasNext()) {
+            S.add(medIterator.next() + "|" + pAmtIterator.next() + "|" + pNotesIterator.next());
+        }
+
+        return S;
+    }
 
     public void setPrescriptionStatus(PrescriptionStatus ps) {
         prescriptionStatus = ps;

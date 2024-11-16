@@ -13,14 +13,19 @@ import java.time.LocalTime;
 
 public class Doctor extends User{
     
-    private Scheduler schedule = new Scheduler();
+    private Scheduler schedule;
 
     public Doctor(int id, String name, String dateOfBirth, Gender gender, BloodType bloodType, String userName, String password) {
         super(id, name, dateOfBirth, gender, bloodType, userName, password);
+        schedule = new Scheduler();
     }
 
     public Scheduler getSchedule() {
         return schedule;
+    }
+    
+    public void setSchedule(Scheduler s) {
+        schedule = s;
     }
 
     public int changeScheduleSlot(LocalDate date, LocalTime time, int status, Appointment a) {
@@ -56,6 +61,10 @@ public class Doctor extends User{
 
     public void printSchedule() {
         schedule.printSchedule();
+    }
+
+    public void updateSchedule() {
+        schedule.updateLastSaved();
     }
 
     public void UpdateUnavailable() {

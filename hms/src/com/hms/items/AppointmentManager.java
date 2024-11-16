@@ -186,4 +186,16 @@ public class AppointmentManager {
             i.next().printAppointmentDetails(usermanager, false);
         }
     }
+
+    public void saveAppts() {
+        TextDB writer = new TextDB();
+        
+        try {
+            writer.saveAppointments(App.apptDB, Appts.values());
+        } catch (Exception e) {
+            System.out.println("Appointment Manager " + e);
+        }
+
+        
+    }
 }

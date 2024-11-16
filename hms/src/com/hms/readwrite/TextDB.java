@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.io.FileInputStream;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.StringTokenizer;
 
@@ -33,6 +34,7 @@ import com.hms.users.Patient;
 import com.hms.users.User;
 import com.hms.items.Appointment;
 import com.hms.items.Prescription;
+import com.hms.items.Scheduler;
 
 
 public class TextDB {
@@ -139,7 +141,7 @@ public Map<Integer, MedicalRecord> readMedicalRecord(String filename) throws IOE
 
     //create new user --> depending on first 3 numbers of id
     //depends on id config
-    md = new MedicalRecord(id, name, dateOfBirth, gender, bloodType, email, phoneNum, appt);
+    md = new MedicalRecord(id, name, dateOfBirth, gender, bloodType, phoneNum, email, appt);
 
     // add to medical array map
     mdMap.put(id, md);
@@ -149,7 +151,7 @@ public Map<Integer, MedicalRecord> readMedicalRecord(String filename) throws IOE
   return mdMap;
 }
 
-public Map<Integer, Appointment> readAppointments(String filename) throws IOException {
+  public Map<Integer, Appointment> readAppointments(String filename) throws IOException {
     // read String from text file
     File myFile = new File(filename);
     Scanner sc = new Scanner(myFile);
@@ -219,6 +221,7 @@ public Map<Integer, Appointment> readAppointments(String filename) throws IOExce
     List<String> alw = new ArrayList<>();
         while(i.hasNext()) {
           Appointment a = i.next();
+          Iterator<String> sI = a.getPrescription().savePrescription().iterator();
           StringBuilder st = new StringBuilder() ;
           st.append(String.valueOf(a.getAppointmentID()).trim()); //id
           st.append(SEPARATOR);
@@ -247,6 +250,7 @@ public Map<Integer, Appointment> readAppointments(String filename) throws IOExce
           st.append(Integer.toString(j).trim());
           
           for(; j > 0; j--) {
+            st.append(sI.next());
             st.append(SEPARATOR);
             
           }
@@ -257,6 +261,68 @@ public Map<Integer, Appointment> readAppointments(String filename) throws IOExce
 			write(filename,alw);
 	}
 
+  public Map<Integer, Scheduler> readSchedules(String filename) throws IOException {
+    File myFile = new File(filename);
+    Scanner sc = new Scanner(myFile);
+    Map<Integer, Scheduler> sMap = new HashMap<>();// to store user data
+
+    while (sc.hasNextLine()){
+      Scheduler s;
+      int[][] sch = new int[7][20];
+      String st = sc.nextLine();
+      // get individual 'fields' of the string separated by SEPARATOR
+      StringTokenizer star = new StringTokenizer(st , SEPARATOR);	// pass in the string to the string tokenizer using delimiter ","
+      
+      int id = Integer.parseInt(star.nextToken().trim());	// getID
+      LocalDate date = LocalDate.parse(star.nextToken().trim());
+
+      for(int i = 0; i < 7; i++) {
+        String[] string = star.nextToken().trim().replaceAll("\\[", "").replaceAll("]", "").split(",");
+        for(int j = 0; j < 20; j++) {
+          sch[i][j] = Integer.valueOf(string[j].trim());
+        }
+      }
+      
+      //create new user --> depending on first 3 numbers of id
+      //depends on id config
+      s = new Scheduler();
+      s.setDoctorID(id);
+      s.setLastSaved(date);
+      s.setSchedule(sch);
+      // add to medical array map
+      sMap.put(id, s);
+    }
+
+    sc.close();
+    return sMap;
+  }
+
+  public void saveSchedule(String filename, Collection<Scheduler> all) {
+    Iterator<Scheduler> i = all.iterator();//iterator
+    List<String> alw = new ArrayList<>();
+        while(i.hasNext()) {
+          Scheduler s = i.next();
+      
+          StringBuilder st = new StringBuilder() ;
+          st.append(String.valueOf(s.getDoctorID()).trim()); //id
+          st.append(SEPARATOR);
+          st.append(s.getLastSaved().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).trim()); //date of birth
+          st.append(SEPARATOR);
+          
+          for (int[] row : s.getSchedule()) {
+            st.append(Arrays.toString(row))
+              .append(SEPARATOR);
+          }
+          
+          alw.add(st.toString());
+			}
+      try {
+        write(filename,alw);
+      } catch (Exception e) {
+        System.out.println("save schedule write " + e);
+      }
+			
+  }
 
   public static void write(String fileName, List data) throws IOException  {
     PrintWriter out = new PrintWriter(new FileWriter(fileName));

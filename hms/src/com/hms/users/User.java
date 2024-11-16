@@ -109,6 +109,7 @@ public class User implements Serializable {
     public String getName() {
         return this.name;
     }
+    
     public void setName(String newName) {
 		// TODO Auto-generated method stub
 		

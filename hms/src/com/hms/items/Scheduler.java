@@ -8,6 +8,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 public class Scheduler {
 
     private LocalDate lastSaved;
+    private int doctorID;
     private final LocalTime start = LocalTime.of(8,0);
     private final int row = 7;
     private final int col = 20; 
@@ -17,6 +18,30 @@ public class Scheduler {
 
     public Scheduler() {
         lastSaved = LocalDate.now();
+    }
+
+    public int[][] getSchedule() {
+        return schedule;
+    }
+
+    public int getDoctorID() {
+        return doctorID;
+    }
+
+    public LocalDate getLastSaved() {
+        return lastSaved;
+    }
+
+    public void setSchedule(int[][] s) {
+        schedule = s;
+    }
+
+    public void setDoctorID(int dID) {
+        doctorID = dID;
+    } 
+
+    public void setLastSaved(LocalDate lS) {
+        lastSaved = lS;
     }
 
     public void printSchedule() {

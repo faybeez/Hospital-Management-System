@@ -51,6 +51,18 @@ public class UserManager {
         throw new NoSuchElementException("Username " + username + " not found.");
     }
 
+    public User getUserFromName(String n) {
+        User u = new User();
+        Iterator<User> i = UsersList.values().iterator();
+        while(i.hasNext()) {
+            u = i.next();
+            if(n.toLowerCase().compareTo(u.getName().toLowerCase()) == 0) {
+                return u;
+            }
+        }
+        throw new NoSuchElementException("Username " + n + " not found.");
+    }
+
     public void printAllUsers() {
         User u = new User();
         Iterator<User> i = UsersList.values().iterator();
