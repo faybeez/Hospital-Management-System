@@ -1,4 +1,5 @@
 package com.hms.items;
+import com.hms.users.UserManager;
 import java.time.LocalDateTime;
 
 public class Appointment {
@@ -33,7 +34,7 @@ public class Appointment {
     private int doctorID;
     private String typeOfService;
     private String consultNotes;
-    private String prescriptionID;
+    private Prescription prescription;
 
     //string in form of YYYY-MM-DDTHH:MM:SS where SS defaults to 00
     public Appointment(int pID, int dID, String typeofservice, String date) {
@@ -46,6 +47,10 @@ public class Appointment {
         AppointmentNumber ++;
     }
 
+    public void setPrescription(Prescription prescription) {
+        this.prescription = prescription;
+    }
+    
     public int getPatientID() {
         return patientID;
     }
@@ -78,12 +83,19 @@ public class Appointment {
         consultNotes = Cn;
     }
 
-    public void setPrescriptionID(String p) {
-        prescriptionID = p;
-    }
-
-    public void printAppointmentDetails() {
-        System.out.println("APPOINTMENT DETAILS");
-    }
+    public void printAppointmentDetails(UserManager userManager, boolean note) {
+        System.out.println("ID: " + id);
+        System.out.println("Status: " + status);
+        System.out.println("Scheduled Date: " + date);
+        String doctorName = userManager.getName(doctorID);
+        System.out.println("Doctor: " + doctorName);
+        String patientName = userManager.getName(patientID);
+        System.out.println("Patient: " + patientName);
+        System.out.println("Type of Service: " + typeOfService);
+        if (note)
+            System.out.println("Consultation Notes: " + consultNotes);
+            System.out.println("Prescription: ");
+            prescription.readPrescription();  
+            }
 
 }
