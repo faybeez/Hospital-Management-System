@@ -5,5 +5,5 @@
 2000000001|Confirmed|2024-11-20|08:30|1020000011|1010000001|`|`|`|`|0|Uncollected
 2000000003|Confirmed|2024-11-19|08:30|1020000011|1010000001|`|`|`|`|0|Uncollected
 2000000002|Pending|2024-11-20|10:30|1020000011|1010000001|`|`|`|`|0|Uncollected
-2000000009|Completed|2024-11-13|12:30|1020000011|1010000001|consult9|migraine|sleep|patient is anxious|2|Paracetamol|16|eat 1 a day, 2 when migraine hurts a lot|Ibuprofen|18|eat only when migraine is bad|Collected
+2000000009|Pending|2024-11-17|11:00|1020000011|1010000003|`|`|`|`|0|Uncollected
 2000000008|Completed|2024-11-13|10:30|1020000011|1010000001|`|flu|`|patient hasn't been getting enough sleep|0|Uncollected

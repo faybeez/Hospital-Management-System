@@ -20,38 +20,43 @@ public class Patient extends User {
         m.PrintAppointmentsFromPatientID(id);
     }
 
-    public Appointment makeAppointmentRequest(Doctor doctor){
+    public Appointment makeAppointmentRequest(Doctor doctor, Scanner sc){
         LocalDate date = LocalDate.of(1990,1,1); //dummy value
         LocalTime time = LocalTime.of(1,1); //dummy value
-        Scanner sc = new Scanner(System.in);
 
         System.out.println("Printing Doctor's Schedule...");
 
         doctor.getSchedule().printSchedule();
 
-        System.out.print("Date of Appointment (maximum 6 days from current date in YYYY-MM-DD):");
+        
         
         while(true) {
+            System.out.print("Date of Appointment (maximum 6 days from current date in YYYY-MM-DD):");
             try {
                 date = LocalDate.parse(sc.nextLine());
             } catch (Exception e) {
                 System.out.println("Invalid text! Try again.");
+                continue;
             }
             if(date.compareTo(LocalDate.now()) > 6 || date.compareTo(LocalDate.now()) < 0) {
                 System.out.println("Invalid date! Try again.");
+                continue;
             }
             break;
         }
         
-        System.out.print("Time of Appointment (8:00 - 18:00 in HH:MM - 30 minute intervals): ");
+        
         while(true) {
+            System.out.print("Time of Appointment (8:00 - 18:00 in HH:MM - 30 minute intervals): ");
             try {
                 time = LocalTime.parse(sc.nextLine());
             } catch (Exception e) {
                 System.out.println("Invalid text! Try again.");
+                continue;
             }
             if(time.compareTo(LocalTime.of(8,0)) < 0 || time.compareTo(LocalTime.of(18,0)) > 0 || time.getMinute() / 30 != 0) {
                 System.out.println("Invalid time! Try again.");
+                continue;
             }
             break;
         }
@@ -60,47 +65,51 @@ public class Patient extends User {
 
         if(!doctor.getSchedule().checkIfFree(a)) {
             System.out.println("You selected a time that is invalid. Please try again.");
-            sc.close();
             return null;
         }
         doctor.getSchedule().addAppointmentToSchedule(a);
-        sc.close();
+        System.out.println("Appointment Created!");
         return a;
     }
 
-    public int rescheduleAppointment(Appointment a, Doctor doctor) {
+    public int rescheduleAppointment(Appointment a, Doctor doctor, Scanner sc) {
         LocalDate date = LocalDate.of(1990,1,1); //dummy value
         LocalTime time = LocalTime.of(1,1); //dummy value
         String c;
-        Scanner sc = new Scanner(System.in);
 
         System.out.println("Printing Doctor's Schedule...");
 
         doctor.getSchedule().printSchedule();
 
-        System.out.print("Date of Appointment (maximum 6 days from current date in YYYY-MM-DD):");
+        
         
         while(true) {
+            System.out.print("Date of Appointment (maximum 6 days from current date in YYYY-MM-DD):");
             try {
                 date = LocalDate.parse(sc.nextLine());
             } catch (Exception e) {
                 System.out.println("Invalid text! Try again.");
+                continue;
             }
             if(date.compareTo(LocalDate.now()) > 6 || date.compareTo(LocalDate.now()) < 0) {
                 System.out.println("Invalid date! Try again.");
+                continue;
             }
             break;
         }
         
-        System.out.print("Time of Appointment (8:00 - 18:00 in HH:MM - 30 minute intervals): ");
+        
         while(true) {
+            System.out.print("Time of Appointment (08:00 - 18:00 in HH:MM - 30 minute intervals): ");
             try {
                 time = LocalTime.parse(sc.nextLine());
             } catch (Exception e) {
                 System.out.println("Invalid text! Try again.");
+                continue;
             }
             if(time.compareTo(LocalTime.of(8,0)) < 0 || time.compareTo(LocalTime.of(18,0)) > 0 || time.getMinute() / 30 != 0) {
                 System.out.println("Invalid time! Try again.");
+                continue;
             }
             break;
         }
@@ -123,11 +132,9 @@ public class Patient extends User {
                 break;
             default:
                 System.out.println("Choice invalid.");
-                sc.close();
                 return -2;
         }
 
-        sc.close();
         return 1;
     }
 

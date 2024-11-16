@@ -60,10 +60,10 @@ public class App {
         
         switch (u.getDesignation()) {
             case "Patient":
-                patientActions((Patient)u, usermanager, apptmanager, medicalrecordmanager);
+                patientActions((Patient)u, usermanager, apptmanager, medicalrecordmanager , sc);
                 break;
             case "Doctor":
-                doctorActions((Doctor)u, usermanager, apptmanager);
+                doctorActions((Doctor)u, usermanager, apptmanager, sc);
                 break;
             case "Pharmacist":
                 pharmacistActions(u);
@@ -97,7 +97,7 @@ public class App {
         sc.close();
     }
 
-    public static void patientActions(Patient p, UserManager usermanager, AppointmentManager apptmanager, MedicalRecordManager medrecordmanager) {
+    public static void patientActions(Patient p, UserManager usermanager, AppointmentManager apptmanager, MedicalRecordManager medrecordmanager, Scanner sc) {
 
         //print current tasks?
 
@@ -110,7 +110,7 @@ public class App {
         Appointment a;
 
         MedicalRecord mr = medrecordmanager.getMedicalRecordofPatient(p.getID());
-
+        
         while(choice != 9) {
             System.out.println("What would you like to do?");
             System.out.println("1. View Medical Record");
@@ -123,10 +123,9 @@ public class App {
             System.out.println("8. View Past Appointment Outcome Records");
             System.out.println("9. Logout");
 
-            Scanner sc = new Scanner(System.in);
             System.out.println("Key in your choice: ");
-            choice = Integer.valueOf(sc.nextLine()); 
-        
+            choice = sc.nextInt(); 
+            sc.nextLine();
 
             //switch
             switch (choice) {
@@ -185,7 +184,7 @@ public class App {
                         break;
                     }
 
-                    a = p.makeAppointmentRequest(d);
+                    a = p.makeAppointmentRequest(d, sc);
                     apptmanager.addAppointment(a);
                     break;
                 case 5:
@@ -204,7 +203,7 @@ public class App {
                     }
 
                     a = appt.get(choice2 - 1);
-                    p.rescheduleAppointment(a, (Doctor)usermanager.getUserFromID(a.getDoctorID()));
+                    p.rescheduleAppointment(a, (Doctor)usermanager.getUserFromID(a.getDoctorID()), sc);
 
                     break;
                 case 6:
@@ -247,7 +246,7 @@ public class App {
 
     } 
 
-    public static void doctorActions(Doctor d, UserManager usermanager, AppointmentManager apptmanager) {
+    public static void doctorActions(Doctor d, UserManager usermanager, AppointmentManager apptmanager, Scanner sc) {
 
         //print current tasks?
 
@@ -267,7 +266,6 @@ public class App {
             System.out.println("7. Record Appointment Outcome");
             System.out.println("8. Logout");
 
-            Scanner sc = new Scanner(System.in);
             System.out.println("Key in your choice: ");
             choice = Integer.valueOf(sc.nextLine()); 
             

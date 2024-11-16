@@ -25,6 +25,7 @@ public class Doctor extends User{
     }
     
     public void setSchedule(Scheduler s) {
+        //s.updateLastSaved();
         schedule = s;
     }
 
