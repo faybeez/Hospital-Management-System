@@ -20,6 +20,16 @@ public class Prescription {
         // prescriptionNumber ++;
     }
 
+    public PrescriptionStatus getPrescriptionStatus() {
+        return prescriptionStatus;
+    }
+    
+    public ArrayList<String> getMedicineList() {
+        return medicineList;
+    }
+
+    public ArrayList<>
+
     public void setPrescriptionStatus(PrescriptionStatus ps) {
         prescriptionStatus = ps;
     }

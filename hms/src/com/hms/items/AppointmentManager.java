@@ -8,6 +8,7 @@ import java.util.Map;
 import com.hms.App;
 import com.hms.items.Appointment.Status;
 import com.hms.readwrite.TextDB;
+import com.hms.users.UserManager;
 
 public class AppointmentManager {
     private Map<Integer, Appointment> Appts = new HashMap<>();
@@ -19,7 +20,7 @@ public class AppointmentManager {
         TextDB reader = new TextDB();
         Appointment a;
         int dID, pID, aID;
-        ArrayList<Integer> apptIDs = new ArrayList<Integer>();
+        ArrayList<Integer> apptIDs;
 
         try {
             Appts = reader.readAppointments(App.apptDB);
@@ -34,26 +35,38 @@ public class AppointmentManager {
             dID = a.getDoctorID();
             pID = a.getPatientID();
             aID = a.getAppointmentID();
+            apptIDs = new ArrayList<Integer>();
 
             //checking if key has been used
             if(DoctorAppt.containsKey(dID)) {
-                DoctorAppt.get(dID).add(pID);
+                DoctorAppt.get(dID).add(aID);
             }
             else{
-                apptIDs.clear();
                 apptIDs.add(aID);
                 DoctorAppt.put(dID, apptIDs);
             }
+            apptIDs = new ArrayList<Integer>();
             //same for patient list
             if(PatientAppt.containsKey(pID)) {
-                PatientAppt.get(pID).add(pID);
+                PatientAppt.get(pID).add(aID);
             }
             else{
-                apptIDs.clear();
                 apptIDs.add(aID);
                 PatientAppt.put(pID, apptIDs);
             }
         }
+    }
+
+    public Map<Integer, Appointment> getApptMap() {
+        return Appts;
+    }
+
+    public Map<Integer, ArrayList<Integer>> getPatientMap() {
+        return PatientAppt;
+    }
+
+    public Map<Integer, ArrayList<Integer>> getDoctorMap() {
+        return DoctorAppt;
     }
 
     public Appointment getAppointmentFromID(int aID) {
@@ -82,7 +95,7 @@ public class AppointmentManager {
         }
     }
     
-    
+
     public void deleteAppointment(int id) {
         if(Appts.remove(id) == null) {
             System.out.println("Appointment invalid! Please try again.");
@@ -104,7 +117,7 @@ public class AppointmentManager {
             temp = apptIterator.next();
 
             if(temp.getPatientID() == id) {
-                temp.printAppointmentDetails();
+                //temp.printAppointmentDetails();
             }
         }
     }
@@ -165,12 +178,12 @@ public class AppointmentManager {
         return appts;
     }
 
-    public void printAppts(ArrayList<Appointment> a) {
+    public void printAppts(ArrayList<Appointment> a, UserManager usermanager) {
         Iterator<Appointment> i = a.iterator();
         int j = 1;
         while(i.hasNext()) {
-            System.out.printf("%d.%n", j++);
-            i.next().printAppointmentDetails();
+            System.out.printf("%n------------Appointment %d------------%n", j++);
+            i.next().printAppointmentDetails(usermanager, false);
         }
     }
 }

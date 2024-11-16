@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Collections;
 
 public class App {
     public static final String userDB = "hms/src/com/hms/database/userlogindb.txt";
@@ -184,7 +185,7 @@ public class App {
                     appt = apptmanager.getPatientAppts(p.getID(), Status.Confirmed);
                     appt.addAll(apptmanager.getPatientAppts(p.getID(), Status.Pending));
 
-                    apptmanager.printAppts(appt);
+                    apptmanager.printAppts(appt, usermanager);
 
                     System.out.println("Which appointment would you like to reschedule? (Number 1-x)");
                     choice2 = sc.nextInt();
@@ -203,7 +204,7 @@ public class App {
                     appt = apptmanager.getPatientAppts(p.getID(), Status.Confirmed);
                     appt.addAll(apptmanager.getPatientAppts(p.getID(), Status.Pending));
 
-                    apptmanager.printAppts(appt);
+                    apptmanager.printAppts(appt, usermanager);
 
                     System.out.println("Which appointment would you like to cancel? (Number 1-x)");
                     choice2 = sc.nextInt();
@@ -219,9 +220,15 @@ public class App {
                     break;
                 case 7:
                     System.out.println("view scheduled appointments");
-                    break;        
+                    appt = apptmanager.getPatientAppts(p.getID(), Status.Confirmed);
+                    appt.addAll(apptmanager.getPatientAppts(p.getID(), Status.Pending));
+                    Collections.sort(appt);
+                    apptmanager.printAppts(appt, usermanager);
+                    
+                    break;
                 case 8:
                     System.out.println("view past appointment outcome records");
+                    apptmanager.printAppts(apptmanager.getPatientAppts(p.getID(), Status.Completed), usermanager);
                 case 9:
                     System.out.println("logout");
                     
@@ -301,7 +308,7 @@ public class App {
                     
                     while (i.hasNext()) {
                         a = i.next();
-                        a.printAppointmentDetails();
+                        a.printAppointmentDetails(usermanager, true);
 
                         System.out.println("Accept? (Y/N)");
                         ad = sc.nextLine();
@@ -324,7 +331,7 @@ public class App {
                 case 6:
                     System.out.println("view upcoming appointments");
                     appt = apptmanager.getDoctorAppts(d.getID(), Status.Confirmed);
-                    apptmanager.printAppts(appt);
+                    apptmanager.printAppts(appt, usermanager);
                     break;
                 case 7:
                     System.out.println("record appointment outcome");

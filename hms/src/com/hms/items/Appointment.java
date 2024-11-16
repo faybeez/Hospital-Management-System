@@ -2,8 +2,9 @@ package com.hms.items;
 import com.hms.users.UserManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 
-public class Appointment {
+public class Appointment implements Comparable<Appointment> {
     //enum
     public enum Status {
         Pending {
@@ -61,8 +62,26 @@ public class Appointment {
         prescription = new Prescription();
     }
 
+    @Override
+    public int compareTo(Appointment o) {
+        if(date.compareTo(o.getDate()) != 0) {
+            return (date.compareTo(o.getDate()));
+        }
+        else {
+            return (time.compareTo(o.getTime()));
+        }
+    }
+
     //public Appointment(int i, Status s, LocalDate d, LocalTime t, int pid, int did, String tos, )
 
+    public String getTypeofService() {
+        return typeOfService;
+    }
+    
+    public String getConsultNotes() {
+        return consultNotes;
+    }
+    
     public String getDiagnosis() {
         return diagnosis;
     }
@@ -81,10 +100,6 @@ public class Appointment {
 
     public Status getStatus() {
         return status;
-    }
-
-    public void setPrescription(Prescription prescription) {
-        this.prescription = prescription;
     }
     
     public int getPatientID() {
@@ -142,8 +157,12 @@ public class Appointment {
         consultNotes = Cn;
     }
 
+    public void setPrescription(Prescription prescription) {
+        this.prescription = prescription;
+    }
+
     public void printAppointmentDetails(UserManager userManager, boolean note) {
-        System.out.println("ID: " + id);
+        //System.out.println("ID: " + id);
         System.out.println("Status: " + status);
         System.out.println("Scheduled Date: " + date);
         String doctorName = userManager.getName(doctorID);
@@ -151,10 +170,12 @@ public class Appointment {
         String patientName = userManager.getName(patientID);
         System.out.println("Patient: " + patientName);
         System.out.println("Type of Service: " + typeOfService);
-        if (note)
+        System.out.println("Diagnosis: " + diagnosis);
+        System.out.println("Treatment: " + treatment);
+        if (note) {
             System.out.println("Consultation Notes: " + consultNotes);
-            System.out.println("Prescription: ");
-            prescription.readPrescription();  
-            }
-
+        }
+        System.out.println("Prescription: ");
+        prescription.readPrescription();  
+    }
 }

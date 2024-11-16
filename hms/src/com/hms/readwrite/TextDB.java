@@ -159,34 +159,32 @@ public Map<Integer, Appointment> readAppointments(String filename) throws IOExce
     int i;
     String temp;
 
-    System.out.println("161");
     while (sc.hasNextLine()){
-      System.out.println("163");
+      p = new Prescription();
       String st = sc.nextLine();
       // get individual 'fields' of the string separated by SEPARATOR
       StringTokenizer star = new StringTokenizer(st , SEPARATOR);	// pass in the string to the string tokenizer using delimiter ","
-      System.out.println("167");
       int id = Integer.parseInt(star.nextToken().trim());	// getID
       Status status = Status.valueOf(star.nextToken().trim());
       LocalDate date = LocalDate.parse(star.nextToken().trim());
       LocalTime time = LocalTime.parse(star.nextToken().trim());
       int pID = Integer.parseInt(star.nextToken().trim());
       int dID = Integer.parseInt(star.nextToken().trim());
-      System.out.println("174");
+      
       temp = star.nextToken().trim();
-      String typeOfService = (temp == "`") ? null : temp;
-      System.out.println("178");
+      String typeOfService = (temp.compareTo("`") == 0) ? null : temp;
+      
       temp = star.nextToken().trim();
-      String diagnosis = (temp == "`") ? null : temp;
+      String diagnosis = (temp.compareTo("`") == 0) ? null : temp;
       temp = star.nextToken().trim();
-      String treatment = (temp == "`") ? null : temp;
+      String treatment = (temp.compareTo("`") == 0) ? null : temp;
       temp = star.nextToken().trim();
-      String consultNotes = (temp == "`") ? null : temp;
+      String consultNotes = (temp.compareTo("`") == 0) ? null : temp;
       i = Integer.parseInt(star.nextToken().trim());
       String medName, notes;
       int medAmt;
       
-      System.out.println("182");
+      
       for(; i > 0; i--) {
         medName = star.nextToken().trim();
         medAmt = Integer.parseInt(star.nextToken().trim());
@@ -210,11 +208,56 @@ public Map<Integer, Appointment> readAppointments(String filename) throws IOExce
       a.setTypeOfService(typeOfService);
       apptMap.put(id, a);
     }
-    System.out.println("206");
+    
     sc.close();
     return apptMap;
 }
   /** Write fixed content to the given file. **/
+  public void saveAppointments(String filename, Collection<Appointment> all) throws IOException {
+		Iterator<Appointment> i = all.iterator();//iterator
+    String temp;
+    List<String> alw = new ArrayList<>();
+        while(i.hasNext()) {
+          Appointment a = i.next();
+          StringBuilder st = new StringBuilder() ;
+          st.append(String.valueOf(a.getAppointmentID()).trim()); //id
+          st.append(SEPARATOR);
+          st.append(a.getStatus().toString().trim()); //name
+          st.append(SEPARATOR);
+          st.append(a.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).trim()); //date of birth
+          st.append(SEPARATOR);
+          st.append(a.getTime().format(DateTimeFormatter.ofPattern("HH:MM")).trim()); //date of birth
+          st.append(SEPARATOR);
+          st.append(Integer.toString(a.getPatientID()).trim()); //patient ID
+          st.append(SEPARATOR);
+          st.append(Integer.toString(a.getDoctorID()).trim());
+          st.append(SEPARATOR);
+          temp = (a.getTypeofService() == null) ? "`" : a.getTypeofService();
+          st.append(temp.trim());
+          st.append(SEPARATOR);
+          temp = (a.getDiagnosis() == null) ? "`" : a.getDiagnosis();
+          st.append(temp.trim());
+          st.append(SEPARATOR);
+          temp = (a.getTreatment() == null) ? "`" : a.getTreatment();
+          st.append(temp.trim());
+          st.append(SEPARATOR);
+          temp = (a.getConsultNotes() == null) ? "`" : a.getConsultNotes();
+          st.append(temp.trim());
+          int j = a.getPrescription().getMedicineList().size();
+          st.append(Integer.toString(j).trim());
+          
+          for(; j > 0; j--) {
+            st.append(SEPARATOR);
+            
+          }
+          
+
+          alw.add(st.toString());
+			}
+			write(filename,alw);
+	}
+
+
   public static void write(String fileName, List data) throws IOException  {
     PrintWriter out = new PrintWriter(new FileWriter(fileName));
 
