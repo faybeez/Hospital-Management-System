@@ -198,7 +198,10 @@ public void saveMedicalRecords(String filename, Collection<MedicalRecord> all) t
     int i;
     String temp;
 
+    //System.out.println("201");
+
     while (sc.hasNextLine()){
+      //System.out.println("204");
       p = new Prescription();
       String st = sc.nextLine();
       // get individual 'fields' of the string separated by SEPARATOR
@@ -209,7 +212,7 @@ public void saveMedicalRecords(String filename, Collection<MedicalRecord> all) t
       LocalTime time = LocalTime.parse(star.nextToken().trim());
       int pID = Integer.parseInt(star.nextToken().trim());
       int dID = Integer.parseInt(star.nextToken().trim());
-      
+      //System.out.println("214");
       temp = star.nextToken().trim();
       String typeOfService = (temp.compareTo("`") == 0) ? null : temp;
       
@@ -225,19 +228,22 @@ public void saveMedicalRecords(String filename, Collection<MedicalRecord> all) t
       
       
       for(; i > 0; i--) {
+        //System.out.println("230");
         medName = star.nextToken().trim();
         medAmt = Integer.parseInt(star.nextToken().trim());
         notes = star.nextToken().trim();
+        //System.out.println("234");
         p.addMedicine(medName, medAmt, notes);
       }
-      
+      //System.out.println("235");
       p.setPrescriptionStatus(PrescriptionStatus.valueOf(star.nextToken().trim()));
-
+      //System.out.println("240");
       a = new Appointment();
       a.setID(id);
       a.setConsultNotes(consultNotes);
       a.setDoctorID(dID);
       a.setPatientID(pID);
+      //System.out.println("246");
       a.setDate(date);
       a.setTime(time);
       a.setPrescription(p);
@@ -245,8 +251,10 @@ public void saveMedicalRecords(String filename, Collection<MedicalRecord> all) t
       a.setTreatment(treatment);
       a.setStatus(status);
       a.setTypeOfService(typeOfService);
+      //System.out.println("254");
       apptMap.put(id, a);
     }
+    //System.out.println("252");
     
     sc.close();
     return apptMap;

@@ -23,42 +23,42 @@ public class Patient extends User {
     public Appointment makeAppointmentRequest(Doctor doctor, Scanner sc){
         LocalDate date = LocalDate.of(1990,1,1); //dummy value
         LocalTime time = LocalTime.of(1,1); //dummy value
+        Boolean test = true;
 
         System.out.println("Printing Doctor's Schedule...");
 
         doctor.getSchedule().printSchedule();
 
-        
-        
-        while(true) {
+        while(test) {
+            test = false;
             System.out.print("Date of Appointment (maximum 6 days from current date in YYYY-MM-DD):");
             try {
                 date = LocalDate.parse(sc.nextLine());
             } catch (Exception e) {
                 System.out.println("Invalid text! Try again.");
-                continue;
+                test = true;
             }
             if(date.compareTo(LocalDate.now()) > 6 || date.compareTo(LocalDate.now()) < 0) {
                 System.out.println("Invalid date! Try again.");
-                continue;
+                test = true;
             }
-            break;
         }
         
+        test = true;
         
-        while(true) {
-            System.out.print("Time of Appointment (8:00 - 18:00 in HH:MM - 30 minute intervals): ");
+        while(test) {
+            test = false;
+            System.out.print("Time of Appointment (08:00 - 18:00 in HH:MM - 30 minute intervals): ");
             try {
                 time = LocalTime.parse(sc.nextLine());
             } catch (Exception e) {
                 System.out.println("Invalid text! Try again.");
-                continue;
+                test = true;
             }
-            if(time.compareTo(LocalTime.of(8,0)) < 0 || time.compareTo(LocalTime.of(18,0)) > 0 || time.getMinute() / 30 != 0) {
+            if(time.compareTo(LocalTime.of(8,0)) < 0 || time.compareTo(LocalTime.of(18,0)) > 0 || (time.getMinute() % 30) != 0) {
                 System.out.println("Invalid time! Try again.");
-                continue;
+                test = true;
             }
-            break;
         }
 
         Appointment a = new Appointment(this.id, doctor.getID(), date, time);
@@ -76,42 +76,42 @@ public class Patient extends User {
         LocalDate date = LocalDate.of(1990,1,1); //dummy value
         LocalTime time = LocalTime.of(1,1); //dummy value
         String c;
+        Boolean test = true;
 
         System.out.println("Printing Doctor's Schedule...");
 
         doctor.getSchedule().printSchedule();
-
         
-        
-        while(true) {
+        while(test) {
+            test = false;
             System.out.print("Date of Appointment (maximum 6 days from current date in YYYY-MM-DD):");
             try {
                 date = LocalDate.parse(sc.nextLine());
             } catch (Exception e) {
                 System.out.println("Invalid text! Try again.");
-                continue;
+                test = true;
             }
             if(date.compareTo(LocalDate.now()) > 6 || date.compareTo(LocalDate.now()) < 0) {
                 System.out.println("Invalid date! Try again.");
-                continue;
+                test = true;
             }
-            break;
         }
         
+        test = true;
         
-        while(true) {
+        while(test) {
+            test = false;
             System.out.print("Time of Appointment (08:00 - 18:00 in HH:MM - 30 minute intervals): ");
             try {
                 time = LocalTime.parse(sc.nextLine());
             } catch (Exception e) {
                 System.out.println("Invalid text! Try again.");
-                continue;
+                test = true;
             }
-            if(time.compareTo(LocalTime.of(8,0)) < 0 || time.compareTo(LocalTime.of(18,0)) > 0 || time.getMinute() / 30 != 0) {
+            if(time.compareTo(LocalTime.of(8,0)) < 0 || time.compareTo(LocalTime.of(18,0)) > 0 || time.getMinute() % 30 != 0) {
                 System.out.println("Invalid time! Try again.");
-                continue;
+                test = true;
             }
-            break;
         }
 
         System.out.println("Old date and time: " + a.getDate().toString() + " - " + a.getTime().toString());

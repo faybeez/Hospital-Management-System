@@ -185,7 +185,9 @@ public class App {
                     }
 
                     a = p.makeAppointmentRequest(d, sc);
-                    apptmanager.addAppointment(a);
+                    if(a != null) {
+                        apptmanager.addAppointment(a);
+                    }
                     break;
                 case 5:
                     System.out.println("reschedule an appointment");
@@ -267,7 +269,8 @@ public class App {
             System.out.println("8. Logout");
 
             System.out.println("Key in your choice: ");
-            choice = Integer.valueOf(sc.nextLine()); 
+            choice = sc.nextInt();
+            sc.nextLine(); 
             
             //switch
             switch (choice) {
@@ -297,11 +300,11 @@ public class App {
                     System.out.println("view personal schedule");
                     d.getSchedule().printSchedule();
 
-                    //print specific appointments
+                    //TODO print specific appointments
                     break;
                 case 4:
                     System.out.println("set availability for appointments");
-                    d.UpdateUnavailable();
+                    d.UpdateUnavailable(sc);
                     break;
                 case 5:
                     System.out.println("Accept or decline appointments");
@@ -323,10 +326,13 @@ public class App {
                             case "Y":
                                 a.setStatus(Status.Confirmed);
                                 //send notif to patient?
+                                break;
                             case "N":
                                 a.setStatus(Status.Cancelled);
+                                break;
                             default:
                                 System.out.println("Wrong input. Skipped.");
+                                break;
                         }
 
                     }
@@ -343,6 +349,16 @@ public class App {
                     System.out.println("record appointment outcome");
                     appt = apptmanager.getDoctorAppts(d.getID(), Status.Completed);
 
+                    apptmanager.printAppts(appt, usermanager);
+
+                    System.out.println("Which appointment would you like to record the outcome of? (1-x)");
+                    choice2 = sc.nextInt();
+                    sc.nextLine();
+
+                    a = appt.get(choice2 - 1);
+
+                    a.recordAppointment(sc);
+
                     break;      
                 case 8: 
                     System.out.println("Logging out...");
@@ -356,7 +372,7 @@ public class App {
 
     public static void pharmacistActions(User p) {
 
-        //print current tasks?
+        //TODO print current tasks?
 
         int choice = -1;
 

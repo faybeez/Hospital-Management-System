@@ -25,7 +25,7 @@ public class Doctor extends User{
     }
     
     public void setSchedule(Scheduler s) {
-        //s.updateLastSaved();
+        s.updateLastSaved();
         schedule = s;
     }
 
@@ -68,9 +68,8 @@ public class Doctor extends User{
         schedule.updateLastSaved();
     }
 
-    public void UpdateUnavailable() {
+    public void UpdateUnavailable(Scanner sc) {
 
-        Scanner sc = new Scanner(System.in);
         LocalDate dStart, dEnd;
         LocalTime tStart, tEnd;
 

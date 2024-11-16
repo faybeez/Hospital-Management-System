@@ -3,6 +3,7 @@ import com.hms.users.UserManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
+import java.util.Scanner;
 
 public class Appointment implements Comparable<Appointment> {
     //enum
@@ -32,13 +33,12 @@ public class Appointment implements Comparable<Appointment> {
     }
 
     public Appointment(int pID, int dID, LocalDate date, LocalTime time) {
-        id = AppointmentIdentifier + AppointmentNumber;
+        id = AppointmentIdentifier + ++AppointmentNumber;
         patientID = pID;
         doctorID = dID;
         this.date = date;
         this.time = time;
         status = Status.Pending;
-        AppointmentNumber ++;
         prescription = new Prescription();
     }
 
@@ -145,6 +145,7 @@ public class Appointment implements Comparable<Appointment> {
         //System.out.println("ID: " + id);
         System.out.println("Status: " + status);
         System.out.println("Scheduled Date: " + date);
+        System.out.println("Scheduled Time: " + time);
         String doctorName = userManager.getName(doctorID);
         System.out.println("Doctor: " + doctorName);
         String patientName = userManager.getName(patientID);
@@ -157,5 +158,35 @@ public class Appointment implements Comparable<Appointment> {
         }
         System.out.println("Prescription: ");
         prescription.readPrescription();  
+    }
+
+    public void recordAppointment(Scanner sc) {
+        String medName, notes;
+        int medamt;
+        status = Status.Completed;
+        System.out.println("Type of Service: ");
+        typeOfService = sc.nextLine();
+        System.out.println("Diagnosis: ");
+        diagnosis = sc.nextLine();
+        System.out.println("Treatment: ");
+        treatment = sc.nextLine();
+        System.out.println("Consult Notes: ");
+        consultNotes = sc.nextLine();
+        System.out.println("Recording prescriptions...");
+        while(true) {
+            System.out.println("Medicine name (to exit, write 000): ");
+            medName = sc.nextLine();
+            // TODO check against medicineDB
+            if(medName.compareTo("000") == 0) {
+                break;
+            }
+            System.out.println("Amount of medicine prescribed (tablets): ");
+            medamt = sc.nextInt();
+            sc.nextLine();
+            System.out.println("Notes:");
+            notes = sc.nextLine();
+
+            prescription.addMedicine(medName, medamt, notes);
+        }
     }
 }

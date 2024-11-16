@@ -33,13 +33,13 @@ public class AppTest {
     public void doctorMapTest() {
         UserManager usermanager = new UserManager();
         AppointmentManager apptmanager = new AppointmentManager();
-        assertEquals(apptmanager.getDoctorMap(), apptmanager.getDoctorMap());
+        assertEquals(1, apptmanager.getDoctorMap());
     }
     @Test
     public void apptMapTest() {
         UserManager usermanager = new UserManager();
         AppointmentManager apptmanager = new AppointmentManager();
-        assertEquals(apptmanager.getApptMap(), apptmanager.getApptMap());
+        assertEquals(1, apptmanager.getApptMap());
     }
 
 
