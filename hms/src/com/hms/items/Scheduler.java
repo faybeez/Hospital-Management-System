@@ -20,14 +20,13 @@ public class Scheduler {
     }
 
     public void printSchedule() {
-        int day = 0;
         LocalTime t = LocalTime.of(8,0);
-        System.out.printf("%n%26s%s%26s%n%s%n","","DOCTOR SCHEDULER","","---------------------------------------------------------------------");
+        System.out.printf("%n%26s%s%26s%n%s%n","","DOCTOR'S SCHEDULE","","---------------------------------------------------------------------");
         for(int i = 0; i < col; i++) {
             System.out.printf("%s ",t);
             for(int j = 0; j < row; j++) {
                 if(schedule[j][i] == -1) {
-                    System.out.printf("|%-3s%1s%3s|", " ", "", " ");
+                    System.out.printf("|%-3s%1s%3s|", " ", " ", " ");
                 }
                 else if(schedule[j][i] == 0) {
                     System.out.printf("|%-3s%1s%3s|", " ", "x", " ");
@@ -37,7 +36,6 @@ public class Scheduler {
                 }
             }
             System.out.println();
-            day++;
             t = t.plusMinutes(30);
         }
     }
@@ -69,20 +67,45 @@ public class Scheduler {
         }
     }
 
-    public void setUnavailable(LocalDate d, LocalTime t) {
+    public int setUnavailable(LocalDate d, LocalTime t) {
         int date = d.compareTo(lastSaved);
+        int temp;
 
         if(date < 0) {
             System.out.println("Date has already passed!");
-            return;
+            return -2;
         }
 
         long minutes = MINUTES.between(start, t);
+        temp = schedule[date][(int)minutes/30];
         schedule[date][(int)minutes/30] = 0;
+        return temp;
+    }
+
+    public int setFree(LocalDate d, LocalTime t) {
+        int date = d.compareTo(lastSaved);
+        int temp;
+
+        if(date < 0) {
+            System.out.println("Date has already passed!");
+            return -2;
+        }
+
+        long minutes = MINUTES.between(start, t);
+        temp = schedule[date][(int)minutes/30];
+        schedule[date][(int)minutes/30] = 0;
+
+        return temp;
     }
 
     //assuming doctor is free
     public void addAppointmentToSchedule(Appointment a) {
+
+        if (a == null) {
+            System.out.println("Appointment object is null!");
+            return;
+        }
+        
         int id = a.getAppointmentID();
 
         int date = a.getDate().compareTo(lastSaved);
@@ -100,6 +123,17 @@ public class Scheduler {
         //appointment checks alr if the date is valid
         int r = a.getDate().compareTo(lastSaved);
         int c = (int)MINUTES.between(start, a.getTime()) / 30;
+        if(schedule[r][c] == -1) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+   
+    public boolean checkIfFree(LocalDate date, LocalTime time) {
+        int r = date.compareTo(lastSaved);
+        int c = (int)MINUTES.between(start, time) / 30;
         if(schedule[r][c] == -1) {
             return true;
         }

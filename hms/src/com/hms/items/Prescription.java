@@ -2,16 +2,26 @@ package com.hms.items;
 import java.util.ArrayList;
 import java.util.Iterator;
 public class Prescription {
-    public static int prescriptionNumber = 0;
-    private static final int prescriptionIdentifier = 2000000000;
-    private int prescriptionID;
+    // public static int prescriptionNumber = 0;
+    // private static final int prescriptionIdentifier = 2000000000;
+    // private int prescriptionID;
+    public enum PrescriptionStatus{
+        Collected,
+        Uncollected;
+    }
+
+    private PrescriptionStatus prescriptionStatus = PrescriptionStatus.Uncollected;
     private ArrayList<String> medicineList = new ArrayList<String>();
     private ArrayList<Integer> prescriptionAmount = new ArrayList<Integer>();
     private ArrayList<String> prescriptionNotes = new ArrayList<String>();
 
     public Prescription() {
-        prescriptionID = prescriptionNumber + prescriptionIdentifier;
-        prescriptionNumber ++;
+        // prescriptionID = prescriptionNumber + prescriptionIdentifier;
+        // prescriptionNumber ++;
+    }
+
+    public void setPrescriptionStatus(PrescriptionStatus ps) {
+        prescriptionStatus = ps;
     }
 
     public void addMedicine(String medicine, int amount, String notes) {

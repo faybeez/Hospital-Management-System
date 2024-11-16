@@ -1,43 +1,47 @@
 package com.hms.users;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import org.junit.platform.console.shadow.picocli.CommandLine.Help.Ansi.Text;
+
+import java.util.Map;
+import com.hms.App;
 
 import com.hms.readwrite.TextDB;
 
 public class UserManager {
-    private ArrayList<User> UsersList = new ArrayList<User>();
+    // private ArrayList<User> UsersList = new ArrayList<User>();
+    private Map<Integer, User> UsersList = new HashMap<>();
     private static final int stripPrefix = 100;
 
     public UserManager() {
         TextDB reader = new TextDB();
         try {
-            this.UsersList = reader.readUsers("hms\\src\\com\\hms\\database\\userlogindb.txt");
+            this.UsersList = reader.readUsers(App.userDB);
         } catch (Exception e) {
             // TODO: handle exception
         }
     }
-    public ArrayList<User> getUsersList() {
+    public Map<Integer, User> getUsersList() {
         return this.UsersList;
     }
 
     public String getName(int id) {
-        int index = id % stripPrefix;
-        String name = UsersList.get(index - 1).getName();
-
+        String name = UsersList.get(id).getName();
         return name;
     }
 
     public User getUserFromID(int id) {
-        int index = id % stripPrefix;
         User u = new User();
-        u = UsersList.get(index - 1);
+        u = UsersList.get(id);
         return u;
     }
 
     public User getUserFromUsername(String username) {
         User u = new User();
-        Iterator<User> i = UsersList.iterator();
+        Iterator<User> i = UsersList.values().iterator();
         while(i.hasNext()) {
             u = i.next();
             if(username.compareTo(u.getUsername()) == 0) {
@@ -49,7 +53,7 @@ public class UserManager {
 
     public void printAllUsers() {
         User u = new User();
-        Iterator<User> i = UsersList.iterator();
+        Iterator<User> i = UsersList.values().iterator();
         while(i.hasNext()) {
             u = i.next();
             u.printUserDetails();
@@ -59,17 +63,17 @@ public class UserManager {
     public void printSubUsers(String c) {
         User u = new User();
 
-        Iterator<User> i = UsersList.iterator();
+        Iterator<User> i = UsersList.values().iterator();
         int count = 1;
 
         switch (c) {
             case "Administrator":
-            while(i.hasNext()) {
-                u = i.next();
-                if(u instanceof Administrator) {
-                    System.out.printf("%-5s%s %s%n", Integer.toString(count++) + ".", "Administrator", u.getName());
+                while(i.hasNext()) {
+                    u = i.next();
+                    if(u instanceof Administrator) {
+                        System.out.printf("%-5s%s %s%n", Integer.toString(count++) + ".", "Administrator", u.getName());
+                    }
                 }
-            }
                 break;
             case "Doctor":
                 while(i.hasNext()) {
@@ -97,8 +101,26 @@ public class UserManager {
                 break;
             default:
                 break;
+        }  
+    }
+
+    public void removeUser(int id) {
+        if(UsersList.containsKey(id)) {
+            UsersList.remove(id);
+            System.out.println("User removed successfully!");
+        }
+        else{
+            System.out.println("User not found and removal was unsuccessful!");
+        }
+    }
+
+    public void saveUsers() {
+        TextDB writer = new TextDB();
+        try {
+            writer.saveUsers(App.userDB, UsersList.values());           
+        } catch (Exception e) {
+            // TODO: handle exception
         }
 
-        
     }
 }

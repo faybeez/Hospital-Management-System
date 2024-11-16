@@ -40,22 +40,46 @@ public class Appointment {
     private int patientID;
     private int doctorID;
     private String typeOfService;
+    private String diagnosis;
+    private String treatment;
     private String consultNotes;
-    private String prescriptionID;
+    private Prescription prescription;
 
-    //string in form of YYYY-MM-DDTHH:MM:SS where SS defaults to 00
+    public Appointment() {
+        AppointmentNumber++;
+    }
+
     public Appointment(int pID, int dID, LocalDate date, LocalTime time) {
         id = AppointmentIdentifier + AppointmentNumber;
         patientID = pID;
         doctorID = dID;
         this.date = date;
         this.time = time;
-        status = Status.Confirmed;
+        status = Status.Pending;
         AppointmentNumber ++;
+        prescription = new Prescription();
+    }
+
+    //public Appointment(int i, Status s, LocalDate d, LocalTime t, int pid, int did, String tos, )
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public String getTreatment() {
+        return treatment;
     }
 
     public int getAppointmentID() {
         return id;
+    }
+
+    public Prescription getPrescription() {
+        return prescription;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     public int getPatientID() {
@@ -74,12 +98,20 @@ public class Appointment {
         return time;
     }
 
+    public void setID(int i) {
+        id = i;
+    }
+
     public void setStatus(Status s) {
         status = s;
     }
 
     public void setDate(LocalDate d) {
         date = d;
+    }
+
+    public void setTime(LocalTime t) {
+        time = t;
     }
 
     public void setPatientID(int Pid) {
@@ -94,12 +126,19 @@ public class Appointment {
         typeOfService = ToS;
     }
 
+    public void setDiagnosis(String d) {
+        diagnosis = d;
+    }
+    public void setTreatment(String t) {
+        treatment = t;
+    }
+
     public void setConsultNotes(String Cn) {
         consultNotes = Cn;
     }
 
-    public void setPrescriptionID(String p) {
-        prescriptionID = p;
+    public void setPrescription(Prescription p) {
+        prescription = p;
     }
 
     public void printAppointmentDetails() {

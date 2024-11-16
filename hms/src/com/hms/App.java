@@ -1,16 +1,28 @@
 package com.hms;
 
 import com.hms.items.AppointmentManager;
+import com.hms.items.MedicalRecord;
+import com.hms.items.MedicalRecordManager;
+import com.hms.items.Appointment.Status;
 import com.hms.users.User;
 import com.hms.users.UserManager;
+import com.hms.users.Patient;
+import com.hms.users.Doctor;
+import com.hms.items.Appointment;
+
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class App {
+    public static final String userDB = "hms/src/com/hms/database/userlogindb.txt";
+    public static final String apptDB = "hms/src/com/hms/database/appointmentdb.txt";
     public static void main(String[] args) throws Exception {
 
         UserManager usermanager = new UserManager();
         AppointmentManager apptmanager = new AppointmentManager();
+        MedicalRecordManager medicalrecordmanager = new MedicalRecordManager();
         Scanner sc = new Scanner(System.in);
         String username;
         String password;
@@ -42,10 +54,10 @@ public class App {
         
         switch (u.getDesignation()) {
             case "Patient":
-                patientActions(u);
+                patientActions((Patient)u, usermanager, apptmanager, medicalrecordmanager);
                 break;
             case "Doctor":
-                doctorActions(u);
+                doctorActions((Doctor)u, usermanager, apptmanager);
                 break;
             case "Pharmacist":
                 pharmacistActions(u);
@@ -57,6 +69,8 @@ public class App {
                 break;
                 
         }
+        //logout actions
+        usermanager.saveUsers();
 
        /* User test = new User(1001, sc.nextLine(), sc.nextLine(), Gender.FEMALE, BloodType.ABMINUS, sc.nextLine(), sc.nextLine());
         //test.printUserDetails();
@@ -74,122 +88,255 @@ public class App {
         sc.close();
     }
 
-    public static void patientActions(User p) {
+    public static void patientActions(Patient p, UserManager usermanager, AppointmentManager apptmanager, MedicalRecordManager medrecordmanager) {
 
         //print current tasks?
 
         int choice = -1;
+        int choice2;
+        int id;
+        String email, phone;
+        Doctor d;
+        ArrayList<Appointment> appt;
+        Appointment a;
 
-        System.out.println("What would you like to do?");
-        System.out.println("1. View Medical Record");
-        System.out.println("2. Update Personal Information");
-        System.out.println("3. View Available Apppointment Slots");
-        System.out.println("4. Schedule an Appointment");
-        System.out.println("5. Reschedule an Appointment");
-        System.out.println("6. Cancel an Appointment");
-        System.out.println("7. View Scheduled Appointments");
-        System.out.println("8. View Past Appointment Outcome Records");
-        System.out.println("9. Logout");
+        MedicalRecord mr = medrecordmanager.getMedicalRecordofPatient(p.getID());
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Key in your choice: ");
-        choice = sc.nextInt(); 
-    
+        while(choice != 9) {
+            System.out.println("What would you like to do?");
+            System.out.println("1. View Medical Record");
+            System.out.println("2. Update Personal Information");
+            System.out.println("3. View Available Apppointment Slots");
+            System.out.println("4. Schedule an Appointment");
+            System.out.println("5. Reschedule an Appointment");
+            System.out.println("6. Cancel an Appointment");
+            System.out.println("7. View Scheduled Appointments");
+            System.out.println("8. View Past Appointment Outcome Records");
+            System.out.println("9. Logout");
 
-        //switch
-        switch (choice) {
-            case 1:
-                System.out.println("view medical record");
-                break;
-            case 2:
-                System.out.println("update personal information");
-                break;
-            case 3:
-                System.out.println("view available appointment slots");
-                break;
-            case 4: 
-                System.out.println("schedule an appointment");
-                break;
-            case 5:
-                System.out.println("reschedule an appointment");
-                break;
-            case 6:
-                System.out.println("cancel an appointment");
-                break;
-            case 7:
-                System.out.println("view scheduled appointments");
-                break;        
-            case 8:
-                System.out.println("view past appoontment outcome records");
-            case 9:
-                System.out.println("logout");
-            default:
-                break;
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Key in your choice: ");
+            choice = sc.nextInt(); 
+        
+
+            //switch
+            switch (choice) {
+                case 1:
+                    System.out.println("view medical record");
+                    mr.printMedicalRecord(apptmanager);
+                    break;
+                case 2:
+                    System.out.println("update personal information");
+
+                    System.out.println("Which information would you like to update?");
+                    System.out.println("1. Email Address");
+                    System.out.println("2. Phone Number");
+                    choice2 = sc.nextInt();
+                    switch (choice2) {
+                        case 1:
+                            System.out.println("Enter your new email address: ");
+                            email = sc.nextLine();
+                            mr.setEmailAddress(email);
+                            System.out.println("Phone number has been changed!");
+                            break;
+                        case 2:
+                            System.out.println("Enter your new phone number: ");
+                            phone = sc.nextLine();
+                            mr.setContactNumber(phone);
+                            System.out.println("Phone number has been changed!");
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 3:
+                    System.out.println("view available appointment slots");
+
+                    usermanager.printSubUsers("Doctor");
+                    System.out.println("Write the doctor's name you'd like to view the appointment slots of:");
+
+                    try {
+                        d = (Doctor)usermanager.getUserFromUsername(sc.nextLine());
+                    } catch (Exception e) {
+                        System.out.println(e);
+                        break;
+                    }
+
+                    System.out.println("Printing Doctor " + d.getName() + "'s Schedule...");
+                    d.getSchedule().printSchedule();
+                    break;
+                case 4: 
+                    System.out.println("Schedule an appointment");
+                    usermanager.printSubUsers("Doctor");
+                    System.out.println("Write the doctor's name you'd like to make an appointment with:");
+                    try {
+                        d = (Doctor)usermanager.getUserFromUsername(sc.nextLine());
+                    } catch (Exception e) {
+                        System.out.println(e);
+                        break;
+                    }
+
+                    a = p.makeAppointmentRequest(d);
+                    apptmanager.addAppointment(a);
+                    break;
+                case 5:
+                    System.out.println("reschedule an appointment");
+                    appt = apptmanager.getPatientAppts(p.getID(), Status.Confirmed);
+                    appt.addAll(apptmanager.getPatientAppts(p.getID(), Status.Pending));
+
+                    apptmanager.printAppts(appt);
+
+                    System.out.println("Which appointment would you like to reschedule? (Number 1-x)");
+                    choice2 = sc.nextInt();
+                    
+                    if(choice2 > appt.size()){
+                        System.out.println("Invalid number!");
+                        break;
+                    }
+
+                    a = appt.get(choice2 - 1);
+                    p.rescheduleAppointment(a, (Doctor)usermanager.getUserFromID(a.getDoctorID()));
+
+                    break;
+                case 6:
+                    System.out.println("cancel an appointment");
+                    appt = apptmanager.getPatientAppts(p.getID(), Status.Confirmed);
+                    appt.addAll(apptmanager.getPatientAppts(p.getID(), Status.Pending));
+
+                    apptmanager.printAppts(appt);
+
+                    System.out.println("Which appointment would you like to cancel? (Number 1-x)");
+                    choice2 = sc.nextInt();
+
+                    if(choice2 > appt.size()){
+                        System.out.println("Invalid number!");
+                        break;
+                    }
+                    
+                    appt.get(choice2 - 1).setStatus(Status.Cancelled);
+                    
+                    System.out.println("Appointment cancelled!");
+                    break;
+                case 7:
+                    System.out.println("view scheduled appointments");
+                    break;        
+                case 8:
+                    System.out.println("view past appointment outcome records");
+                case 9:
+                    System.out.println("logout");
+                    
+                default:
+                    break;
+            }
         }
 
     } 
 
-    public static void doctorActions(User p) {
+    public static void doctorActions(Doctor d, UserManager usermanager, AppointmentManager apptmanager) {
 
         //print current tasks?
 
         int choice = -1;
+        int choice2;
+        ArrayList<Appointment> appt;
+        Iterator<Appointment> i;
 
-        System.out.println("What would you like to do?");
-        System.out.println("1. View Patient Medical Records");
-        System.out.println("2. Update Patient Medical Record");
-        System.out.println("3. View Personal Schedule");
-        System.out.println("4. Set Availability or Appointments");
-        System.out.println("5. Accept or Decline Appointment Requests");
-        System.out.println("6. View Upcoming Appointments");
-        System.out.println("7. Record Appointment Outcome");
-        System.out.println("8. Logout");
+        while(choice != 8) {
+            System.out.println("What would you like to do?");
+            System.out.println("1. View Patient Medical Records");
+            System.out.println("2. Update Patient Medical Record");
+            System.out.println("3. View Personal Schedule");
+            System.out.println("4. Set Availability or Appointments");
+            System.out.println("5. Accept or Decline Appointment Requests");
+            System.out.println("6. View Upcoming Appointments");
+            System.out.println("7. Record Appointment Outcome");
+            System.out.println("8. Logout");
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Key in your choice: ");
-        choice = sc.nextInt(); 
-        
-        //switch
-        switch (choice) {
-            case 1:
-                System.out.println("view patient medical record");
-                break;
-            case 2:
-                System.out.println("What would you like to update?");
-                System.out.println("1. Add new diagnoses");
-                System.out.println("2. Add new pescription");
-                System.out.println("3. Add new treatment plans");
-                System.out.println("Key in your choice: ");
-                int choice2 = sc.nextInt(); 
-                switch (choice2) {
-                    case 1:
-                        System.out.println("add new diagnoses");
-                        break;
-                    case 2:
-                        System.out.println("add new description");
-                    case 3:
-                        System.out.println("add new treatment plans");
-                }
-                break;
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Key in your choice: ");
+            choice = sc.nextInt(); 
+            
+            //switch
+            switch (choice) {
+                case 1:
+                    System.out.println("Viewing patient medical records");
+                    
+                    break;
+                case 2:
+                    System.out.println("What would you like to update?");
+                    System.out.println("1. Add new diagnoses");
+                    System.out.println("2. Add new pescription");
+                    System.out.println("3. Add new treatment plans");
+                    System.out.println("Key in your choice: ");
+                    choice2 = sc.nextInt(); 
+                    switch (choice2) {
+                        case 1:
+                            System.out.println("add new diagnoses");
+                            break;
+                        case 2:
+                            System.out.println("add new description");
+                        case 3:
+                            System.out.println("add new treatment plans");
+                    }
+                    break;
 
-            case 3:
-                System.out.println("view personal schedule");
-                break;
-            case 4:
-                System.out.println("set availability for appointments");
-            case 5:
-                System.out.println("accept or decline appointment");
-                break;
-            case 6:
-                System.out.println("view upcoming appointments");
-                break;
-            case 7:
-                System.out.println("record appointment outcome");
-                break;      
-            case 8: 
-                System.out.println("logout");
-            default:
-                break;
+                case 3:
+                    System.out.println("view personal schedule");
+                    d.getSchedule().printSchedule();
+
+                    //print specific appointments
+                    break;
+                case 4:
+                    System.out.println("set availability for appointments");
+                    d.UpdateUnavailable();
+                    break;
+                case 5:
+                    System.out.println("Accept or decline appointments");
+                    System.out.println("Printing all pending appointments...");
+                    String ad;
+                    
+                    appt = apptmanager.getDoctorAppts(d.getID(), Status.Pending);
+                    i = appt.iterator();
+                    Appointment a;
+                    
+                    while (i.hasNext()) {
+                        a = i.next();
+                        a.printAppointmentDetails();
+
+                        System.out.println("Accept? (Y/N)");
+                        ad = sc.nextLine();
+
+                        switch(ad) {
+                            case "Y":
+                                a.setStatus(Status.Confirmed);
+                                //send notif to patient?
+                            case "N":
+                                a.setStatus(Status.Cancelled);
+                            default:
+                                System.out.println("Wrong input. Skipped.");
+                        }
+
+                    }
+
+                    //System.out.println("Which appointment would you like to accept / decline?");
+
+                    break;
+                case 6:
+                    System.out.println("view upcoming appointments");
+                    appt = apptmanager.getDoctorAppts(d.getID(), Status.Confirmed);
+                    apptmanager.printAppts(appt);
+                    break;
+                case 7:
+                    System.out.println("record appointment outcome");
+                    appt = apptmanager.getDoctorAppts(d.getID(), Status.Completed);
+
+                    break;      
+                case 8: 
+                    System.out.println("Logging out...");
+                    
+                default:
+                    break;
+            }
         }
 
     } 

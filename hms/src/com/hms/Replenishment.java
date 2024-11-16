@@ -5,7 +5,7 @@ public class Replenishment {
     private int replenishQuantity;
     private String status;
 
-    public Replenishment(int medID, int quantity,String status) {
+    public Replenishment(int medID, int quantity, String status) {
         this.medID = medID;
         this.replenishQuantity = quantity;
         this.status = "Pending";

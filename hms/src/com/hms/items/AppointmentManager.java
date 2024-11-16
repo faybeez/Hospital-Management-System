@@ -1,21 +1,103 @@
 package com.hms.items;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+
+import com.hms.App;
+import com.hms.items.Appointment.Status;
+import com.hms.readwrite.TextDB;
 
 public class AppointmentManager {
-    private ArrayList<Appointment> Appts = new ArrayList<Appointment>();
+    private Map<Integer, Appointment> Appts = new HashMap<>();
+    //doctorID -> pending apptIDs
+    private Map<Integer, ArrayList<Integer>> DoctorAppt = new HashMap<>();
+    private Map<Integer, ArrayList<Integer>> PatientAppt = new HashMap<>();
+
+    public AppointmentManager() {
+        TextDB reader = new TextDB();
+        Appointment a;
+        int dID, pID, aID;
+        ArrayList<Integer> apptIDs = new ArrayList<Integer>();
+
+        try {
+            Appts = reader.readAppointments(App.apptDB);
+        } catch (Exception e) {
+            System.out.println("Appt Manager " + e);
+        }
+        
+        Iterator<Appointment> i = Appts.values().iterator();
+
+        while(i.hasNext()) {
+            a = i.next();
+            dID = a.getDoctorID();
+            pID = a.getPatientID();
+            aID = a.getAppointmentID();
+
+            //checking if key has been used
+            if(DoctorAppt.containsKey(dID)) {
+                DoctorAppt.get(dID).add(pID);
+            }
+            else{
+                apptIDs.clear();
+                apptIDs.add(aID);
+                DoctorAppt.put(dID, apptIDs);
+            }
+            //same for patient list
+            if(PatientAppt.containsKey(pID)) {
+                PatientAppt.get(pID).add(pID);
+            }
+            else{
+                apptIDs.clear();
+                apptIDs.add(aID);
+                PatientAppt.put(pID, apptIDs);
+            }
+        }
+    }
+
+    public Appointment getAppointmentFromID(int aID) {
+        return Appts.get(aID);
+    }
 
     public void addAppointment(Appointment a) {
-        Appts.add(a);
+        Appts.put(a.getAppointmentID(), a);
+        //add to doctor map
+        if(DoctorAppt.containsKey(a.getDoctorID())) {
+            DoctorAppt.get(a.getDoctorID()).add(a.getAppointmentID());
+        }
+        else{
+            ArrayList<Integer> temp = new ArrayList<>();
+            temp.add(a.getAppointmentID());
+            DoctorAppt.put(a.getDoctorID(),temp);
+        }
+        //add to patient map
+        if(PatientAppt.containsKey(a.getPatientID())) {
+            PatientAppt.get(a.getPatientID()).add(a.getAppointmentID());
+        }
+        else{
+            ArrayList<Integer> temp = new ArrayList<>();
+            temp.add(a.getAppointmentID());
+            PatientAppt.put(a.getPatientID(),temp);
+        }
     }
     
-    public void deleteAppointment(int index) {
-        Appts.remove(index - 1);
+    
+    public void deleteAppointment(int id) {
+        if(Appts.remove(id) == null) {
+            System.out.println("Appointment invalid! Please try again.");
+        }
+        else{
+            int dID = Appts.get(id).getDoctorID();
+            int pID = Appts.get(id).getPatientID();
+            DoctorAppt.get(dID).remove(id);
+            PatientAppt.get(pID).remove(id);
+            System.out.println("Appointment deleted.");
+        }
     }
 
     public void PrintAppointmentsFromPatientID(int id) {
-        Iterator<Appointment> apptIterator = Appts.iterator();
+        Iterator<Appointment> apptIterator = Appts.values().iterator();
         Appointment temp;
 
         while(apptIterator.hasNext()) {
@@ -27,16 +109,68 @@ public class AppointmentManager {
         }
     }
 
-    public void PrintAppointmentsFromDoctorID(int id) {
-        Iterator<Appointment> apptIterator = Appts.iterator();
-        Appointment temp;
+    // public ArrayList<Appointment> getPatientAppointments(int id, Status s){
+    //     Iterator<Appointment> apptIterator = Appts.values().iterator();
+    //     ArrayList<Appointment> apt = new ArrayList<Appointment>();
+    //     Appointment temp;
 
-        while(apptIterator.hasNext()) {
-            temp = apptIterator.next();
+    //     while(apptIterator.hasNext()) {
+    //         temp = apptIterator.next();
+
+    //         if(temp.getPatientID() == id && temp.getStatus() == s) {
+    //             apt.add(temp);
+    //         }
+    //     }
+    //     return apt;
+    // }
+
+    // public void PrintAppointmentsFromDoctorID(int id) {
+    //     Iterator<Appointment> apptIterator = Appts.values().iterator();
+    //     Appointment temp;
+
+    //     while(apptIterator.hasNext()) {
+    //         temp = apptIterator.next();
             
-            if(temp.getDoctorID() == id) {
-                temp.printAppointmentDetails();
+    //         if(temp.getDoctorID() == id) {
+    //             temp.printAppointmentDetails();
+    //         }
+    //     }
+    // }
+
+    public ArrayList<Appointment> getDoctorAppts(int id, Status s) {
+        Iterator<Integer> temp = DoctorAppt.get(id).iterator();
+        ArrayList<Appointment> appts = new ArrayList<Appointment>();
+        int a;
+        while(temp.hasNext()) {
+            a = temp.next();
+            if(Appts.get(a).getStatus() == s) {
+                appts.add(Appts.get(a));
             }
+        }
+
+        return appts;
+    }
+
+    public ArrayList<Appointment> getPatientAppts(int id, Status s) {
+        Iterator<Integer> temp = PatientAppt.get(id).iterator();
+        ArrayList<Appointment> appts = new ArrayList<Appointment>();
+        int a;
+        while(temp.hasNext()) {
+            a = temp.next();
+            if(Appts.get(a).getStatus() == s) {
+                appts.add(Appts.get(a));
+            }
+        }
+
+        return appts;
+    }
+
+    public void printAppts(ArrayList<Appointment> a) {
+        Iterator<Appointment> i = a.iterator();
+        int j = 1;
+        while(i.hasNext()) {
+            System.out.printf("%d.%n", j++);
+            i.next().printAppointmentDetails();
         }
     }
 }

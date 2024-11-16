@@ -1,11 +1,8 @@
 package com.hms.readwrite;
 
-
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import com.hms.items.Medicine;

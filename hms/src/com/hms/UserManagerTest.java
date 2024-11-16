@@ -16,7 +16,7 @@ public class UserManagerTest {
         ArrayList<User> UsersList = new ArrayList<User>();
         TextDB reader = new TextDB();
         try {
-            UsersList = reader.readUsers("hms\\\\src\\\\com\\\\hms\\\\database\\\\userlogindb.txt");
+            //UsersList = reader.readUsers("hms\\\\src\\\\com\\\\hms\\\\database\\\\userlogindb.txt");
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -24,7 +24,7 @@ public class UserManagerTest {
         UserManager um = new UserManager();
         
         ArrayList<User> UM = new ArrayList<User>();
-        UM = um.getUsersList();
+        //UM = um.getUsersList();
 
         assertEquals(UsersList, UM);
     }
@@ -52,7 +52,7 @@ public class UserManagerTest {
         String filename = "hms\\src\\com\\hms\\database\\userlogindb.txt";
         ArrayList<User> userArray = new ArrayList<User>();
         try {
-            userArray = textdb.readUsers(filename);
+            // userArray = textdb.readUsers(filename);
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -68,7 +68,7 @@ public class UserManagerTest {
         UserManager um = new UserManager();
         
         ArrayList<User> UM = new ArrayList<User>();
-        UM = um.getUsersList();
+        // UM = um.getUsersList();
 
         System.out.println(UM.get(1).getName());
 

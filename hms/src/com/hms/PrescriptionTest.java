@@ -8,14 +8,6 @@ import org.junit.Test;
 import com.hms.items.Prescription;
 
 public class PrescriptionTest {
-    @Test
-    public void createPrescriptionTest() {
-        Prescription p1 = new Prescription();
-        Prescription p2 = new Prescription();
-        Prescription p3 = new Prescription();
-
-        assertEquals(3, p2.prescriptionNumber);
-    }
 
     public static void main(String[] args) {
         Prescription p1 = new Prescription();
