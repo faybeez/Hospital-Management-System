@@ -7,30 +7,10 @@ import java.util.Comparator;
 public class Appointment implements Comparable<Appointment> {
     //enum
     public enum Status {
-        Pending {
-            @Override
-            public String toString() {
-                return "Waiting for Doctor's Approval";
-            }
-        },
-        Confirmed {
-            @Override
-            public String toString() {
-                return "Confirmed";
-            }
-        },
-        Cancelled {
-            @Override
-            public String toString() {
-                return "Cancelled";
-            }
-        },
-        Completed {
-            @Override
-            public String toString() {
-                return "Completed";
-            }
-        }
+        Pending,
+        Confirmed,
+        Cancelled,
+        Completed;
     }
 
     public static int AppointmentNumber = 0;

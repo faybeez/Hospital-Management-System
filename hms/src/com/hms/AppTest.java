@@ -47,7 +47,7 @@ public class AppTest {
         UserManager usermanager = new UserManager();
         AppointmentManager apptmanager = new AppointmentManager();
         SchedulerManager smanager = new SchedulerManager(usermanager);
-
+        
         ((Doctor)usermanager.getUserFromName("jonas")).printSchedule();
         
 

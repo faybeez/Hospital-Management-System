@@ -3,6 +3,7 @@ package com.hms;
 import com.hms.items.AppointmentManager;
 import com.hms.items.MedicalRecord;
 import com.hms.items.MedicalRecordManager;
+import com.hms.items.SchedulerManager;
 import com.hms.items.Appointment.Status;
 import com.hms.users.User;
 import com.hms.users.UserManager;
@@ -20,11 +21,14 @@ public class App {
     public static final String userDB = "hms/src/com/hms/database/userlogindb.txt";
     public static final String apptDB = "hms/src/com/hms/database/appointmentdb.txt";
     public static final String schedulerDB = "hms/src/com/hms/database/schedulerdb.txt";
+    public static final String medrecordDB = "hms/src/com/hms/database/medicalrecorddb.txt";
+
     public static void main(String[] args) throws Exception {
 
         UserManager usermanager = new UserManager();
         AppointmentManager apptmanager = new AppointmentManager();
         MedicalRecordManager medicalrecordmanager = new MedicalRecordManager();
+        SchedulerManager schedulermanager = new SchedulerManager(usermanager);
         Scanner sc = new Scanner(System.in);
         String username;
         String password;
@@ -74,6 +78,8 @@ public class App {
         //logout actions
         usermanager.saveUsers();
         apptmanager.saveAppts();
+        medicalrecordmanager.saveMedicalRecords();
+        schedulermanager.saveSchedules();
 
        /* User test = new User(1001, sc.nextLine(), sc.nextLine(), Gender.FEMALE, BloodType.ABMINUS, sc.nextLine(), sc.nextLine());
         //test.printUserDetails();

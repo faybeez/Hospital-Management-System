@@ -21,7 +21,7 @@ public class UserManager {
         try {
             this.UsersList = reader.readUsers(App.userDB);
         } catch (Exception e) {
-            // TODO: handle exception
+            System.out.println("user manager " + e);
         }
     }
     public Map<Integer, User> getUsersList() {

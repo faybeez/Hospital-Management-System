@@ -29,4 +29,15 @@ public class SchedulerManager {
             ((Doctor)um.getUserFromID(s.getDoctorID())).setSchedule(s);
         }
     }
+
+    public void saveSchedules() {
+        TextDB writer = new TextDB();
+        
+        try {
+            writer.saveSchedule(App.schedulerDB, schedules.values());
+        } catch (Exception e) {
+            System.out.println("scheduler Manager " + e);
+        }
+    }
+    
 }

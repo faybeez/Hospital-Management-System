@@ -41,11 +41,43 @@ public class MedicalRecord {
         id = ID;
         name = n;
         dateOfBirth = LocalDate.parse(DOB);
-        gender = Gender.valueOf(g);
-        bloodType = BloodType.valueOf(bt);
+        gender = Gender.getByValue(g);
+        bloodType = BloodType.getByValue(bt);
         contactNumber = contact;
         emailAddress = email;
         appointmentIDs = appt;
+    }
+
+    public int getID() {
+        return id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return this.dateOfBirth;
+    }
+    
+    public Gender getGender() {
+        return this.gender;
+    }
+
+    public BloodType getBloodType() {
+        return this.bloodType;
+    }
+
+    public String getEmailAddress() {
+        return this.emailAddress;
+    }
+
+    public String getContactNumber() {
+        return this.contactNumber;
+    }
+
+    public ArrayList<Integer> getAppointmentIDs() {
+        return appointmentIDs;
     }
 
     public void setAppointmentIDs(ArrayList<Integer> aid) {

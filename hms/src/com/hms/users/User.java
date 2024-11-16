@@ -1,6 +1,7 @@
 package com.hms.users;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.EnumSet;
 
 public class User implements Serializable {
     // enums
@@ -54,6 +55,15 @@ public class User implements Serializable {
                 return "AB-";
             }
         };
+
+        public static BloodType getByValue(String value) {
+            for(final BloodType element : EnumSet.allOf(BloodType.class)) {
+                if(element.toString().equals(value)) {
+                    return element;
+                }
+            }
+            return null;
+        }
     };
     
     //missing javadoc
@@ -70,6 +80,15 @@ public class User implements Serializable {
                 return "Male";
             }
         };
+
+        public static Gender getByValue(String value) {
+            for(final Gender element : EnumSet.allOf(Gender.class)) {
+                if(element.toString().equals(value)) {
+                    return element;
+                }
+            }
+            return null;
+        }
     };
 
     //userCount

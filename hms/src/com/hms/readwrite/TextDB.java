@@ -67,16 +67,16 @@ public class TextDB {
       //depends on id config
       switch(id / IDPARSE) {
           case 100:
-              user = new Administrator(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
+              user = new Administrator(id, name, dateOfBirth, Gender.getByValue(gender), BloodType.getByValue(bloodType), username,password);
               break;
           case 101:
-              user = new Doctor(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
+              user = new Doctor(id, name, dateOfBirth, Gender.getByValue(gender), BloodType.getByValue(bloodType), username,password);
               break;
           case 102:
-              user = new Patient(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
+              user = new Patient(id, name, dateOfBirth, Gender.getByValue(gender), BloodType.getByValue(bloodType), username,password);
               break;
           case 103:
-              user = new Pharmacist(id, name, dateOfBirth, Gender.valueOf(gender), BloodType.valueOf(bloodType), username,password);
+              user = new Pharmacist(id, name, dateOfBirth, Gender.getByValue(gender), BloodType.getByValue(bloodType), username,password);
               break;
       }
 
@@ -100,9 +100,9 @@ public void saveUsers(String filename, Collection<User> all) throws IOException 
           st.append(SEPARATOR);
           st.append(user.getDateOfBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).trim()); //date of birth
           st.append(SEPARATOR);
-          st.append(user.getGender().toString().trim()); //gender
+          st.append(user.getGender()); //gender
           st.append(SEPARATOR);
-          st.append(user.getBloodType().toString().trim()); //blood type
+          st.append(user.getBloodType()); //blood type
           st.append(SEPARATOR);
           st.append(user.getUsername().toString().trim()); //username
           st.append(SEPARATOR);
@@ -150,6 +150,43 @@ public Map<Integer, MedicalRecord> readMedicalRecord(String filename) throws IOE
   sc.close();
   return mdMap;
 }
+public void saveMedicalRecords(String filename, Collection<MedicalRecord> all) throws IOException {
+  Iterator<MedicalRecord> i = all.iterator();//iterator
+  List<String> alw = new ArrayList<>();
+  ArrayList<Integer> aptID = new ArrayList<Integer>();
+      while(i.hasNext()) {
+        MedicalRecord mr = i.next();
+      
+        StringBuilder st = new StringBuilder() ;
+        st.append(String.valueOf(mr.getID()).trim()); //id
+        st.append(SEPARATOR);
+        st.append(mr.getName().trim()); //name
+        st.append(SEPARATOR);
+        st.append(mr.getDateOfBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).trim()); //date of birth
+        st.append(SEPARATOR);
+        st.append(mr.getGender().toString().trim()); //gender
+        st.append(SEPARATOR);
+        st.append(mr.getBloodType().toString().trim()); //blood type
+        st.append(SEPARATOR);
+        st.append(mr.getEmailAddress().toString().trim()); //username
+        st.append(SEPARATOR);
+        st.append(mr.getContactNumber().toString().trim()); //password
+        st.append(SEPARATOR);
+        aptID = mr.getAppointmentIDs();
+        st.append(Integer.toString(aptID.size()).trim()); //appt id size
+        
+      
+        for(int j = aptID.size(); j > 0; j--) {
+          st.append(SEPARATOR);
+          st.append(aptID.remove(j - 1));
+        }
+        
+
+        alw.add(st.toString());
+    }
+    write(filename,alw);
+}
+
 
   public Map<Integer, Appointment> readAppointments(String filename) throws IOException {
     // read String from text file
@@ -229,7 +266,7 @@ public Map<Integer, MedicalRecord> readMedicalRecord(String filename) throws IOE
           st.append(SEPARATOR);
           st.append(a.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).trim()); //date of birth
           st.append(SEPARATOR);
-          st.append(a.getTime().format(DateTimeFormatter.ofPattern("HH:MM")).trim()); //date of birth
+          st.append(a.getTime().format(DateTimeFormatter.ofPattern("HH:mm")).trim()); //date of birth
           st.append(SEPARATOR);
           st.append(Integer.toString(a.getPatientID()).trim()); //patient ID
           st.append(SEPARATOR);
@@ -247,14 +284,16 @@ public Map<Integer, MedicalRecord> readMedicalRecord(String filename) throws IOE
           temp = (a.getConsultNotes() == null) ? "`" : a.getConsultNotes();
           st.append(temp.trim());
           int j = a.getPrescription().getMedicineList().size();
+          st.append(SEPARATOR);
           st.append(Integer.toString(j).trim());
           
           for(; j > 0; j--) {
-            st.append(sI.next());
             st.append(SEPARATOR);
-            
+            st.append(sI.next()); 
           }
-          
+
+          st.append(SEPARATOR);
+          st.append(a.getPrescription().getPrescriptionStatus()); 
 
           alw.add(st.toString());
 			}

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Map;
 
+import com.hms.App;
 import com.hms.readwrite.TextDB;
 
 public class MedicalRecordManager {
@@ -16,9 +17,9 @@ public class MedicalRecordManager {
     public MedicalRecordManager() {
         TextDB reader = new TextDB();
         try {
-            this.medicalRecordList = reader.readMedicalRecord("hms\\src\\com\\hms\\database\\medicalrecorddb.txt");
+            this.medicalRecordList = reader.readMedicalRecord(App.medrecordDB);
         } catch (Exception e) {
-            // TODO: handle exception
+            System.out.println("Med record manager " + e);
         }
     }
     public Map<Integer, MedicalRecord> getMedRecordList() {
@@ -27,5 +28,15 @@ public class MedicalRecordManager {
 
     public MedicalRecord getMedicalRecordofPatient(int id) {
         return medicalRecordList.get(id);
+    }
+
+    public void saveMedicalRecords() {
+        TextDB writer = new TextDB();
+        
+        try {
+            writer.saveMedicalRecords(App.medrecordDB, medicalRecordList.values());
+        } catch (Exception e) {
+            System.out.println("medical record Manager " + e);
+        }
     }
 }

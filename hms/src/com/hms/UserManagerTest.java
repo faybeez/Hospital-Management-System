@@ -39,6 +39,13 @@ public class UserManagerTest {
 
     }
 
+    @Test
+    public void readUsersTest() {
+        UserManager um = new UserManager();
+
+        assertEquals(1, um.getUsersList());
+    }
+
     public static void test3(String[] args) {
         UserManager um = new UserManager();
 
