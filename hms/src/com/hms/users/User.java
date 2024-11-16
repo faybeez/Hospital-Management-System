@@ -151,7 +151,12 @@ public class User implements Serializable {
 
     //print details method NOT DONE -- RECHANGE
     public void printUserDetails() {
-        System.out.println(name + dateOfBirth + gender.toString() + bloodType.toString() + userName + password);
+        System.out.println("Name: " + name);
+        System.out.println("Date of Birth: " + dateOfBirth.toString());
+        System.out.println("Gender: " + gender.toString());
+        System.out.println("Blood Type: " + bloodType.toString());
+        System.out.println("Username: " + userName);
+        System.out.println("Password: " + password);
     }
 
     public String getDesignation() {
