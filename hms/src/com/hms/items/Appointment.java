@@ -1,4 +1,5 @@
 package com.hms.items;
+import com.hms.users.UserManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -82,6 +83,10 @@ public class Appointment {
         return status;
     }
 
+    public void setPrescription(Prescription prescription) {
+        this.prescription = prescription;
+    }
+    
     public int getPatientID() {
         return patientID;
     }
@@ -137,12 +142,19 @@ public class Appointment {
         consultNotes = Cn;
     }
 
-    public void setPrescription(Prescription p) {
-        prescription = p;
-    }
-
-    public void printAppointmentDetails() {
-        System.out.println("APPOINTMENT DETAILS");
-    }
+    public void printAppointmentDetails(UserManager userManager, boolean note) {
+        System.out.println("ID: " + id);
+        System.out.println("Status: " + status);
+        System.out.println("Scheduled Date: " + date);
+        String doctorName = userManager.getName(doctorID);
+        System.out.println("Doctor: " + doctorName);
+        String patientName = userManager.getName(patientID);
+        System.out.println("Patient: " + patientName);
+        System.out.println("Type of Service: " + typeOfService);
+        if (note)
+            System.out.println("Consultation Notes: " + consultNotes);
+            System.out.println("Prescription: ");
+            prescription.readPrescription();  
+            }
 
 }
