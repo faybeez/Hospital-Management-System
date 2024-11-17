@@ -32,6 +32,11 @@ import com.hms.users.Pharmacist;
 import com.hms.users.Doctor;
 import com.hms.users.Patient;
 import com.hms.users.User;
+import com.hms.items.Medicine;
+import com.hms.items.Replenishment;
+import com.hms.items.Appointment;
+import com.hms.items.Prescription;
+
 import com.hms.items.Appointment;
 import com.hms.items.Prescription;
 import com.hms.items.Scheduler;
@@ -371,6 +376,90 @@ public void saveMedicalRecords(String filename, Collection<MedicalRecord> all) t
 			
   }
 
+  public ArrayList<Medicine> readwritemedicine(String filename) throws IOException {
+    File myFile = new File(filename);
+    Scanner sc = new Scanner(myFile);
+    ArrayList<Medicine> medList = new ArrayList<>();
+
+    while (sc.hasNextLine()) {
+        String line = sc.nextLine();
+        StringTokenizer star = new StringTokenizer(line, SEPARATOR);
+
+        String medname = star.nextToken().trim();
+        int med_id = Integer.parseInt(star.nextToken().trim());
+        int stock = Integer.parseInt(star.nextToken().trim());
+        int lowstock = Integer.parseInt(star.nextToken().trim());
+        double price = Double.parseDouble(star.nextToken().trim());
+
+        Medicine medicine = new Medicine(medname, med_id, stock, lowstock, price);
+        medList.add(medicine);
+    }
+
+    sc.close();
+    return medList;
+}
+
+
+public void saveMedicine(String filename, ArrayList<Medicine> medicineList) throws IOException {
+    List<String> alw = new ArrayList<>();
+
+    for (Medicine medicine : medicineList) {
+        StringBuilder st = new StringBuilder();
+        st.append(medicine.getMedname().trim());
+        st.append(SEPARATOR);
+        st.append(String.valueOf(medicine.getMed_id()).trim());
+        st.append(SEPARATOR);
+        st.append(String.valueOf(medicine.getStock()).trim());
+        st.append(SEPARATOR);
+        st.append(String.valueOf(medicine.getLowstock()).trim());
+        st.append(SEPARATOR);
+        st.append(String.valueOf(medicine.getPrice()).trim());
+
+        alw.add(st.toString());
+    }
+
+    write(filename, alw);
+}
+
+public ArrayList<Replenishment> readReplenishments(String filename) throws IOException {
+    File myFile = new File(filename);
+    Scanner sc = new Scanner(myFile);
+    ArrayList<Replenishment> replenishmentList = new ArrayList<>();
+
+    while (sc.hasNextLine()) {
+        String line = sc.nextLine();
+        StringTokenizer star = new StringTokenizer(line, SEPARATOR);
+
+        int medID = Integer.parseInt(star.nextToken().trim());
+        int replenishQuantity = Integer.parseInt(star.nextToken().trim());
+        String status = star.nextToken().trim();
+
+        Replenishment replenishment = new Replenishment(medID, replenishQuantity, status);
+        replenishmentList.add(replenishment);
+    }
+
+    sc.close();
+    return replenishmentList;
+}
+
+
+public void saveReplenishments(String filename, ArrayList<Replenishment> replenishmentList) throws IOException {
+    List<String> alw = new ArrayList<>();
+
+    for (Replenishment replenishment : replenishmentList) {
+        StringBuilder st = new StringBuilder();
+        st.append(String.valueOf(replenishment.getMedID()).trim());
+        st.append(SEPARATOR);
+        st.append(String.valueOf(replenishment.getQuantity()).trim());
+        st.append(SEPARATOR);
+        st.append(replenishment.getStatus().trim());
+
+        alw.add(st.toString());
+    }
+
+    write(filename, alw);
+}
+
   public static void write(String fileName, List data) throws IOException  {
     PrintWriter out = new PrintWriter(new FileWriter(fileName));
 
@@ -403,4 +492,11 @@ public void saveMedicalRecords(String filename, Collection<MedicalRecord> all) t
   **/
 
 }
+
+
+
+
+
+
+
 

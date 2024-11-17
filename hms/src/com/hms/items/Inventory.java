@@ -3,11 +3,17 @@ package com.hms.items;
 import java.io.IOException;
 
 
+
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.hms.App;
+import com.hms.items.Medicine;
+import com.hms.*;
+import com.hms.readwrite.*;
 import com.hms.readwrite.readwritemedicine;
 import java.util.Scanner;
-import java.util.Scanner;
+
 
 public class Inventory {
 	private ArrayList<Medicine> medicineList;
@@ -19,10 +25,11 @@ public class Inventory {
 
 	public Inventory()
 	{
+		 
 	//TODO move read write here (example in usermanager/medical record manager class)
 		medicineList = new ArrayList<>();
 		replenishment = new ArrayList<>();
-		replenishment = new ArrayList<>();
+	
 	}
 
 	
@@ -75,8 +82,8 @@ public class Inventory {
 			}
 		
 	}
-	public void addMedicine() {
-		Scanner sc = new Scanner(System.in);
+	public void addMedicine(Scanner sc) {
+		
 
 		System.out.println("Enter the medicine ID: ");
 		int medId = sc.nextInt();  
@@ -100,7 +107,7 @@ public class Inventory {
 
 		System.out.println("New medicine added successfully");
 
-		sc.close();
+		
 	}
 	public void removeMedicine(int medID)
 	{
@@ -200,9 +207,17 @@ public class Inventory {
 	
 		System.out.println("Process failed");
 	}
-
-	// TODO add saveInventory (one txt file for medicinedb, and one txt file for replenishment requests)
+	public void saveInventory() {
+	    try {
+	        TextDB writer = new TextDB();
+	        // save medicines
+	        writer.saveMedicine("hms/src/com/hms/database/medicinedb.txt", medicineList);
+	        
+	        // save replenishment
+	        writer.saveReplenishments("hms/src/com/hms/database/replenishmentDB.txt", replenishment);
+	    } catch (IOException e) {
+	        System.out.println("Error: " + e);
+	    }
+	}
 	
 }
-
-
