@@ -24,6 +24,7 @@ public class UserManager {
             System.out.println("user manager " + e);
         }
     }
+    
     public Map<Integer, User> getUsersList() {
         return this.UsersList;
     }
@@ -124,6 +125,15 @@ public class UserManager {
         else{
             System.out.println("User not found and removal was unsuccessful!");
         }
+    }
+
+    public void addUser(User u) {
+        if(UsersList.containsKey(u.getID())) {
+            System.out.println("User ID is not unique! Unable to add user. Error.");
+            return;
+        }
+        UsersList.put(u.getID(), u);
+        return;
     }
 
     public void saveUsers() {

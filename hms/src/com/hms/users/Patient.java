@@ -12,6 +12,15 @@ import java.time.LocalTime;
 
 public class Patient extends User {
 
+    private static final int idPrefix = 1020000000;
+
+    public Patient(String name, String dateOfBirth, Gender gender, BloodType bloodType, String userName, String password) {
+        super(name, dateOfBirth, gender, bloodType, userName, password);
+        int i = idPrefix + userCount;
+        super.setID(i);
+    }
+
+
     public Patient(int id, String name, String dateOfBirth, Gender gender, BloodType bloodType, String userName, String password) {
         super(id, name, dateOfBirth, gender, bloodType, userName, password);
     }

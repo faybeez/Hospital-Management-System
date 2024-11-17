@@ -14,6 +14,14 @@ import java.time.LocalTime;
 public class Doctor extends User{
     
     private Scheduler schedule;
+    private static final int idPrefix = 1010000000;
+
+    public Doctor(String name, String dateOfBirth, Gender gender, BloodType bloodType, String userName, String password) {
+        super(name, dateOfBirth, gender, bloodType, userName, password);
+        int i = idPrefix + userCount;
+        super.setID(i);
+        schedule = new Scheduler();
+    }
 
     public Doctor(int id, String name, String dateOfBirth, Gender gender, BloodType bloodType, String userName, String password) {
         super(id, name, dateOfBirth, gender, bloodType, userName, password);
