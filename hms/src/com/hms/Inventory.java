@@ -2,11 +2,13 @@ package com.hms;
 
 import java.io.IOException;
 
+
 import java.util.ArrayList;
 
 import com.hms.items.Medicine;
 import java.util.Iterator;
 import com.hms.readwrite.readwritemedicine;
+import java.util.Scanner;
 import java.util.Scanner;
 
 public class Inventory {
@@ -17,6 +19,7 @@ public class Inventory {
 	 public Inventory()
 	 {
 		 medicineList = new ArrayList<>();
+		 replenishment = new ArrayList<>();
 		 replenishment = new ArrayList<>();
 	 }
 	

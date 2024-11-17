@@ -141,6 +141,11 @@ public class User implements Serializable {
 		// TODO Auto-generated method stub
 		
 	}
+    }
+    public void setDateOfBirth(String newDob) {
+		// TODO Auto-generated method stub
+		
+	}
 
     public Gender getGender() {
         return this.gender;
@@ -158,9 +163,20 @@ public class User implements Serializable {
   		
   	}
    
+    }
+    public void setUsername(String username) {
+  		// TODO Auto-generated method stub
+  		
+  	}
+   
 
     public String getPassword() {
         return password;
+    }
+    public void setPassword(String password2) {
+		// TODO Auto-generated method stub
+		
+	}
     }
     public void setPassword(String password2) {
 		// TODO Auto-generated method stub
