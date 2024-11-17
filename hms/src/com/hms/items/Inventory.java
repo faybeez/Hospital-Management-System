@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.hms.App;
-import com.hms.Medicine;
+import com.hms.items.Medicine;
 import com.hms.*;
 import com.hms.readwrite.*;
 import com.hms.readwrite.readwritemedicine;
@@ -219,15 +219,5 @@ public class Inventory {
 	        System.out.println("Error: " + e);
 	    }
 	}
-
-
-
-
-
-	
-
-	
 	
 }
-
-

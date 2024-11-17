@@ -1,4 +1,4 @@
-package com.hms;
+package com.hms.items;
 import java.io.IOException;
 
 public class InventoryTesting {

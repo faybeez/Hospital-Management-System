@@ -2,7 +2,8 @@ package com.hms.users;
 
 import java.io.IOException;
 import java.util.Scanner;
-import com.hms.Inventory;
+
+import com.hms.items.Inventory;
 
 public class Pharmacist_testing {
     public static void main(String[] args) {

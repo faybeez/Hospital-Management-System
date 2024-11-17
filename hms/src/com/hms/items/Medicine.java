@@ -1,10 +1,10 @@
-package com.hms;
+package com.hms.items;
 
 public class Medicine {
 	private String medname;
 	private int med_id;
 	private int stock;
-	private int lowstock;
+	private int lowstock; // threshold
 	private double price;  
 
 
@@ -51,6 +51,10 @@ public class Medicine {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public void decreaseStock(int dec) {
+		this.stock = stock - dec;
 	}
 }
 
