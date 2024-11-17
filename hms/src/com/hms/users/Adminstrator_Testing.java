@@ -47,7 +47,7 @@ public class Adminstrator_Testing {
                 case 2:
                     System.out.println("Filter by 1. Role, 2. Gender, 3. Age");
                     int filter = sc.nextInt();
-                    staffManager.displayStaff(filter);
+                    staffManager.displayStaff(filter,sc);
                     break;
                 case 3:
                     inventory.displayMedications();
@@ -62,7 +62,7 @@ public class Adminstrator_Testing {
                     int secondChoice1 = sc.nextInt();
 
                     if (secondChoice1 == 1) {
-                        inventory.addMedicine();
+                        inventory.addMedicine(sc);
                     } else if (secondChoice1 == 2) {
                         System.out.println("Enter the id of the medicine you want to remove:");
                         int med_id = sc.nextInt();

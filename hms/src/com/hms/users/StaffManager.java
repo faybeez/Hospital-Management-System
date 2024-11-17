@@ -139,10 +139,10 @@ public class StaffManager {
        
 	}
 
-	public void displayStaff(int filter)
+	public void displayStaff(int filter,Scanner sc)
 	
 	{
-		Scanner sc=new Scanner(System.in);
+		
 		if (filter==1) //role
 		{
 			
