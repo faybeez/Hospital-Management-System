@@ -336,9 +336,6 @@ public class App {
                         }
 
                     }
-
-                    //System.out.println("Which appointment would you like to accept / decline?");
-
                     break;
                 case 6:
                     System.out.println("view upcoming appointments");
@@ -411,7 +408,7 @@ public class App {
 
     public static void adminActions (User p)    {
 
-        //print current tasks?
+        //TODO print current tasks?
 
         int choice = -1;
 

@@ -176,7 +176,7 @@ public class Appointment implements Comparable<Appointment> {
         while(true) {
             System.out.println("Medicine name (to exit, write 000): ");
             medName = sc.nextLine();
-            // TODO check against medicineDB
+            // TODO check name against medicineDB
             if(medName.compareTo("000") == 0) {
                 break;
             }
