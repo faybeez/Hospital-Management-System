@@ -122,51 +122,42 @@ public void saveUsers(String filename, List al) throws IOException {
     }
     return data;
   }
-<<<<<<< Updated upstream
+
     */
 
 }
 
-  public class readwritemedicine {
-	   public static final String SEPARATOR = "|";
+public ArrayList<Medicine> readwritemedicine(String filename) throws IOException {
+    File myFile = new File(filename);
+    Scanner sc = new Scanner(myFile);
+    ArrayList<Medicine> medList = new ArrayList<>();
 
-	   public ArrayList<Medicine> medList(String filename) throws IOException {
-	      File myFile = new File(filename);
-	      Scanner sc = new Scanner(myFile);
+    while (sc.hasNextLine()) {
+        String line = sc.nextLine();
+        StringTokenizer star = new StringTokenizer(line, SEPARATOR);
 
-	      ArrayList<Medicine> medList = new ArrayList<>();
+        String medname = star.nextToken().trim();
+        int med_id = Integer.parseInt(star.nextToken().trim());
+        int stock = Integer.parseInt(star.nextToken().trim());
+        int lowstock = Integer.parseInt(star.nextToken().trim());
+        double price = Double.parseDouble(star.nextToken().trim());
 
-	      while(sc.hasNextLine()) {
-	       
-	         String line = sc.nextLine();
-	         StringTokenizer star = new StringTokenizer(line, SEPARATOR);
-	         
-	         String medname = star.nextToken().trim();
-	         int med_id = Integer.parseInt(star.nextToken().trim());
-	         int stock = Integer.parseInt(star.nextToken().trim());
-	         int lowstock = Integer.parseInt(star.nextToken().trim());
-	         double price = Double.parseDouble(star.nextToken().trim());
-	         
-	         Medicine medicine=new Medicine(medname,med_id,stock,lowstock,price);
-	         medList.add(medicine);
-	       
-	   
-	      }
+        Medicine medicine = new Medicine(medname, med_id, stock, lowstock, price);
+        medList.add(medicine);
+    }
 
-	      sc.close();
-	      return medList;
-	   }
+    sc.close();
+    return medList;
+}
+
 	   
 
 
-public void saveMedicine(String filename, ArrayList<Medicine> medicineList) {
-	
-	List<String> alw = new ArrayList<>();
+public void saveMedicine(String filename, ArrayList<Medicine> medicineList) throws IOException {
+    List<String> alw = new ArrayList<>();
 
-    for (int i = 0; i < medicineList.size(); i++) {
-        Medicine medicine = medicineList.get(i);
+    for (Medicine medicine : medicineList) {
         StringBuilder st = new StringBuilder();
-        
         st.append(medicine.getMedname().trim());
         st.append(SEPARATOR);
         st.append(String.valueOf(medicine.getMed_id()).trim());
@@ -175,51 +166,51 @@ public void saveMedicine(String filename, ArrayList<Medicine> medicineList) {
         st.append(SEPARATOR);
         st.append(String.valueOf(medicine.getLowstock()).trim());
         st.append(SEPARATOR);
-        st.append(String.valueOf(medicine.getPrice()).trim()); 
-        
+        st.append(String.valueOf(medicine.getPrice()).trim());
+
         alw.add(st.toString());
     }
 
     write(filename, alw);
 }
-public void readReplenishments(String filename) throws IOException {
+
+public ArrayList<Replenishment> readReplenishments(String filename) throws IOException {
     File myFile = new File(filename);
     Scanner sc = new Scanner(myFile);
     ArrayList<Replenishment> replenishmentList = new ArrayList<>();
-    
+
     while (sc.hasNextLine()) {
         String line = sc.nextLine();
         StringTokenizer star = new StringTokenizer(line, SEPARATOR);
 
         int medID = Integer.parseInt(star.nextToken().trim());
         int replenishQuantity = Integer.parseInt(star.nextToken().trim());
-        String status = star.nextToken().trim();  
+        String status = star.nextToken().trim();
 
         Replenishment replenishment = new Replenishment(medID, replenishQuantity, status);
         replenishmentList.add(replenishment);
     }
 
-    
+    sc.close();
+    return replenishmentList;
 }
 
 
-public void saveReplenishments(String filename, ArrayList<com.hms.Replenishment> replenishment) throws IOException {
+public void saveReplenishments(String filename, ArrayList<Replenishment> replenishmentList) throws IOException {
     List<String> alw = new ArrayList<>();
 
-    for (int i = 0; i < replenishment.size(); i++) {
-        com.hms.Replenishment replenishment1 = replenishment.get(i);
+    for (Replenishment replenishment : replenishmentList) {
         StringBuilder st = new StringBuilder();
-        
-        st.append(String.valueOf(replenishment1.getMedID()).trim());
+        st.append(String.valueOf(replenishment.getMedID()).trim());
         st.append(SEPARATOR);
-        st.append(String.valueOf(replenishment1.getQuantity()).trim());
+        st.append(String.valueOf(replenishment.getQuantity()).trim());
         st.append(SEPARATOR);
-        st.append(replenishment1.getStatus().trim());
-        
+        st.append(replenishment.getStatus().trim());
+
         alw.add(st.toString());
     }
 
-    write(filename, alw);  
+    write(filename, alw);
 }
 
 
