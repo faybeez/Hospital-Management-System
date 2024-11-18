@@ -1,13 +1,12 @@
 package com.hms.users;
 import com.hms.items.*;
 import java.util.Scanner;
-import com.hms.*;
 
-public class Adminstrator_Testing {
+public class Administrator_Testing {
     public static void main(String[] args) {
         int choice;
         Scanner sc = new Scanner(System.in); 
-        StaffManager staffManager = new StaffManager();
+        //StaffManager staffManager = new StaffManager();
         Inventory inventory = new Inventory();
 
         do {
@@ -32,22 +31,22 @@ public class Adminstrator_Testing {
                     int secondChoice = sc.nextInt();
 
                     if (secondChoice == 1) {
-                        User user1 = staffManager.staffInfo();
-                        staffManager.addStaff(user1);
+                        //User user1 = staffManager.staffInfo();
+                        //staffManager.addStaff(user1);
                     } else if (secondChoice == 2) {
                         System.out.print("Enter the ID: ");
                         int id = sc.nextInt();
-                        staffManager.updateStaff(id);
+                        //staffManager.updateStaff(id);
                     } else if (secondChoice == 3) {
                         System.out.print("Enter the ID: ");
                         int id = sc.nextInt();
-                        staffManager.removeStaff(id);
+                        //staffManager.removeStaff(id);
                     }
                     break;
                 case 2:
                     System.out.println("Filter by 1. Role, 2. Gender, 3. Age");
                     int filter = sc.nextInt();
-                    staffManager.displayStaff(filter,sc);
+                    //staffManager.displayStaff(filter,sc);
                     break;
                 case 3:
                     inventory.displayMedications();
@@ -104,8 +103,6 @@ public class Adminstrator_Testing {
                     System.out.println("Invalid choice. Please try again.");
             }
         } while (choice != 7);
-
-       
         
     }
 }

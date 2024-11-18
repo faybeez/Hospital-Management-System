@@ -11,32 +11,33 @@ import com.hms.App;
 import com.hms.items.Medicine;
 import com.hms.*;
 import com.hms.readwrite.*;
-import com.hms.readwrite.readwritemedicine;
+
 import java.util.Scanner;
 
 
 public class Inventory {
 	private ArrayList<Medicine> medicineList;
 	private ArrayList<Replenishment> replenishment;
-	private String filename = "hms/src/com/hms/database/medicinedb.txt" ;
 	//private Map<Integer, Medicine> medicineList; use this << (integer is the medicine id)
 	//private Map<Integer, Replenishment> replenishmentRequests (integer is medicine id that is requested);
 
 
 	public Inventory()
 	{
-		 
-	//TODO move read write here (example in usermanager/medical record manager class)
-		medicineList = new ArrayList<>();
-		replenishment = new ArrayList<>();
-	
-	}
+		TextDB reader = new TextDB();
 
-	
-	public void medicineslist () throws IOException
-	{
-		readwritemedicine rwmed=new readwritemedicine();
-		medicineList=rwmed.medList(filename);
+		try {
+            medicineList = reader.readMedicines(App.medicineDB);
+        } catch (Exception e) {
+            System.out.println("Inventory Manager " + e);
+        }
+
+		try {
+            replenishment = reader.readReplenishments(App.replenishmentDB);
+        } catch (Exception e) {
+            System.out.println("Inventory Manager " + e);
+        }
+		
 	}
 	
 	public void checkstock(int medID)
@@ -51,8 +52,48 @@ public class Inventory {
 		}
 		System.out.println("Medicine does not exist");
 	}
+
+	public boolean checkIfMedicineExists(String medName) {
+		for (Medicine m : medicineList) {
+			if(m.getMedname().equalsIgnoreCase(medName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void checkstock(String medName)
+	{
+		for (Medicine medicine:medicineList)
+		{
+			if(medicine.getMedname().equalsIgnoreCase(medName))
+			{
+				System.out.println(medicine.getMedname()+ " stock:  " + medicine.getStock());
+				return;
+			}
+		}
+		System.out.println("Medicine does not exist");
+	}
+
+	public boolean checkIfStockEnough(String medName, int amount) {
+		for (Medicine medicine:medicineList)
+			{
+				if(medicine.getMedname().equalsIgnoreCase(medName))
+				{
+					if(amount > medicine.getStock())
+					{
+						System.out.println( medName + " has insufficient stocks");
+						return false;
+					}
+					System.out.println( medName + " has sufficient stocks");
+					return true;
+				}
+			}
+		System.out.println("Unsuccessful");
+		return false;
+	} 
 	
-	public void reducestock(int medID,int amount)
+	public boolean reducestock(int medID,int amount) //success return true
 	{
 		for (Medicine medicine:medicineList)
 			{
@@ -61,17 +102,41 @@ public class Inventory {
 					if(amount>medicine.getStock())
 					{
 						System.out.println("insufficient stocks");
-						return;
+						return false;
 					}
 					int stock=medicine.getStock()-amount;
 					medicine.setStock(stock);
 					System.out.println( medicine.getMedname()+ " current stock after reducing:  " + medicine.getStock());
 				
 				
-					return;
+					return true;
+				}
+			}
+		System.out.println("Unsuccessful");
+		return false;
+	}
+
+	public boolean reduceStockFromName(String medName,int amount)
+	{
+		for (Medicine medicine:medicineList)
+			{
+				if(medicine.getMedname().equalsIgnoreCase(medName))
+				{
+					if(amount>medicine.getStock())
+					{
+						System.out.println("insufficient stocks");
+						return false;
+					}
+					int stock=medicine.getStock()-amount;
+					medicine.setStock(stock);
+					System.out.println( medicine.getMedname()+ " current stock after reducing:  " + medicine.getStock());
+				
+				
+					return true;
 				}
 			}
 			System.out.println("Unsuccessful");
+			return false;
 	}
 	
 	
@@ -211,10 +276,10 @@ public class Inventory {
 	    try {
 	        TextDB writer = new TextDB();
 	        // save medicines
-	        writer.saveMedicine("hms/src/com/hms/database/medicinedb.txt", medicineList);
+	        writer.saveMedicines(App.medicineDB, medicineList);
 	        
 	        // save replenishment
-	        writer.saveReplenishments("hms/src/com/hms/database/replenishmentDB.txt", replenishment);
+	        writer.saveReplenishments(App.replenishmentDB, replenishment);
 	    } catch (IOException e) {
 	        System.out.println("Error: " + e);
 	    }

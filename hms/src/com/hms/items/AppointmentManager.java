@@ -154,27 +154,58 @@ public class AppointmentManager {
         Iterator<Integer> temp = DoctorAppt.get(id).iterator();
         ArrayList<Appointment> appts = new ArrayList<Appointment>();
         int a;
-        while(temp.hasNext()) {
-            a = temp.next();
-            if(Appts.get(a).getStatus() == s) {
+        if(s == null) {
+            while(temp.hasNext()) {
+                a = temp.next();
                 appts.add(Appts.get(a));
             }
         }
+        else {
+            while(temp.hasNext()) {
+                a = temp.next();
+                if(Appts.get(a).getStatus() == s) {
+                    appts.add(Appts.get(a));
+                }
+            }
+    
+        }
 
         return appts;
+    }
+
+    public ArrayList<Appointment> getAllAppointmentsFromStatus(Status s) {
+        Iterator<Appointment> i = Appts.values().iterator();
+        ArrayList<Appointment> temp = new ArrayList<Appointment>();
+        Appointment a;
+        while(i.hasNext()) {
+            a = i.next();
+            if(a.getStatus() == s) {
+                temp.add(a);
+            }
+        }
+        return temp;
     }
 
     public ArrayList<Appointment> getPatientAppts(int id, Status s) {
         Iterator<Integer> temp = PatientAppt.get(id).iterator();
         ArrayList<Appointment> appts = new ArrayList<Appointment>();
         int a;
-        while(temp.hasNext()) {
-            a = temp.next();
-            if(Appts.get(a).getStatus() == s) {
+        if(s == null) {
+            while(temp.hasNext()) {
+                a = temp.next();
                 appts.add(Appts.get(a));
             }
         }
-
+        else {
+            while(temp.hasNext()) {
+                a = temp.next();
+                if(Appts.get(a).getStatus() == s) {
+                    appts.add(Appts.get(a));
+                }
+            }
+    
+        }
+        
         return appts;
     }
 

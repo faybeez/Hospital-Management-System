@@ -1,20 +1,24 @@
 package com.hms.users;
-import java.util.ArrayList;
+
+import java.util.List;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.ArrayList;
 
-import org.junit.platform.console.shadow.picocli.CommandLine.Help.Ansi.Text;
 
 import java.util.Map;
 import com.hms.App;
 
 import com.hms.readwrite.TextDB;
+import com.hms.users.User.Gender;
 
 public class UserManager {
     // private ArrayList<User> UsersList = new ArrayList<User>();
     private Map<Integer, User> UsersList = new HashMap<>();
-    private static final int stripPrefix = 100;
 
     public UserManager() {
         TextDB reader = new TextDB();
@@ -136,13 +140,48 @@ public class UserManager {
         return;
     }
 
+    public List<User> filterUser(String attribute, String value, String t) {
+        List<User> temp;
+        switch (attribute.toLowerCase()) {
+            case "age":
+                switch (t) {
+                    case "<=":
+                        temp = UsersList.values().stream().filter(user -> user.getAge() <= Integer.valueOf(value)).collect(Collectors.toList());
+                        return temp;
+                    case ">=":
+                        temp = UsersList.values().stream().filter(user -> user.getAge() >= Integer.valueOf(value)).collect(Collectors.toList());
+                        return temp;
+                    case "<":
+                        temp = UsersList.values().stream().filter(user -> user.getAge() < Integer.valueOf(value)).collect(Collectors.toList());
+                        return temp;
+                    case ">":
+                        temp = UsersList.values().stream().filter(user -> user.getAge() > Integer.valueOf(value)).collect(Collectors.toList());
+                        return temp;  
+                }
+                break;
+            case "gender":
+                temp = UsersList.values().stream().filter(user -> user.getGender() == Gender.getByValue(value)).collect(Collectors.toList());
+                return temp;
+            case "role":
+            temp = UsersList.values().stream().filter(user -> user.getDesignation().toLowerCase().compareTo(value.toLowerCase()) == 0).collect(Collectors.toList());
+                return temp;
+            default:
+                System.out.println("Attribute doesn't exist / not expected. Exiting...");
+                return null;
+        }
+        return null;
+                                                        
+    }
+
     public void saveUsers() {
         TextDB writer = new TextDB();
         try {
+            //Collections.sort(UsersList.values());
             writer.saveUsers(App.userDB, UsersList.values());           
         } catch (Exception e) {
             // TODO: handle exception
         }
 
     }
+
 }

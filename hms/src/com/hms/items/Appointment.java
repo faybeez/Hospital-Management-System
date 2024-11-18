@@ -150,17 +150,20 @@ public class Appointment implements Comparable<Appointment> {
         System.out.println("Doctor: " + doctorName);
         String patientName = userManager.getName(patientID);
         System.out.println("Patient: " + patientName);
-        System.out.println("Type of Service: " + typeOfService);
-        System.out.println("Diagnosis: " + diagnosis);
-        System.out.println("Treatment: " + treatment);
-        if (note) {
-            System.out.println("Consultation Notes: " + consultNotes);
+        if(status == Status.Completed) {
+            System.out.println("Type of Service: " + typeOfService);
+            System.out.println("Diagnosis: " + diagnosis);
+            System.out.println("Treatment: " + treatment);
+            if (note) {
+                System.out.println("Consultation Notes: " + consultNotes);
+            }
+            System.out.println("Prescription: ");
+            prescription.readPrescription(); 
         }
-        System.out.println("Prescription: ");
-        prescription.readPrescription();  
+         
     }
 
-    public void recordAppointment(Scanner sc) {
+    public void recordAppointment(Scanner sc, Inventory inventory) {
         String medName, notes;
         int medamt;
         status = Status.Completed;
@@ -176,7 +179,10 @@ public class Appointment implements Comparable<Appointment> {
         while(true) {
             System.out.println("Medicine name (to exit, write 000): ");
             medName = sc.nextLine();
-            // TODO check name against medicineDB
+            if(!inventory.checkIfMedicineExists(medName)) {
+                System.out.println("Medicine name doesn't exist! Try again...");
+                continue;
+            }
             if(medName.compareTo("000") == 0) {
                 break;
             }

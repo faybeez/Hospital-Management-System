@@ -36,7 +36,7 @@ public class MedicalRecordManager {
         try {
             writer.saveMedicalRecords(App.medrecordDB, medicalRecordList.values());
         } catch (Exception e) {
-            System.out.println("medical record Manager " + e);
+            System.out.println("Medical Record Manager " + e);
         }
     }
 }
