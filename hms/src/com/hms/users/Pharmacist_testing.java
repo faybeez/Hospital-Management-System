@@ -11,11 +11,11 @@ public class Pharmacist_testing {
         Scanner sc = new Scanner(System.in); 
         Inventory inventory = new Inventory();
         
-        try {
-            inventory.medicineslist();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // try {
+        //     inventory.medicineslist();
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
 
         do {
             System.out.println("1. View Appointment Outcome Record");

@@ -1,14 +1,10 @@
 package com.hms.users;
 
-import com.hms.users.User.BloodType;
-import com.hms.users.User.Gender;
 import com.hms.items.Scheduler;
 import com.hms.items.Appointment;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Doctor extends User{

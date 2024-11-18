@@ -1,10 +1,10 @@
-Paracetamol| 01| 100| 20|1.00
-Ibuprofen|02|  50| 10|1.20
-Amoxicillin|03| 75 | 15|2.50
-Lisinopril|04| 120|75|3.00
-Aspirin| 05| 80| 20|3.20
-Insulin|06| 150|100|4.00
-Penicillamine|07| 60|20|7.20
-Chlorpheniramine|08|140|130|6.40
-Aciclovir|09| 50|30|2.40
-Amoxicillin|10|100|40|3.50
+Paracetamol|1|100|20|1.0
+Ibuprofen|2|50|10|1.2
+Amoxicillin|3|75|15|2.5
+Lisinopril|4|120|75|3.0
+Aspirin|5|80|20|3.2
+Insulin|6|150|100|4.0
+Penicillamine|7|60|20|7.2
+Chlorpheniramine|8|140|130|6.4
+Aciclovir|9|50|30|2.4
+Amoxicillin|10|100|40|3.5

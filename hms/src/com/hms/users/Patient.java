@@ -2,7 +2,6 @@ package com.hms.users;
 
 import com.hms.items.Appointment;
 import com.hms.items.AppointmentManager;
-import com.hms.items.MedicalRecord;
 import com.hms.items.Appointment.Status;
 
 import java.util.Scanner;

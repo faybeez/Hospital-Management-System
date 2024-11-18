@@ -376,7 +376,7 @@ public void saveMedicalRecords(String filename, Collection<MedicalRecord> all) t
 			
   }
 
-  public ArrayList<Medicine> readwritemedicine(String filename) throws IOException {
+  public ArrayList<Medicine> readMedicines(String filename) throws IOException {
     File myFile = new File(filename);
     Scanner sc = new Scanner(myFile);
     ArrayList<Medicine> medList = new ArrayList<>();
@@ -400,7 +400,7 @@ public void saveMedicalRecords(String filename, Collection<MedicalRecord> all) t
 }
 
 
-public void saveMedicine(String filename, ArrayList<Medicine> medicineList) throws IOException {
+public void saveMedicines(String filename, ArrayList<Medicine> medicineList) throws IOException {
     List<String> alw = new ArrayList<>();
 
     for (Medicine medicine : medicineList) {

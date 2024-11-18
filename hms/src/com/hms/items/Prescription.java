@@ -35,6 +35,15 @@ public class Prescription {
     public ArrayList<String> getPrescriptionNotes() {
         return prescriptionNotes;
     }
+
+    public String getMedicineFromList(int i) {
+        return medicineList.get(i);
+    }
+
+    public int getMedAmtFromList(int i) {
+        return prescriptionAmount.get(i);
+    }
+
     public ArrayList<String> savePrescription() {
         Iterator<String> medIterator = medicineList.iterator();
         Iterator<Integer> pAmtIterator = prescriptionAmount.iterator();
@@ -76,5 +85,7 @@ public class Prescription {
         while(medIterator.hasNext()) {
             System.out.printf("%nMedicine: %s%nAmount Prescripted: %d%nNotes: %s%n", medIterator.next(), pAmtIterator.next(), pNotesIterator.next());
         }
+
+        System.out.println("Prescription status: " + prescriptionStatus);
     }
 }

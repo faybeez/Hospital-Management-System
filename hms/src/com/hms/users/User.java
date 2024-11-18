@@ -1,9 +1,12 @@
 package com.hms.users;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.EnumSet;
 
-public class User implements Serializable {
+import com.hms.items.Appointment;
+
+public class User implements Comparable<User>  {
     // enums
 
     public enum BloodType {
@@ -156,6 +159,10 @@ public class User implements Serializable {
         return password;
     }
 
+    public int getAge() {
+        return (LocalDate.now().getYear() - dateOfBirth.getYear());
+    }
+
     //set methods
 
     public void setID(int i) {
@@ -221,4 +228,9 @@ public class User implements Serializable {
         gender = g;
 		
 	}
+
+    @Override
+    public int compareTo(User u) {
+        return id - u.getID();
+    }
 }

@@ -1,6 +1,7 @@
 package com.hms;
 
 import com.hms.items.AppointmentManager;
+import com.hms.items.Inventory;
 import com.hms.items.MedicalRecord;
 import com.hms.items.MedicalRecordManager;
 import com.hms.items.SchedulerManager;
@@ -8,6 +9,8 @@ import com.hms.items.Appointment.Status;
 import com.hms.users.User;
 import com.hms.users.UserManager;
 import com.hms.users.Patient;
+import com.hms.users.Pharmacist;
+import com.hms.users.Administrator;
 import com.hms.users.Doctor;
 import com.hms.items.Appointment;
 
@@ -22,6 +25,8 @@ public class App {
     public static final String apptDB = "hms/src/com/hms/database/appointmentdb.txt";
     public static final String schedulerDB = "hms/src/com/hms/database/schedulerdb.txt";
     public static final String medrecordDB = "hms/src/com/hms/database/medicalrecorddb.txt";
+    public static final String medicineDB = "hms/src/com/hms/database/medicinedb.txt";
+    public static final String replenishmentDB = "hms/src/com/hms/database/replenishmentdb.txt";
 
     public static void main(String[] args) throws Exception {
 
@@ -29,6 +34,7 @@ public class App {
         AppointmentManager apptmanager = new AppointmentManager();
         MedicalRecordManager medicalrecordmanager = new MedicalRecordManager();
         SchedulerManager schedulermanager = new SchedulerManager(usermanager);
+        Inventory inventory = new Inventory();
         Scanner sc = new Scanner(System.in);
         String username;
         String password;
@@ -63,13 +69,13 @@ public class App {
                 patientActions((Patient)u, usermanager, apptmanager, medicalrecordmanager , sc);
                 break;
             case "Doctor":
-                doctorActions((Doctor)u, usermanager, apptmanager, sc);
+                doctorActions((Doctor)u, usermanager, apptmanager, inventory, sc);
                 break;
             case "Pharmacist":
-                pharmacistActions(u);
+                pharmacistActions((Pharmacist)u, usermanager, apptmanager, inventory, sc);
                 break;
-            case "Admin":
-                adminActions(u);
+            case "Administrator":
+                adminActions((Administrator)u, usermanager, inventory, apptmanager, sc);
                 break;
             default:
                 break;
@@ -80,20 +86,7 @@ public class App {
         apptmanager.saveAppts();
         medicalrecordmanager.saveMedicalRecords();
         schedulermanager.saveSchedules();
-
-       /* User test = new User(1001, sc.nextLine(), sc.nextLine(), Gender.FEMALE, BloodType.ABMINUS, sc.nextLine(), sc.nextLine());
-        //test.printUserDetails();
-        //System.out.println("test!");
-
-        TextDB textdb = new TextDB();
-        
-        String filename = "hms\\src\\com\\hms\\database\\userlogindb.txt";
-        ArrayList<User> userArray = new ArrayList<User>();
-        userArray = textdb.readUsers(filename);
-        User user = userArray.get(0);
-
-        user.printUserDetails(); */
-
+        inventory.saveInventory();
         sc.close();
     }
 
@@ -248,7 +241,7 @@ public class App {
 
     } 
 
-    public static void doctorActions(Doctor d, UserManager usermanager, AppointmentManager apptmanager, Scanner sc) {
+    public static void doctorActions(Doctor d, UserManager usermanager, AppointmentManager apptmanager, Inventory inventory, Scanner sc) {
 
         //print current tasks?
 
@@ -325,7 +318,7 @@ public class App {
                         switch(ad) {
                             case "Y":
                                 a.setStatus(Status.Confirmed);
-                                //send notif to patient?
+                                //TODO send notif to patient?
                                 break;
                             case "N":
                                 a.setStatus(Status.Cancelled);
@@ -354,7 +347,7 @@ public class App {
 
                     a = appt.get(choice2 - 1);
 
-                    a.recordAppointment(sc);
+                    a.recordAppointment(sc, inventory);
 
                     break;      
                 case 8: 
@@ -367,117 +360,96 @@ public class App {
 
     } 
 
-    public static void pharmacistActions(User p) {
+    public static void pharmacistActions(Pharmacist p, UserManager usermanager, AppointmentManager apptmanager, Inventory inventory, Scanner sc) {
 
         //TODO print current tasks?
 
         int choice = -1;
+        while (choice != 6) {
+            System.out.println("What would you like to do?");
+            System.out.println("1. View Appointment Outcome Record");
+            System.out.println("2. Update Status of Prescription");
+            System.out.println("3. Dispense medicine based on prescription");
+            System.out.println("4. View Medicine Inventory");
+            System.out.println("5. Submit Replenishment Request");
+            System.out.println("6. Logout");
 
-        System.out.println("What would you like to do?");
-        System.out.println("1. View Appointment Outcome Record");
-        System.out.println("2. Update Status of Prescription");
-        System.out.println("3. View Medicine Inventory");
-        System.out.println("4. Submit Replenishment Request");
-        System.out.println("5. Logout");
-
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Key in your choice: ");
-        choice = Integer.valueOf(sc.nextLine()); 
-    
-        //switch
-        switch (choice) {
-            case 1:
-                System.out.println("view appointment outcome record");
-                break;
-            case 2:
-                System.out.println("update status of prescription");
-                break;
-            case 3:
-                System.out.println("monitor medicine inventory");
-                break;
-            case 4: 
-                System.out.println("submit replenishment request");
-                break;
-            case 5: 
-                System.out.println("logout");
-            default:
-                break;
+            System.out.println("Key in your choice: ");
+            choice = Integer.valueOf(sc.nextLine()); 
+        
+            //switch
+            switch (choice) {
+                case 1:
+                    System.out.println("Viewing all appointment outcome records...");
+                    p.viewAppointmentOutcomeRecords(apptmanager, usermanager, sc);
+                    
+                    break;
+                case 2:
+                    System.out.println("Manually update status of prescription");
+                    p.changePrescriptionStatus(apptmanager, usermanager, sc);
+                    break;
+                case 3:
+                    System.out.println("Dispensing medicine...");
+                    p.dispenseMedicine(usermanager, apptmanager, inventory, sc);
+                case 4:
+                    System.out.println("Viewing medicine inventory...");
+                    inventory.displayMedications();
+                    break;
+                case 5: 
+                    System.out.println("submit replenishment request");
+                    p.submitRepenishmentRequest(inventory, sc);
+                    break;
+                case 6: 
+                    System.out.println("Logging out...");
+                    break;
+                default:
+                    break;
+            }
         }
+        
 
     } 
 
-    public static void adminActions (User p)    {
+    public static void adminActions (Administrator a, UserManager usermanager, Inventory inventory, AppointmentManager apptmanager, Scanner sc)    {
 
         //TODO print current tasks?
 
         int choice = -1;
+        while(choice != 7) {
+            System.out.println("What would you like to do?");
+            System.out.println("1. Manage Hospital Staff");
+            System.out.println("2. View all users");
+            System.out.println("3. All View Appointment Datails");
+            System.out.println("4. View and Manage Medicine Inventory"); 
+            System.out.println("5. Approve Replenish Request");
+            System.out.println("6. Log out");
 
-        System.out.println("What would you like to do?");
-        System.out.println("1. View and Manage Hospital Staff");
-        System.out.println("2. Filter by Role");
-        System.out.println("3. View Appointment Datails");
-        System.out.println("4. View and Manage Medicine Inventory"); 
-        System.out.println("5. Update Low Stock Level Alert Line");
-        System.out.println("6. Approve Replenish Request");
-
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Key in your choice: ");
-        choice = Integer.valueOf(sc.nextLine()); 
-        
-        //switch
-        switch (choice) {
-            case 1:
-                System.out.println("What would you like to do?");
-                System.out.println("Add Staff Members");
-                System.out.println("Updating Staff Members");
-                System.out.println("Remove Staff Members");
-                int choice2 = Integer.valueOf(sc.nextLine());
-                switch (choice2)    {
-                    case 1:
-                        System.out.println("add staff member");
-                        break;
-                    case 2:
-                        System.out.println("update staff member");
-                        break;
-                    case 3: 
-                        System.out.println("remove staff member");
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 2:
-                System.out.println("What would you like to filter by?");
-                System.out.println("Role?");
-                System.out.println("Gender");
-                System.out.println("Age");
-                choice2 = Integer.valueOf(sc.nextLine());
-                switch (choice2)    {
-                    case 1:
-                        System.out.println("role");
-                        break;
-                    case 2:
-                        System.out.println("gender");
-                        break;
-                    case 3: 
-                        System.out.println("age");
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 3:
-                System.out.println("voew appointment details");
-                break;
-            case 4: 
-                System.out.println("view and manage medicine invertory");
-                break;    
-            case 5:
-                System.out.println("update low stock level alert line");
-            case 6: 
-                System.out.println("approve replenish,emt request");
-            default:
-                break;
+            System.out.println("Key in your choice: ");
+            choice = Integer.valueOf(sc.nextLine()); 
+            
+            //switch
+            switch (choice) {
+                case 1:
+                    a.manageHospitalStaff(usermanager, sc);
+                    break;
+                case 2:
+                    a.filterUserByAttribute(usermanager, sc);
+                    break;
+                case 3:
+                    a.viewAppointments(apptmanager, usermanager, sc);
+                    break;
+                case 4: 
+                    System.out.println("view and manage medicine invertory");
+                    a.manageMedicationInventory(inventory, sc);
+                    break;    
+                case 5: 
+                    System.out.println("Approve replenishment requests");
+                    a.manageReplenishments(sc, inventory);
+                case 6:
+                    System.out.println("Logging out...");
+                default:
+                    break;
+            }
         }
 
     } 
