@@ -2,8 +2,8 @@ package com.hms.users;
 
 import com.hms.items.Appointment;
 import com.hms.enums.*;
+import com.hms.App;
 
-import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -23,7 +23,6 @@ public class Patient extends User {
     }
 
     public Appointment makeAppointmentRequest(Doctor doctor){
-        Scanner sc = new Scanner(System.in);
         try {
             LocalDate date = LocalDate.of(1990,1,1); //dummy value
             LocalTime time = LocalTime.of(1,1); //dummy value
@@ -37,7 +36,7 @@ public class Patient extends User {
                 test = false;
                 System.out.print("Date of Appointment (maximum 6 days from current date in YYYY-MM-DD):");
                 try {
-                    date = LocalDate.parse(sc.nextLine());
+                    date = LocalDate.parse(App.sc.nextLine());
                 } catch (Exception e) {
                     System.out.println("Invalid text! Try again.");
                     test = true;
@@ -54,7 +53,7 @@ public class Patient extends User {
                 test = false;
                 System.out.print("Time of Appointment (08:00 - 18:00 in HH:MM - 30 minute intervals): ");
                 try {
-                    time = LocalTime.parse(sc.nextLine());
+                    time = LocalTime.parse(App.sc.nextLine());
                 } catch (Exception e) {
                     System.out.println("Invalid text! Try again.");
                     test = true;
@@ -69,23 +68,19 @@ public class Patient extends User {
 
             if(!doctor.getSchedule().checkIfFree(a)) {
                 System.out.println("You selected a time that is invalid. Please try again.");
-                sc.close();
                 return null;
             }
             doctor.getSchedule().addAppointmentToSchedule(a);
             System.out.println("Appointment Created!");
-            sc.close();
             return a;
         } catch (Exception e) {
             throw e;
         }finally {
-            sc.close();
         }
         
     }
 
     public int rescheduleAppointment(Appointment a, Doctor doctor) {
-        Scanner sc = new Scanner(System.in);
 
         try {
             LocalDate date = LocalDate.of(1990,1,1); //dummy value
@@ -101,7 +96,7 @@ public class Patient extends User {
                 test = false;
                 System.out.print("Date of Appointment (maximum 6 days from current date in YYYY-MM-DD):");
                 try {
-                    date = LocalDate.parse(sc.nextLine());
+                    date = LocalDate.parse(App.sc.nextLine());
                 } catch (Exception e) {
                     System.out.println("Invalid text! Try again.");
                     test = true;
@@ -118,7 +113,7 @@ public class Patient extends User {
                 test = false;
                 System.out.print("Time of Appointment (08:00 - 18:00 in HH:MM - 30 minute intervals): ");
                 try {
-                    time = LocalTime.parse(sc.nextLine());
+                    time = LocalTime.parse(App.sc.nextLine());
                 } catch (Exception e) {
                     System.out.println("Invalid text! Try again.");
                     test = true;
@@ -132,7 +127,7 @@ public class Patient extends User {
             System.out.println("Old date and time: " + a.getDate().toString() + " - " + a.getTime().toString());
             System.out.println("New date and time " + date.toString() + " - " + time.toString());
             System.out.println("Reschedule appointment? (Y/N)");
-            c = sc.nextLine().toUpperCase();
+            c = App.sc.nextLine().toUpperCase();
 
             switch (c) {
                 case "Y":
@@ -147,16 +142,13 @@ public class Patient extends User {
                     break;
                 default:
                     System.out.println("Choice invalid.");
-                    sc.close();
                     return -2;
             }
-            sc.close();
             return 1;
     
         } catch (Exception e) {
             throw e;
         } finally{
-            sc.close();
         }
     } 
 
