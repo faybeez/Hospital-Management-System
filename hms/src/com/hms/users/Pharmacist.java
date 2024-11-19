@@ -2,8 +2,7 @@ package com.hms.users;
 
 import com.hms.items.AppointmentManager;
 import com.hms.items.Prescription;
-import com.hms.items.Appointment.Status;
-import com.hms.items.Prescription.PrescriptionStatus;
+import com.hms.enums.*;
 import com.hms.items.Appointment;
 import com.hms.items.Inventory;
 
@@ -28,13 +27,13 @@ public class Pharmacist extends User {
 
     public void viewAppointmentOutcomeRecords(AppointmentManager apptmanager, UserManager usermanager, Scanner sc) {
         //TODO different people?
-        ArrayList<Appointment> completedAppts = apptmanager.getAllAppointmentsFromStatus(Status.Completed);
+        ArrayList<Appointment> completedAppts = apptmanager.getAllAppointmentsFromStatus(AppointmentStatus.Completed);
 
         apptmanager.printAppts(completedAppts, usermanager);
     }
 
     public void changePrescriptionStatus(AppointmentManager apptmanager, UserManager usermanager, Scanner sc) {
-        ArrayList<Appointment> completedAppts = apptmanager.getAllAppointmentsFromStatus(Status.Completed);
+        ArrayList<Appointment> completedAppts = apptmanager.getAllAppointmentsFromStatus(AppointmentStatus.Completed);
 
         apptmanager.printAppts(completedAppts, usermanager);
 
@@ -78,7 +77,7 @@ public class Pharmacist extends User {
             return;
         }
 
-        ArrayList<Appointment> appts = apptmanager.getPatientAppts(u.getID(), Status.Completed);
+        ArrayList<Appointment> appts = apptmanager.getPatientAppts(u.getID(), AppointmentStatus.Completed);
         apptmanager.printAppts(appts, usermanager);
         System.out.println("Which prescription would you like to dispense?");
         int choice = sc.nextInt();

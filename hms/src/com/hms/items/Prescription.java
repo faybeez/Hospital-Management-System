@@ -1,14 +1,12 @@
 package com.hms.items;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.hms.enums.PrescriptionStatus;
 public class Prescription {
     // public static int prescriptionNumber = 0;
     // private static final int prescriptionIdentifier = 2000000000;
     // private int prescriptionID;
-    public enum PrescriptionStatus{
-        Collected,
-        Uncollected;
-    }
 
     private PrescriptionStatus prescriptionStatus = PrescriptionStatus.Uncollected;
     private ArrayList<String> medicineList = new ArrayList<String>();

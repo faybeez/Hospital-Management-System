@@ -5,9 +5,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.hms.App;
-import com.hms.items.Appointment.Status;
-import com.hms.readwrite.TextDB;
+import com.hms.ItemsService;
+import com.hms.dao.AppointmentDao;
+import com.hms.dao.Dao;
+import com.hms.enums.AppointmentStatus;
 import com.hms.users.UserManager;
 
 public class AppointmentManager {
@@ -15,15 +16,16 @@ public class AppointmentManager {
     //doctorID -> pending apptIDs
     private Map<Integer, ArrayList<Integer>> DoctorAppt = new HashMap<>();
     private Map<Integer, ArrayList<Integer>> PatientAppt = new HashMap<>();
+    private static final String apptDB = "hms/resources/appointmentdb.txt";
 
     public AppointmentManager() {
-        TextDB reader = new TextDB();
+        Dao<Appointment> reader = new AppointmentDao();
         Appointment a;
         int dID, pID, aID;
         ArrayList<Integer> apptIDs;
 
         try {
-            Appts = reader.readAppointments(App.apptDB);
+            Appts = reader.read(apptDB);
         } catch (Exception e) {
             System.out.println("Appt Manager " + e);
         }
@@ -57,14 +59,26 @@ public class AppointmentManager {
         }
     }
 
+    
+    /** 
+     * @return Map<Integer, Appointment>
+     */
     public Map<Integer, Appointment> getApptMap() {
         return Appts;
     }
 
+    
+    /** 
+     * @return Map<Integer, ArrayList<Integer>>
+     */
     public Map<Integer, ArrayList<Integer>> getPatientMap() {
         return PatientAppt;
     }
 
+    
+    /** 
+     * @return Map<Integer, ArrayList<Integer>>
+     */
     public Map<Integer, ArrayList<Integer>> getDoctorMap() {
         return DoctorAppt;
     }
@@ -109,6 +123,11 @@ public class AppointmentManager {
         }
     }
 
+    
+    /** 
+     * @param id
+     */
+    @Deprecated
     public void PrintAppointmentsFromPatientID(int id) {
         Iterator<Appointment> apptIterator = Appts.values().iterator();
         Appointment temp;
@@ -122,35 +141,37 @@ public class AppointmentManager {
         }
     }
 
-    // public ArrayList<Appointment> getPatientAppointments(int id, Status s){
-    //     Iterator<Appointment> apptIterator = Appts.values().iterator();
-    //     ArrayList<Appointment> apt = new ArrayList<Appointment>();
-    //     Appointment temp;
+    @Deprecated
+    public ArrayList<Appointment> getPatientAppointments(int id, AppointmentStatus s){
+        Iterator<Appointment> apptIterator = Appts.values().iterator();
+        ArrayList<Appointment> apt = new ArrayList<Appointment>();
+        Appointment temp;
 
-    //     while(apptIterator.hasNext()) {
-    //         temp = apptIterator.next();
+        while(apptIterator.hasNext()) {
+            temp = apptIterator.next();
 
-    //         if(temp.getPatientID() == id && temp.getStatus() == s) {
-    //             apt.add(temp);
-    //         }
-    //     }
-    //     return apt;
-    // }
+            if(temp.getPatientID() == id && temp.getStatus() == s) {
+                apt.add(temp);
+            }
+        }
+        return apt;
+    }
 
-    // public void PrintAppointmentsFromDoctorID(int id) {
-    //     Iterator<Appointment> apptIterator = Appts.values().iterator();
-    //     Appointment temp;
+    @Deprecated
+    public void PrintAppointmentsFromDoctorID(int id) {
+        Iterator<Appointment> apptIterator = Appts.values().iterator();
+        Appointment temp;
 
-    //     while(apptIterator.hasNext()) {
-    //         temp = apptIterator.next();
+        while(apptIterator.hasNext()) {
+            temp = apptIterator.next();
             
-    //         if(temp.getDoctorID() == id) {
-    //             temp.printAppointmentDetails();
-    //         }
-    //     }
-    // }
+            if(temp.getDoctorID() == id) {
+                //temp.printAppointmentDetails();
+            }
+        }
+    }
 
-    public ArrayList<Appointment> getDoctorAppts(int id, Status s) {
+    public ArrayList<Appointment> getDoctorAppts(int id, AppointmentStatus s) {
         Iterator<Integer> temp = DoctorAppt.get(id).iterator();
         ArrayList<Appointment> appts = new ArrayList<Appointment>();
         int a;
@@ -173,7 +194,7 @@ public class AppointmentManager {
         return appts;
     }
 
-    public ArrayList<Appointment> getAllAppointmentsFromStatus(Status s) {
+    public ArrayList<Appointment> getAllAppointmentsFromStatus(AppointmentStatus s) {
         Iterator<Appointment> i = Appts.values().iterator();
         ArrayList<Appointment> temp = new ArrayList<Appointment>();
         Appointment a;
@@ -186,7 +207,7 @@ public class AppointmentManager {
         return temp;
     }
 
-    public ArrayList<Appointment> getPatientAppts(int id, Status s) {
+    public ArrayList<Appointment> getPatientAppts(int id, AppointmentStatus s) {
         Iterator<Integer> temp = PatientAppt.get(id).iterator();
         ArrayList<Appointment> appts = new ArrayList<Appointment>();
         int a;
@@ -209,20 +230,20 @@ public class AppointmentManager {
         return appts;
     }
 
-    public void printAppts(ArrayList<Appointment> a, UserManager usermanager) {
+    public void printAppts(ArrayList<Appointment> a, ItemsService itemsService) {
         Iterator<Appointment> i = a.iterator();
         int j = 1;
         while(i.hasNext()) {
             System.out.printf("%n------------Appointment %d------------%n", j++);
-            i.next().printAppointmentDetails(usermanager, false);
+            i.next().printAppointmentDetails(itemsService, false);
         }
     }
 
     public void saveAppts() {
-        TextDB writer = new TextDB();
+        Dao<Appointment> writer = new AppointmentDao();
         
         try {
-            writer.saveAppointments(App.apptDB, Appts.values());
+            writer.save(apptDB, Appts.values());
         } catch (Exception e) {
             System.out.println("Appointment Manager " + e);
         }

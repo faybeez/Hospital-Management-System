@@ -5,7 +5,6 @@ import com.hms.items.Inventory;
 import com.hms.items.MedicalRecord;
 import com.hms.items.MedicalRecordManager;
 import com.hms.items.SchedulerManager;
-import com.hms.items.Appointment.Status;
 import com.hms.users.User;
 import com.hms.users.UserManager;
 import com.hms.users.Patient;
@@ -13,6 +12,7 @@ import com.hms.users.Pharmacist;
 import com.hms.users.Administrator;
 import com.hms.users.Doctor;
 import com.hms.items.Appointment;
+import com.hms.enums.*;
 
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -20,15 +20,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
 
-public class App {
-    public static final String userDB = "hms/src/com/hms/database/userlogindb.txt";
-    public static final String apptDB = "hms/src/com/hms/database/appointmentdb.txt";
-    public static final String schedulerDB = "hms/src/com/hms/database/schedulerdb.txt";
-    public static final String medrecordDB = "hms/src/com/hms/database/medicalrecorddb.txt";
-    public static final String medicineDB = "hms/src/com/hms/database/medicinedb.txt";
-    public static final String replenishmentDB = "hms/src/com/hms/database/replenishmentdb.txt";
-
-    public static void main(String[] args) throws Exception {
+public class App {    
+    /** 
+     * main function of the code
+     * @param args
+     * 
+     */
+    public static void main(String[] args) {
 
         UserManager usermanager = new UserManager();
         AppointmentManager apptmanager = new AppointmentManager();
@@ -96,7 +94,6 @@ public class App {
 
         int choice = -1;
         int choice2;
-        int id;
         String email, phone;
         Doctor d;
         ArrayList<Appointment> appt;
@@ -184,8 +181,8 @@ public class App {
                     break;
                 case 5:
                     System.out.println("reschedule an appointment");
-                    appt = apptmanager.getPatientAppts(p.getID(), Status.Confirmed);
-                    appt.addAll(apptmanager.getPatientAppts(p.getID(), Status.Pending));
+                    appt = apptmanager.getPatientAppts(p.getID(), AppointmentStatus.Confirmed);
+                    appt.addAll(apptmanager.getPatientAppts(p.getID(), AppointmentStatus.Pending));
 
                     apptmanager.printAppts(appt, usermanager);
 
@@ -203,8 +200,8 @@ public class App {
                     break;
                 case 6:
                     System.out.println("cancel an appointment");
-                    appt = apptmanager.getPatientAppts(p.getID(), Status.Confirmed);
-                    appt.addAll(apptmanager.getPatientAppts(p.getID(), Status.Pending));
+                    appt = apptmanager.getPatientAppts(p.getID(), AppointmentStatus.Confirmed);
+                    appt.addAll(apptmanager.getPatientAppts(p.getID(), AppointmentStatus.Pending));
 
                     apptmanager.printAppts(appt, usermanager);
 
@@ -216,21 +213,21 @@ public class App {
                         break;
                     }
                     
-                    appt.get(choice2 - 1).setStatus(Status.Cancelled);
+                    appt.get(choice2 - 1).setStatus(AppointmentStatus.Cancelled);
                     
                     System.out.println("Appointment cancelled!");
                     break;
                 case 7:
                     System.out.println("view scheduled appointments");
-                    appt = apptmanager.getPatientAppts(p.getID(), Status.Confirmed);
-                    appt.addAll(apptmanager.getPatientAppts(p.getID(), Status.Pending));
+                    appt = apptmanager.getPatientAppts(p.getID(), AppointmentStatus.Confirmed);
+                    appt.addAll(apptmanager.getPatientAppts(p.getID(), AppointmentStatus.Pending));
                     Collections.sort(appt);
                     apptmanager.printAppts(appt, usermanager);
                     
                     break;
                 case 8:
                     System.out.println("view past appointment outcome records");
-                    apptmanager.printAppts(apptmanager.getPatientAppts(p.getID(), Status.Completed), usermanager);
+                    apptmanager.printAppts(apptmanager.getPatientAppts(p.getID(), AppointmentStatus.Completed), usermanager);
                 case 9:
                     System.out.println("logout");
                     
@@ -297,14 +294,14 @@ public class App {
                     break;
                 case 4:
                     System.out.println("set availability for appointments");
-                    d.UpdateUnavailable(sc);
+                    d.UpdateUnavailable();
                     break;
                 case 5:
                     System.out.println("Accept or decline appointments");
                     System.out.println("Printing all pending appointments...");
                     String ad;
                     
-                    appt = apptmanager.getDoctorAppts(d.getID(), Status.Pending);
+                    appt = apptmanager.getDoctorAppts(d.getID(), AppointmentStatus.Pending);
                     i = appt.iterator();
                     Appointment a;
                     
@@ -317,11 +314,11 @@ public class App {
 
                         switch(ad) {
                             case "Y":
-                                a.setStatus(Status.Confirmed);
+                                a.setStatus(AppointmentStatus.Confirmed);
                                 //TODO send notif to patient?
                                 break;
                             case "N":
-                                a.setStatus(Status.Cancelled);
+                                a.setStatus(AppointmentStatus.Cancelled);
                                 break;
                             default:
                                 System.out.println("Wrong input. Skipped.");
@@ -332,12 +329,12 @@ public class App {
                     break;
                 case 6:
                     System.out.println("view upcoming appointments");
-                    appt = apptmanager.getDoctorAppts(d.getID(), Status.Confirmed);
+                    appt = apptmanager.getDoctorAppts(d.getID(), AppointmentStatus.Confirmed);
                     apptmanager.printAppts(appt, usermanager);
                     break;
                 case 7:
                     System.out.println("record appointment outcome");
-                    appt = apptmanager.getDoctorAppts(d.getID(), Status.Completed);
+                    appt = apptmanager.getDoctorAppts(d.getID(), AppointmentStatus.Completed);
 
                     apptmanager.printAppts(appt, usermanager);
 
@@ -415,7 +412,7 @@ public class App {
         //TODO print current tasks?
 
         int choice = -1;
-        while(choice != 7) {
+        while(choice != 6) {
             System.out.println("What would you like to do?");
             System.out.println("1. Manage Hospital Staff");
             System.out.println("2. View all users");
