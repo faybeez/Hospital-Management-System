@@ -249,6 +249,7 @@ public class AdministratorActions implements UserActions {
             System.out.println("2. Remove an existing medicine ");
             System.out.println("3. Update initial stocks ");
             System.out.println("4. Update low stock level quantity ");
+            System.out.println("5. View Inventory ");
             int secondChoice1 = App.sc.nextInt();
             App.sc.nextLine();
 
@@ -257,36 +258,43 @@ public class AdministratorActions implements UserActions {
             } else if (secondChoice1 == 2) {
                 System.out.println("Enter the id of the medicine you want to remove:");
                 int med_id = App.sc.nextInt();
+                App.sc.nextLine();
                 itemsService.removeMedicine(med_id);
             } else if (secondChoice1 == 3) {
                 System.out.println("Enter the medicine ID: ");
                 int id = App.sc.nextInt();
+                App.sc.nextLine();
                 System.out.println("Update the new initial stock: ");
                 int stock = App.sc.nextInt();
+                App.sc.nextLine();
                 itemsService.updateInitialStock(id, stock);
             } else if (secondChoice1 == 4) {
                 System.out.println("Enter the medicine ID: ");
                 int id = App.sc.nextInt();
+                App.sc.nextLine();
                 System.out.println("Update the new low stock: ");
                 int lowstock = App.sc.nextInt();
+                App.sc.nextLine();
                 itemsService.updateLowStock(id, lowstock); 
+            } else if (secondChoice1 == 5) {
+                itemsService.viewInventory();
             }
         } catch (Exception e) {
-            System.err.println("Manage medicine inventory error " + e);
+            System.err.println("Manage medicine inventory error: " + e);
         } finally{
-            ;
         }
     }
 
     void manageReplenishmentRequest() {
         
         try {
+            //TODO no pending requests
             itemsService.displayRequests();
             System.out.println("What med ID do you want to replenish?");
             int med_ID = App.sc.nextInt();
             itemsService.approveRequest(med_ID);
         } catch (Exception e) {
-            System.err.println("Manage replenishment request error " + e);
+            System.err.println("Manage replenishment request error: " + e);
         } finally {
             ;
         }
@@ -315,9 +323,11 @@ public class AdministratorActions implements UserActions {
 
         System.out.println("Enter the initial stock quantity: ");
         int stock = App.sc.nextInt();  
+        App.sc.nextLine();
 
         System.out.println("Enter the low stock quantity: ");
         int lowStock = App.sc.nextInt();  
+        App.sc.nextLine();
 
         if(lowStock < 0) {
             throw new IllegalArgumentException("Low stock threshold must not be under 0.");
@@ -325,9 +335,10 @@ public class AdministratorActions implements UserActions {
 
         System.out.println("Enter the price of the medicine: ");
         double price = App.sc.nextDouble();
+        App.sc.nextLine();
 
-        if(lowStock < 0) {
-            throw new IllegalArgumentException("Price must not be under 0.");
+        if(price <= 0) {
+            throw new IllegalArgumentException("Price must not be 0 and under.");
         }
 
         Medicine newMed = new Medicine(medName, medId, stock, lowStock, price);
@@ -344,7 +355,7 @@ public class AdministratorActions implements UserActions {
         u.setPassword(null);
     }
 
-    public User createUser() {
+    public User createUser() throws Exception {
         
         try {
             String[] d = {"doctor", "patient", "administrator", "pharmacist"}; 
@@ -376,7 +387,7 @@ public class AdministratorActions implements UserActions {
             String username = App.sc.nextLine();
 
             try {
-                itemsService.getUserFromUsername(username).printUserDetails();;
+                itemsService.getUserFromUsername(username);
             } catch (Exception e) {
                 usernameCheck = false;
             }
@@ -397,7 +408,7 @@ public class AdministratorActions implements UserActions {
                     return u;
                 case "patient":
                     u = new Patient(name, dob, gender, bloodType, username, password);
-                    
+                    itemsService.createMedicalRecordForNewPatient((Patient)u);
                     return u; 
                 case "administrator":
                     u = new Administrator(name, dob, gender, bloodType, username, password);

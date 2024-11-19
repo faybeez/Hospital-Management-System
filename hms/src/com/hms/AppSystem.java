@@ -38,11 +38,17 @@ public class AppSystem {
             throw new Exception("Wrong password, Exiting...");
         }
         
-        System.out.println("Welcome " + u.getDesignation() + " " + u.getName() + "!");
-        
         if(password.compareTo(defaultPassword) == 0) {
-            //TODO change pass
+            System.out.println("Enter your new password here: ");
+            String newPass = App.sc.nextLine();
+            if(newPass.compareTo(defaultPassword) == 0) {
+                throw new Exception("Password is the same as before. Exiting...");
+            }
+            u.setPassword(newPass);
+            System.out.println("Password has been changed!");
         }
+
+        System.out.println("Welcome " + u.getDesignation() + " " + u.getName() + "!");
         return u;
     }
 

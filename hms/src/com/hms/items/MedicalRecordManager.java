@@ -22,6 +22,15 @@ public class MedicalRecordManager {
         return this.medicalRecordList;
     }
 
+    public void addMedicalRecord(MedicalRecord m) throws Exception {
+        if(medicalRecordList.containsKey(m.getID())) {
+            throw new Exception("Patient ID has already been taken!");
+        }
+        else {
+            medicalRecordList.put(m.getID(), m);
+        }
+    }
+
     public MedicalRecord getMedicalRecordofPatient(int id) {
         return medicalRecordList.get(id);
     }

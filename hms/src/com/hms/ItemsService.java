@@ -5,6 +5,7 @@ import com.hms.items.AppointmentManager;
 import com.hms.items.Appointment;
 import com.hms.items.Inventory;
 import com.hms.items.MedicalRecordManager;
+import com.hms.users.Patient;
 import com.hms.users.User;
 import com.hms.users.UserManager;
 import com.hms.items.MedicalRecord;
@@ -128,5 +129,10 @@ public class ItemsService {
 
     public void submitRequest(int medID, int quantity){
         inventory.submitRequest(medID, quantity);
+    }
+
+    public void createMedicalRecordForNewPatient(Patient p) throws Exception{
+        MedicalRecord mr = new MedicalRecord(p.getID(), p.getName(), p.getDateOfBirth().toString(), p.getGender(),p.getBloodType());
+        medicalRecordManager.addMedicalRecord(mr);
     }
 }

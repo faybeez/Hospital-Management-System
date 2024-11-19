@@ -10,6 +10,7 @@
 1020000016|sarah|1989-04-05|Female|O-|sarah1|password
 1020000020|chloe|1989-03-10|Female|AB+|chloe1|password
 1020000043|test3|2000-01-01|Male|A-|test33|123
+1020000044|leo DiCaprio|2000-01-01|Male|A-|leo2|pass123
 1010000003|siti|2007-11-30|Female|B-|siti1|password
 1010000002|sandra|1986-09-11|Female|O+|sandra1|password
 1030000021|erin|1986-01-11|Female|A-|erin1|password

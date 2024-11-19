@@ -16,6 +16,7 @@ import com.hms.users.AdministratorActions;
 import com.hms.users.Doctor;
 import com.hms.users.DoctorActions;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 public class App {    
@@ -25,7 +26,7 @@ public class App {
      * 
      */
 
-    public static final Scanner sc = new Scanner(System.in);
+    public static final Scanner sc = new Scanner(System.in).useLocale(Locale.US);
     public static void main(String[] args) {
 
         UserManager usermanager = new UserManager();

@@ -3,6 +3,7 @@
 1020000014|samuel|1998-11-20|Male|A+|samuel@gmail.com|12345679|0|0
 1020000013|aliam|1981-04-21|Male|A+|aliam@gmail.com|12345678|0|0
 1020000012|jameson|1990-08-15|Male|AB+|jameson@gmail.com|88888888|0|0
+1020000044|leo DiCaprio|2000-01-01|Male|A-|-|-|0|0
 1020000019|celine|1996-03-07|Female|AB-|celine@gmail.com|12345684|0|0
 1020000018|cara|1991-03-11|Female|AB+|cara@gmail.com|12345683|0|0
 1020000017|sofia|1989-12-14|Female|AB+|sofia@gmail.com|12345682|0|0

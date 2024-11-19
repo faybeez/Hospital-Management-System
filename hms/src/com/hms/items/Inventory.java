@@ -55,12 +55,12 @@ public class Inventory {
 	}
 
 	public boolean checkIfMedicineIDExists(int id) {
-		try {
-			medicineList.get(id);
-		} catch (Exception e) {
+		if(medicineList.containsKey(id)) {
+			return true;
+		}
+		else {
 			return false;
 		}
-		return true;
 	}
 
 	public void checkstock(String medName)
@@ -157,7 +157,13 @@ public class Inventory {
 	}
 	public void removeMedicine(int medID)
 	{
-		medicineList.remove(medID);
+		if(medicineList.containsKey(medID)) {
+			medicineList.remove(medID);
+		}
+		else {
+			throw new NullPointerException("Medicine ID does not exist!");
+		}
+		
 	}
 
 	public void updateInitialStock(int medID, int stock) {

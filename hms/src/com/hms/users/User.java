@@ -26,7 +26,6 @@ public class User implements Comparable<User>  {
         this.userName = userName;
         this.password = password;
         userCount++;
-        System.out.println("User count: " + userCount);
     }
 
     //for LocalDate, string in format of YEAR-MONTH-DAY eg "2024-01-12";

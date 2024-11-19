@@ -38,6 +38,11 @@ public class MedicalRecord {
         dateOfBirth = LocalDate.parse(DOB);
         gender = g;
         bloodType = bt;
+        contactNumber = "-";
+        emailAddress = "-";
+        diagnoses = new ArrayList<String>();
+        treatmentPlans = new ArrayList<String>();
+        appointmentIDs = new ArrayList<Integer>();
     }
 
     public MedicalRecord(int ID, String n, String DOB, String g, String bt, String contact, String email, ArrayList<Integer> appt, ArrayList<String> d, ArrayList<String> t){
@@ -114,7 +119,7 @@ public class MedicalRecord {
         treatmentPlans.add(t);
     }
 
-    public void printMedicalRecord(ItemsService itemsService) {
+    public void printMedicalRecord(ItemsService itemsService) throws Exception {
 
         //print top part of medical record
         System.out.println("Name: " + name);
