@@ -87,6 +87,7 @@ public class PatientActions implements UserActions {
             System.out.println("Which information would you like to update?");
             System.out.println("1. Email Address");
             System.out.println("2. Phone Number");
+            System.out.println("3. Password");
             int choice2 = Integer.valueOf(App.sc.nextLine());
             switch (choice2) {
                 case 1:
@@ -101,6 +102,11 @@ public class PatientActions implements UserActions {
                     mr.setContactNumber(phone);
                     System.out.println("Phone number has been changed!");
                     break;
+                case 3:
+                    System.out.println("Enter your new password: ");
+                    String password = App.sc.nextLine();
+                    p.setPassword(password);
+                    System.out.println("Password has been changed!");
                 default:
                     break;
             }
