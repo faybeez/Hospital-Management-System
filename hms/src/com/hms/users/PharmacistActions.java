@@ -1,7 +1,7 @@
 package com.hms.users;
 
 import java.util.ArrayList;
-
+import java.util.Iterator;
 
 import com.hms.ItemsService;
 import com.hms.enums.AppointmentStatus;
@@ -9,7 +9,13 @@ import com.hms.enums.PrescriptionStatus;
 import com.hms.items.Appointment;
 import com.hms.items.Prescription;
 import com.hms.App;
+import com.hms.items.Medicine;
 
+/** 
+ * PharmacistActions.java
+ * 
+ * handles pharmacist's actions
+ */
 public class PharmacistActions implements UserActions {
     Pharmacist p;
     ItemsService itemsService;
@@ -19,6 +25,9 @@ public class PharmacistActions implements UserActions {
         this.itemsService = itemsService;
     }
 
+    /** 
+     * print's pharmacist's actions
+     */
     @Override
     public void printActions() {
         System.out.println("What would you like to do?");
@@ -31,6 +40,13 @@ public class PharmacistActions implements UserActions {
         return;
     }
 
+    
+    /** 
+     * executes pharmacist's actions
+     * @param i
+     * @return boolean
+     * @throws UnsupportedOperationException
+     */
     @Override
     public boolean executeAction(int i) throws UnsupportedOperationException {
         if(i < 1 || i > 6) {
@@ -160,12 +176,30 @@ public class PharmacistActions implements UserActions {
     void submitRepenishmentRequest() {
         try {
             System.out.println("Submit Replenishment Request");
-            System.out.print("Enter the medicine ID to reduce stock: ");
+            Iterator<Medicine> i = itemsService.findLowStock().iterator();
+            System.out.println("Current medicines in low stock:");
+            Medicine m;
+            int j = 1;
+            while (i.hasNext()) {
+                m = i.next();
+                System.out.println(j++ + ". " + m.getMedname() +" - ID: " + m.getMed_id() + " - Current Stock: " + m.getStock() + " - Low stock: " + m.getLowstock());
+            }
+            System.out.print("Enter the medicine ID to replenish stock (does not have to be low-stock): ");
             int medId1 = App.sc.nextInt();
             App.sc.nextLine();
+
+            if(!itemsService.checkIfMedicineIDExists(medId1)) {
+                throw new Exception("Medicine ID doesn't exist");
+            }
+            
             System.out.print("Enter the amount to replenish: ");
             int quantity = App.sc.nextInt();
             App.sc.nextLine();
+
+            if(quantity <= 0) {
+                throw new Exception("Amount to replenish cannot be less than or equal to 0!");
+            }
+            
             itemsService.submitRequest(medId1, quantity);
         } catch (Exception e) {
             System.err.println("Submit replenishment request error: " + e);

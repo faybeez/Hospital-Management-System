@@ -2,6 +2,11 @@ package com.hms.users;
 
 import com.hms.enums.*;
 
+/** 
+ * Administrator.java
+ * 
+ * User subclass for the administrator role
+ */
 public class Administrator extends User{
     private static final int idPrefix = 1000000000;
     

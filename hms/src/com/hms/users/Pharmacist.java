@@ -3,6 +3,11 @@ package com.hms.users;
 
 import com.hms.enums.*;
 
+/** 
+ * Pharmacist.java
+ * 
+ * User subclass for the pharmacist role
+ */
 public class Pharmacist extends User {
     
     private static final int idPrefix = 1030000000;

@@ -13,6 +13,11 @@ import com.hms.items.Appointment;
 import com.hms.items.Medicine;
 import com.hms.App;
 
+/** 
+ * AdministratorActions.java
+ * 
+ * handles all administrator's actions
+ */
 public class AdministratorActions implements UserActions {
     Administrator a;
     ItemsService itemsService;
@@ -21,7 +26,9 @@ public class AdministratorActions implements UserActions {
         this.a = a;
         this.itemsService = itemsService;
     }
-
+    /** 
+     * prints administrator's actions
+     */
     @Override
     public void printActions() {
         System.out.println("What would you like to do?");
@@ -33,7 +40,12 @@ public class AdministratorActions implements UserActions {
         System.out.println("6. Log out");
         return;
     }
-
+    /** 
+     * executes administrator's actions
+     * @param i (choice of action, based on printed actions)
+     * @return boolean (logout/not)
+     * @throws UnsupportedOperationException
+     */
     @Override
     public boolean executeAction(int i) throws UnsupportedOperationException {
         if(i < 1 || i > 6) {
@@ -407,7 +419,7 @@ public class AdministratorActions implements UserActions {
             switch(designation.toLowerCase()) {
                 case "doctor":
                     u = new Doctor(name, dob, gender, bloodType, username, password);
-                    
+                    itemsService.addToSchedules(u.getID(), ((Doctor)u).getSchedule());
                     return u;
                 case "patient":
                     u = new Patient(name, dob, gender, bloodType, username, password);

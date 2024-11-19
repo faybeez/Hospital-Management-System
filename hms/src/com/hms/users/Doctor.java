@@ -8,6 +8,11 @@ import com.hms.App;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/** 
+ * Doctor.java
+ * 
+ * User subclass dedicated to the role doctor
+ */
 public class Doctor extends User{
     
     private Scheduler schedule;
@@ -22,18 +27,35 @@ public class Doctor extends User{
 
     public Doctor(int id, String name, String dateOfBirth, Gender gender, BloodType bloodType, String userName, String password) {
         super(id, name, dateOfBirth, gender, bloodType, userName, password);
-        schedule = new Scheduler();
     }
-
+    
+    /** 
+     * gets doctor's schedule
+     * @return Scheduler
+     */
     public Scheduler getSchedule() {
         return schedule;
     }
     
+    
+    /** 
+     * sets doctor's schedule
+     * @param s
+     */
     public void setSchedule(Scheduler s) {
         s.updateLastSaved();
         schedule = s;
     }
 
+    
+    /** 
+     * changes a schedule's slot status
+     * @param date
+     * @param time
+     * @param status (0 - set free, -1 - set unavailable, other - set appointment)
+     * @param a
+     * @return int
+     */
     public int changeScheduleSlot(LocalDate date, LocalTime time, int status, Appointment a) {
 
         int r = date.compareTo(LocalDate.now());
@@ -65,17 +87,25 @@ public class Doctor extends User{
 
     }
 
+    /** 
+     * prints doctor's schedule
+     */
     public void printSchedule() {
         if (schedule == null) {
             throw new NullPointerException("Doctor's schedule not found");
         }
         schedule.printSchedule();
     }
-
+    /** 
+     * updates doctor's schedule
+     */
     public void updateSchedule() {
         schedule.updateLastSaved();
     }
 
+    /** 
+     * updates the unavailable times of the doctor
+     */
     public void UpdateUnavailable() {
 
         LocalDate dStart, dEnd;

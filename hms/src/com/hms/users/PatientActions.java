@@ -9,7 +9,11 @@ import com.hms.App;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
+    /** 
+     * PatientActions.java
+     * 
+     * Controls patient's actions
+     */
 public class PatientActions implements UserActions {
     Patient p;
     ItemsService itemsService;
@@ -19,6 +23,9 @@ public class PatientActions implements UserActions {
         this.itemsService = itemsService;
     }
 
+    /** 
+     * prints patient's actions
+     */
     @Override
     public void printActions() {
         System.out.println("What would you like to do?");
@@ -35,6 +42,12 @@ public class PatientActions implements UserActions {
     }
 
 
+    /** 
+     * executes patient's actions
+     * @param i
+     * @return boolean
+     * @throws UnsupportedOperationException
+     */
     @Override
     public boolean executeAction(int i) throws UnsupportedOperationException {
         if(i < 1 || i > 9) {

@@ -268,5 +268,15 @@ public class Inventory {
 	public ArrayList<Replenishment> getReplenishmentRequests() {
 		return new ArrayList<Replenishment>(replenishmentRequests.values());
 	}
-	
+
+	public ArrayList<Medicine> findLowStock() {
+		ArrayList<Medicine> temp = new ArrayList<Medicine>();
+		for(Medicine m : medicineList.values()) {
+			if(m.getStock() < m.getLowstock()) {
+				temp.add(m);
+			}
+		}
+		return temp;
+	}
+
 }

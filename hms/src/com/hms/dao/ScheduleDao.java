@@ -55,6 +55,7 @@ public class ScheduleDao extends ItemDao implements Dao<Scheduler>{
       s.setSchedule(sch);
       // add to medical array map
       sMap.put(id, s);
+
     }
 
     sc.close();

@@ -8,6 +8,11 @@ import com.hms.App;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/** 
+ * DoctorActions.java
+ * 
+ * handles all doctor's actions
+ */
 public class DoctorActions implements UserActions {
     Doctor d;
     ItemsService itemsService;
@@ -17,6 +22,9 @@ public class DoctorActions implements UserActions {
         this.itemsService = itemsService;
     }
 
+    /** 
+     * prints doctor's actions
+     */
     @Override
     public void printActions() {
         System.out.println("What would you like to do?");
@@ -31,6 +39,13 @@ public class DoctorActions implements UserActions {
         return;
     }
 
+    
+    /** 
+     * executes doctor's actions
+     * @param i (choice of action, based on printed actions)
+     * @return boolean (logout/not)
+     * @throws UnsupportedOperationException
+     */
     @Override
     public boolean executeAction(int i) throws UnsupportedOperationException {
         if(i < 1 || i > 8) {
@@ -72,7 +87,7 @@ public class DoctorActions implements UserActions {
 
             itemsService.getMedicalRecordofPatient(u.getID()).printMedicalRecord(itemsService);
         } catch (Exception e) {
-            System.err.println("View patient medical records: ");
+            System.err.println("View patient medical records: " + e);
         }
     }
 

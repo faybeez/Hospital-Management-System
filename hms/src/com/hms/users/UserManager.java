@@ -24,21 +24,44 @@ public class UserManager {
         }
     }
     
+    
+    /** 
+     * returns the entire userslist
+     * @return Map<Integer, User>
+     */
     public Map<Integer, User> getUsersList() {
         return this.UsersList;
     }
 
+    
+    /** 
+     * returns the name of the user from their id
+     * @param id
+     * @return String
+     */
     public String getName(int id) {
         String name = UsersList.get(id).getName();
         return name;
     }
 
+    
+    /** 
+     * returns user from its' id
+     * @param id
+     * @return User
+     */
     public User getUserFromID(int id) {
         User u = new User();
         u = UsersList.get(id);
         return u;
     }
 
+    
+    /** 
+     * returns a user from the username
+     * @param username
+     * @return User
+     */
     public User getUserFromUsername(String username) {
         User u = new User();
         Iterator<User> i = UsersList.values().iterator();
@@ -51,6 +74,13 @@ public class UserManager {
         throw new NoSuchElementException("Username " + username + " not found.");
     }
 
+    
+    /** 
+     * Returns a user from the comments
+     * @param n
+     * @return User
+     * @throws NoSuchElementException
+     */
     public User getUserFromName(String n) throws NoSuchElementException{
         User u = new User();
         Iterator<User> i = UsersList.values().iterator();
@@ -71,7 +101,11 @@ public class UserManager {
             u.printUserDetails();
         }
     }
-    //assuming the Userslist (and db by extension) is not sorted
+    
+    /** finds users and print based on role
+     * @param c (Administrator, Patient, Doctor, Pharmacist)
+     * assuming the Userslist (and db by extension) is not sorted
+     */
     public void printSubUsers(String c) {
         User u = new User();
 
@@ -116,6 +150,11 @@ public class UserManager {
         }  
     }
 
+    
+    /** 
+     * removes user from userslist
+     * @param id
+     */
     public void removeUser(int id) {
         if(UsersList.containsKey(id)) {
             UsersList.remove(id);
@@ -126,6 +165,11 @@ public class UserManager {
         }
     }
 
+    
+    /** 
+     * adds user to the userslist
+     * @param u
+     */
     public void addUser(User u) {
         if(UsersList.containsKey(u.getID())) {
             System.out.println("User ID " + u.getID() +" is not unique! Unable to add user. Error.");
@@ -135,6 +179,14 @@ public class UserManager {
         return;
     }
 
+    
+    /** 
+     * filters user based on different attributes
+     * @param attribute (age, gender, role)
+     * @param value (age: int, gender: value, role: value)
+     * @param t (added info for age "<=" etc)
+     * @return List<User>
+     */
     public List<User> filterUser(String attribute, String value, String t) {
         List<User> temp;
         switch (attribute.toLowerCase()) {
@@ -168,6 +220,9 @@ public class UserManager {
                                                         
     }
 
+    /** 
+     * saves the userslist into txt using the DAO
+     */
     public void saveUsers() {
         Dao<User> writer = new UserDao();
         try {

@@ -19,6 +19,11 @@ import com.hms.users.DoctorActions;
 import java.util.Locale;
 import java.util.Scanner;
 
+/** 
+ * App.java
+ * 
+ * Main App for the hospital management system. Run this code to start the application
+ */
 public class App {    
     /** 
      * main function of the code
@@ -36,7 +41,7 @@ public class App {
         Inventory inventory = new Inventory();
         AppSystem appSystem = new AppSystem();
 
-        ItemsService itemsService = new ItemsService(apptmanager, medicalrecordmanager, inventory, usermanager);
+        ItemsService itemsService = new ItemsService(apptmanager, medicalrecordmanager, inventory, usermanager, schedulermanager);
         UserActions userActions = null;
 
             
@@ -57,6 +62,7 @@ public class App {
                 userActions = new PatientActions((Patient)u, itemsService);
                 break;
             case "Doctor":
+                System.out.println("ID: " + ((Doctor)u).getID());
                 userActions = new DoctorActions((Doctor)u, itemsService);
                 break;
             case "Pharmacist":
@@ -84,13 +90,13 @@ public class App {
             }
         } catch (Exception e) {
             System.err.println(e);
-        } finally { //logout
-            usermanager.saveUsers();
-            apptmanager.saveAppts();
-            medicalrecordmanager.saveMedicalRecords();
-            schedulermanager.saveSchedules();
-            inventory.saveInventory();
         }
+
+        usermanager.saveUsers();
+        apptmanager.saveAppts();
+        medicalrecordmanager.saveMedicalRecords();
+        schedulermanager.saveSchedules();
+        inventory.saveInventory();
         
     }
 }

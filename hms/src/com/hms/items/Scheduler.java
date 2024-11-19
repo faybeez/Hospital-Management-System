@@ -68,7 +68,7 @@ public class Scheduler {
     public void updateLastSaved() {
 
         int dateDifference;
-        if(lastSaved != LocalDate.now()) {
+        if(!lastSaved.isEqual(LocalDate.now())) {
             dateDifference = LocalDate.now().compareTo(lastSaved);
 
             //deleting past date data
@@ -118,7 +118,7 @@ public class Scheduler {
 
         long minutes = MINUTES.between(start, t);
         temp = schedule[date][(int)minutes/30];
-        schedule[date][(int)minutes/30] = 0;
+        schedule[date][(int)minutes/30] = -1;
 
         return temp;
     }

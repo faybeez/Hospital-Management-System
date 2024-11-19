@@ -21,13 +21,21 @@ public class SchedulerManager {
         } catch (Exception e) {
             System.out.println("Scheduler Manager " + e);
         }
-
+        
         Iterator<Scheduler> i = schedules.values().iterator();
-
         while(i.hasNext()) {
             s = i.next();
-            ((Doctor)um.getUserFromID(s.getDoctorID())).setSchedule(s);
+            //System.out.println("name: " + ((Doctor)(um.getUserFromID(s.getDoctorID()))).getName());
+            //s.printSchedule();
+            //System.out.println("AFTER");
+            ((Doctor)(um.getUserFromID(s.getDoctorID()))).setSchedule(s);
+            //System.out.println(((Doctor)(um.getUserFromID(s.getDoctorID()))).getName());
+            //s.printSchedule();
         }
+    }
+
+    public void addToSchedules(int id, Scheduler s) {
+        schedules.put(id, s);
     }
 
     public void saveSchedules() {

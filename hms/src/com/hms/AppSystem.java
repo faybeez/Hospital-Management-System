@@ -5,8 +5,13 @@ import java.util.NoSuchElementException;
 import java.lang.Exception;
 
 import com.hms.users.UserManager;
-import com.hms.users.User;
+import com.hms.users.*;
 
+/** 
+ * AppSystem.java
+ * 
+ * handles login for the App
+ */
 public class AppSystem {
     private static final String defaultPassword = "defaultpass";
 

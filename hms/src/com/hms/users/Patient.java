@@ -7,7 +7,11 @@ import com.hms.App;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-
+/** 
+ * Patient.java
+ * 
+ * User subclass dedicated to the role patient
+ */
 public class Patient extends User {
 
     private static final int idPrefix = 1020000000;
@@ -22,6 +26,12 @@ public class Patient extends User {
         super(id, name, dateOfBirth, gender, bloodType, userName, password);
     }
 
+    
+    /** 
+     * Makes an appointment request to the doctor
+     * @param doctor
+     * @return Appointment
+     */
     public Appointment makeAppointmentRequest(Doctor doctor){
         try {
             LocalDate date = LocalDate.of(1990,1,1); //dummy value
@@ -80,6 +90,13 @@ public class Patient extends User {
         
     }
 
+    
+    /** 
+     * Reschedules an appointment
+     * @param a
+     * @param doctor
+     * @return int (success / fail)
+     */
     public int rescheduleAppointment(Appointment a, Doctor doctor) {
 
         try {
@@ -131,6 +148,7 @@ public class Patient extends User {
 
             switch (c) {
                 case "Y":
+                    doctor.changeScheduleSlot(a.getDate(), a.getTime(), 0, a);
                     a.setDate(date);
                     a.setTime(time);
                     doctor.changeScheduleSlot(date, time, -1, null);

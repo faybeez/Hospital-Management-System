@@ -11,6 +11,8 @@ import com.hms.users.UserManager;
 import com.hms.items.MedicalRecord;
 import com.hms.items.Medicine;
 import com.hms.items.Replenishment;
+import com.hms.items.SchedulerManager;
+import com.hms.items.Scheduler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +22,14 @@ public class ItemsService {
     private AppointmentManager apptManager;
     private MedicalRecordManager medicalRecordManager;
     private Inventory inventory;
+    private SchedulerManager schedulerManager;
 
-    public ItemsService(AppointmentManager apptManager, MedicalRecordManager medicalRecordManager, Inventory inventory, UserManager userManager) {
+    public ItemsService(AppointmentManager apptManager, MedicalRecordManager medicalRecordManager, Inventory inventory, UserManager userManager, SchedulerManager schedulerManager) {
         this.apptManager = apptManager;
         this.medicalRecordManager = medicalRecordManager;
         this.userManager = userManager;
         this.inventory = inventory;
+        this.schedulerManager = schedulerManager;
     }
 
     
@@ -260,6 +264,9 @@ public class ItemsService {
         return inventory.checkIfStockEnough(name, amount);
     }
 
+    /** 
+     * prints the medicine inventory
+     */
     public void viewInventory() {
         inventory.displayMedications();
     }
@@ -285,7 +292,31 @@ public class ItemsService {
         medicalRecordManager.addMedicalRecord(mr);
     }
 
+    
+    /** 
+     * gets all the replenishment requests as an arraylist
+     * @return ArrayList<Replenishment>
+     */
     public ArrayList<Replenishment> getReplenishmentRequests() {
         return inventory.getReplenishmentRequests();
     } 
+
+    
+    /** 
+     * find the medicine that is low stock
+     * @return ArrayList<Medicine>
+     */
+    public ArrayList<Medicine> findLowStock() {
+        return inventory.findLowStock();
+    }
+
+    
+    /** 
+     * add a schedule to the schedulermanager
+     * @param id (doctor id)
+     * @param s (schedule)
+     */
+    public void addToSchedules(int id, Scheduler s) {
+        schedulerManager.addToSchedules(id, s);
+    }
 }
