@@ -118,7 +118,7 @@ public class PharmacistActions implements UserActions {
 
             ArrayList<Appointment> appts = itemsService.getPatientAppts(u.getID(), AppointmentStatus.Completed);
             itemsService.printAppts(appts);
-            System.out.println("Which prescription would you like to dispense?");
+            System.out.println("Which prescription would you like to dispense? (1 - x from Appointment Number)");
             int choice = App.sc.nextInt();
             App.sc.nextLine();
 

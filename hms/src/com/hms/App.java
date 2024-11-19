@@ -75,20 +75,23 @@ public class App {
             return;
         }
 
-
-        while(!cont) {
-            userActions.printActions();
-            c = sc.nextInt();
-            sc.nextLine();
-            cont = userActions.executeAction(c);
+        try {
+            while(!cont) {
+                userActions.printActions();
+                c = sc.nextInt();
+                sc.nextLine();
+                cont = userActions.executeAction(c);
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+        } finally { //logout
+            usermanager.saveUsers();
+            apptmanager.saveAppts();
+            medicalrecordmanager.saveMedicalRecords();
+            schedulermanager.saveSchedules();
+            inventory.saveInventory();
         }
-
-        //logout actions
-        usermanager.saveUsers();
-        apptmanager.saveAppts();
-        medicalrecordmanager.saveMedicalRecords();
-        schedulermanager.saveSchedules();
-        inventory.saveInventory();
+        
     }
 }
 

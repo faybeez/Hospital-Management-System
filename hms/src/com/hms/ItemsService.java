@@ -10,6 +10,7 @@ import com.hms.users.User;
 import com.hms.users.UserManager;
 import com.hms.items.MedicalRecord;
 import com.hms.items.Medicine;
+import com.hms.items.Replenishment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -283,4 +284,8 @@ public class ItemsService {
         MedicalRecord mr = new MedicalRecord(p.getID(), p.getName(), p.getDateOfBirth().toString(), p.getGender(),p.getBloodType());
         medicalRecordManager.addMedicalRecord(mr);
     }
+
+    public ArrayList<Replenishment> getReplenishmentRequests() {
+        return inventory.getReplenishmentRequests();
+    } 
 }
