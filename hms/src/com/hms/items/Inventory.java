@@ -2,6 +2,7 @@ package com.hms.items;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.ArrayList;
 
 import com.hms.dao.*;
 
@@ -262,6 +263,10 @@ public class Inventory {
 	    } catch (IOException e) {
 	        System.out.println("Inventory saving error: " + e);
 	    }
+	}
+
+	public ArrayList<Replenishment> getReplenishmentRequests() {
+		return new ArrayList<Replenishment>(replenishmentRequests.values());
 	}
 	
 }

@@ -288,8 +288,11 @@ public class AdministratorActions implements UserActions {
     void manageReplenishmentRequest() {
         
         try {
-            //TODO no pending requests
             itemsService.displayRequests();
+            if(itemsService.getReplenishmentRequests().isEmpty()) {
+                System.out.println("No replenishment requests. Exiting...");
+                return;
+            }
             System.out.println("What med ID do you want to replenish?");
             int med_ID = App.sc.nextInt();
             itemsService.approveRequest(med_ID);

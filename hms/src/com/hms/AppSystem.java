@@ -14,6 +14,13 @@ public class AppSystem {
 
     }
 
+    
+    /** 
+     * handles login for app
+     * @param userManager to handle users
+     * @return User logged in account
+     * @throws Exception
+     */
     public User Login(UserManager userManager) throws Exception {
 
         String username;

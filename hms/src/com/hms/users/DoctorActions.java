@@ -172,6 +172,11 @@ public class DoctorActions implements UserActions {
             ArrayList<Appointment> appt = itemsService.getDoctorAppts(d.getID(), AppointmentStatus.Completed);
             itemsService.printAppts(appt);
 
+            if(appt.isEmpty()) {
+                System.out.println("No appointments to record! Exiting...");
+                return;
+            }
+
             System.out.println("Which appointment would you like to record the outcome of? (1-x)");
             int choice = App.sc.nextInt();
             App.sc.nextLine();
