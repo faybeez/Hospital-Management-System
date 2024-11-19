@@ -4,14 +4,21 @@ import com.hms.ItemsService;
 import com.hms.enums.AppointmentStatus;
 import com.hms.items.Appointment;
 import com.hms.items.MedicalRecord;
+import com.hms.App;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
+
 public class PatientActions implements UserActions {
     Patient p;
     ItemsService itemsService;
+
+    public PatientActions(Patient p, ItemsService itemsService) {
+        this.p = p;
+        this.itemsService = itemsService;
+    }
 
     @Override
     public void printActions() {
@@ -74,7 +81,6 @@ public class PatientActions implements UserActions {
     }
 
     void updatePersonalInformation() {
-        Scanner sc = new Scanner(System.in);
 
         try {
             MedicalRecord mr = itemsService.getMedicalRecordofPatient(p.getID());
@@ -82,17 +88,17 @@ public class PatientActions implements UserActions {
             System.out.println("Which information would you like to update?");
             System.out.println("1. Email Address");
             System.out.println("2. Phone Number");
-            int choice2 = Integer.valueOf(sc.nextLine());
+            int choice2 = Integer.valueOf(App.sc.nextLine());
             switch (choice2) {
                 case 1:
                     System.out.println("Enter your new email address: ");
-                    String email = sc.nextLine();
+                    String email = App.sc.nextLine();
                     mr.setEmailAddress(email);
                     System.out.println("Email Address has been changed!");
                     break;
                 case 2:
                     System.out.println("Enter your new phone number: ");
-                    String phone = sc.nextLine();
+                    String phone = App.sc.nextLine();
                     mr.setContactNumber(phone);
                     System.out.println("Phone number has been changed!");
                     break;
@@ -102,36 +108,34 @@ public class PatientActions implements UserActions {
         } catch (Exception e) {
             System.err.println("Update personal information error " + e);
         } finally {
-            sc.close();
         }
     }
 
     void viewAvailableAppointmentSlots() {
-        Scanner sc = new Scanner(System.in);
 
         try {
             itemsService.printSubUsers("Doctor");
             System.out.println("Write the doctor's name you'd like to view the appointment slots of:");
 
-            Doctor d = (Doctor)itemsService.getUserFromName(sc.nextLine());
+            Doctor d = (Doctor)itemsService.getUserFromName(App.sc.nextLine());
 
             System.out.println("Printing Doctor " + d.getName() + "'s Schedule...");
             d.printSchedule();
         } catch (Exception e) {
             System.err.println("View Available Appointment Slots error " + e);
         } finally{
-            sc.close();
+
         }
     }
 
     void scheduleAppointment() {
-        Scanner sc = new Scanner(System.in);
+
         try {
             System.out.println("Schedule an appointment");
             itemsService.printSubUsers("Doctor");
             System.out.println("Write the doctor's name you'd like to make an appointment with:");
             
-            Doctor d = (Doctor)itemsService.getUserFromName(sc.nextLine());
+            Doctor d = (Doctor)itemsService.getUserFromName(App.sc.nextLine());
 
             Appointment a = p.makeAppointmentRequest(d);
             if(a != null) {
@@ -140,12 +144,12 @@ public class PatientActions implements UserActions {
         } catch (Exception e) {
             System.err.println("Schedule appointment error " + e);
         } finally {
-            sc.close();
+
         }
     }
 
     void rescheduleAppointment() {
-        Scanner sc = new Scanner(System.in);
+
         try {
             ArrayList<Appointment> appt = itemsService.getPatientAppts(p.getID(), AppointmentStatus.Confirmed);
             appt.addAll(itemsService.getPatientAppts(p.getID(), AppointmentStatus.Pending));
@@ -153,7 +157,7 @@ public class PatientActions implements UserActions {
             itemsService.printAppts(appt);
 
             System.out.println("Which appointment would you like to reschedule? (Number 1-x)");
-            int choice2 = Integer.valueOf(sc.nextLine());
+            int choice2 = Integer.valueOf(App.sc.nextLine());
             
             if(choice2 > appt.size()){
                 throw new IndexOutOfBoundsException("Appointment array index out of bounds!");
@@ -165,12 +169,11 @@ public class PatientActions implements UserActions {
         } catch (Exception e) {
             System.err.println("Schedule appointment error " + e);
         } finally {
-            sc.close();
+
         }
     }
 
     void cancelAppointment() {
-        Scanner sc = new Scanner(System.in);
         try {
             ArrayList<Appointment> appt = itemsService.getPatientAppts(p.getID(), AppointmentStatus.Confirmed);
             appt.addAll(itemsService.getPatientAppts(p.getID(), AppointmentStatus.Pending));
@@ -178,7 +181,7 @@ public class PatientActions implements UserActions {
             itemsService.printAppts(appt);
 
             System.out.println("Which appointment would you like to cancel? (Number 1-x)");
-            int choice2 = Integer.valueOf(sc.nextLine());
+            int choice2 = Integer.valueOf(App.sc.nextLine());
 
             if(choice2 > appt.size()){
                 throw new IndexOutOfBoundsException("Appointment array index out of bounds!");
@@ -190,7 +193,7 @@ public class PatientActions implements UserActions {
         } catch (Exception e) {
             System.err.println("Schedule appointment error " + e);
         } finally {
-            sc.close();
+
         }
     }
 

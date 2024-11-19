@@ -8,10 +8,17 @@ import com.hms.enums.AppointmentStatus;
 import com.hms.enums.PrescriptionStatus;
 import com.hms.items.Appointment;
 import com.hms.items.Prescription;
+import com.hms.App;
 
 public class PharmacistActions implements UserActions {
     Pharmacist p;
     ItemsService itemsService;
+
+    public PharmacistActions(Pharmacist p, ItemsService itemsService) {
+        this.p = p;
+        this.itemsService = itemsService;
+    }
+
     @Override
     public void printActions() {
         System.out.println("What would you like to do?");
@@ -61,7 +68,6 @@ public class PharmacistActions implements UserActions {
     }
 
     void updatePrescriptionStatus(){
-        Scanner sc = new Scanner(System.in);
         try {
             ArrayList<Appointment> completedAppts = itemsService.getAllAppointmentsFromStatus(AppointmentStatus.Completed);
 
@@ -69,8 +75,8 @@ public class PharmacistActions implements UserActions {
 
             System.out.println("Which prescription would you like to change the status of?");
 
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice = App.sc.nextInt();
+            App.sc.nextLine();
 
             if(choice < 1 || choice > completedAppts.size()) {
                 throw new ArrayIndexOutOfBoundsException("Prescription Index out of bounds!");
@@ -82,8 +88,8 @@ public class PharmacistActions implements UserActions {
             System.out.println("1. Uncollected");
             System.out.println("2. Collected");
             
-            choice = sc.nextInt();
-            sc.nextLine();
+            choice = App.sc.nextInt();
+            App.sc.nextLine();
 
             switch (choice) {
                 case 1:
@@ -99,15 +105,13 @@ public class PharmacistActions implements UserActions {
         } catch (Exception e) {
             System.err.println("Update prescription error " + e);
         } finally {
-            sc.close();
         }
     }
 
     void dispenseMedicineFromPrescription() {
-        Scanner sc = new Scanner(System.in);
         try {
             System.out.println("Enter name of patient:");
-            String name = sc.nextLine();
+            String name = App.sc.nextLine();
             User u;
 
             u = itemsService.getUserFromName(name);
@@ -115,8 +119,8 @@ public class PharmacistActions implements UserActions {
             ArrayList<Appointment> appts = itemsService.getPatientAppts(u.getID(), AppointmentStatus.Completed);
             itemsService.printAppts(appts);
             System.out.println("Which prescription would you like to dispense?");
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice = App.sc.nextInt();
+            App.sc.nextLine();
 
             Appointment a = appts.get(choice - 1);
             Prescription p = a.getPrescription();
@@ -141,7 +145,6 @@ public class PharmacistActions implements UserActions {
         } catch (Exception e) {
             System.err.println("Dispense medicine error: " + e);
         } finally {
-            sc.close();
         }
     }
 
@@ -155,20 +158,18 @@ public class PharmacistActions implements UserActions {
     }
 
     void submitRepenishmentRequest() {
-        Scanner sc = new Scanner(System.in);
         try {
             System.out.println("Submit Replenishment Request");
             System.out.print("Enter the medicine ID to reduce stock: ");
-            int medId1 = sc.nextInt();
-            sc.nextLine();
+            int medId1 = App.sc.nextInt();
+            App.sc.nextLine();
             System.out.print("Enter the amount to replenish: ");
-            int quantity = sc.nextInt();
-            sc.nextLine();
+            int quantity = App.sc.nextInt();
+            App.sc.nextLine();
             itemsService.submitRequest(medId1, quantity);
         } catch (Exception e) {
             System.err.println("Submit replenishment request error: " + e);
         } finally {
-            sc.close();
         }
     }
 }

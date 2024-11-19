@@ -3,14 +3,19 @@ package com.hms.users;
 import com.hms.ItemsService;
 import com.hms.enums.AppointmentStatus;
 import com.hms.items.Appointment;
+import com.hms.App;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Scanner;
 
 public class DoctorActions implements UserActions {
     Doctor d;
     ItemsService itemsService;
+
+    public DoctorActions(Doctor d, ItemsService itemsService) {
+        this.d = d;
+        this.itemsService = itemsService;
+    }
 
     @Override
     public void printActions() {
@@ -66,7 +71,7 @@ public class DoctorActions implements UserActions {
 
     //TODO not complete
     void updatePatientMedicalRecord() {
-        Scanner sc = new Scanner(System.in);
+        
 
         System.out.println("What would you like to update?");
         System.out.println("1. Add new diagnoses");
@@ -75,7 +80,7 @@ public class DoctorActions implements UserActions {
         System.out.println("Key in your choice: ");
 
         try {
-            int choice2 = Integer.valueOf(sc.nextLine()); 
+            int choice2 = Integer.valueOf(App.sc.nextLine()); 
         switch (choice2) {
             case 1:
                 System.out.println("add new diagnoses");
@@ -89,7 +94,7 @@ public class DoctorActions implements UserActions {
             System.err.println("Update Patient Medical Record Error " + e);
         }
         finally {
-            sc.close();
+            
         }
         
         
@@ -115,7 +120,7 @@ public class DoctorActions implements UserActions {
     }
 
     void settleAppointmentRequests() {
-        Scanner sc = new Scanner(System.in);
+        
         Iterator<Appointment> i;
         try {
             System.out.println("Printing all pending appointments...");
@@ -129,7 +134,7 @@ public class DoctorActions implements UserActions {
                 a.printAppointmentDetails(itemsService, true);
 
                 System.out.println("Accept? (Y/N)");
-                ad = sc.nextLine();
+                ad = App.sc.nextLine();
 
                 switch(ad) {
                     case "Y":
@@ -152,7 +157,7 @@ public class DoctorActions implements UserActions {
             System.err.println(e);
         }
         finally{
-            sc.close();
+            
         }
     }
 
@@ -168,20 +173,20 @@ public class DoctorActions implements UserActions {
     }
 
     void recordAppointmentOutcome() {
-        Scanner sc = new Scanner(System.in);
+        
         try {
             ArrayList<Appointment> appt = itemsService.getDoctorAppts(d.getID(), AppointmentStatus.Completed);
             itemsService.printAppts(appt);
 
             System.out.println("Which appointment would you like to record the outcome of? (1-x)");
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice = App.sc.nextInt();
+            App.sc.nextLine();
 
             appt.get(choice - 1).recordAppointment(itemsService);
         } catch (Exception e) {
             System.err.println("Read Appointment Outcome Error" + e);
         } finally {
-            sc.close();
+            
         }
         
     }
