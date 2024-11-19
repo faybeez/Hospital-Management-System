@@ -16,6 +16,8 @@ public class MedicalRecord {
     private String contactNumber;
     private String emailAddress;
     private BloodType bloodType;
+    private ArrayList<String> diagnoses;
+    private ArrayList<String> treatmentPlans;
     private ArrayList<Integer> appointmentIDs;
 
     public void setContactNumber(String cn) {
@@ -38,7 +40,7 @@ public class MedicalRecord {
         bloodType = bt;
     }
 
-    public MedicalRecord(int ID, String n, String DOB, String g, String bt, String contact, String email, ArrayList<Integer> appt){
+    public MedicalRecord(int ID, String n, String DOB, String g, String bt, String contact, String email, ArrayList<Integer> appt, ArrayList<String> d, ArrayList<String> t){
         id = ID;
         name = n;
         dateOfBirth = LocalDate.parse(DOB);
@@ -47,6 +49,8 @@ public class MedicalRecord {
         contactNumber = contact;
         emailAddress = email;
         appointmentIDs = appt;
+        diagnoses = d;
+        treatmentPlans = t;
     }
 
     public int getID() {
@@ -81,12 +85,33 @@ public class MedicalRecord {
         return appointmentIDs;
     }
 
+    public ArrayList<String> getDiagnoses() {
+        return diagnoses;
+    }
+
+    public ArrayList<String> getTreatmentPlans() {
+        return treatmentPlans;
+    }
+    
+    public void setDiagnoses(ArrayList<String> d) {
+        diagnoses = d;
+    }
+
+    public void setTreatmentPlans(ArrayList<String> t) {
+        treatmentPlans = t;
+    }
+
     public void setAppointmentIDs(ArrayList<Integer> aid) {
         appointmentIDs = aid;
     }
 
     public void addAppointmentID(int aid) {
         appointmentIDs.add(aid);
+    }
+    
+    public void addDiagnosisTreatment(String d, String t) {
+        diagnoses.add(d);
+        treatmentPlans.add(t);
     }
 
     public void printMedicalRecord(ItemsService itemsService) {
@@ -101,8 +126,17 @@ public class MedicalRecord {
 
         ArrayList<Appointment> apts = itemsService.getPatientAppts(id, AppointmentStatus.Completed);
         Iterator<Appointment> i = apts.iterator();
+        Iterator<String> d = diagnoses.iterator();
+        Iterator<String> t = treatmentPlans.iterator();
         Appointment a;
         System.out.println("------------------PAST DIAGNOSES------------------");
+        System.out.println("-----diagnoses not attached to appointments-------");
+        while(d.hasNext()) {
+            System.out.println("Diagnosis        : " + d.next());
+            System.out.println("Treatment        : " + t.next());
+            System.out.println("--------------------------------------------------");
+        }
+        System.out.println("-------------APPOINTMENT DIAGNOSES----------------");
         while(i.hasNext()) {
             a = i.next();
             System.out.println("Date of Diagnosis: " + a.getDate().toString());

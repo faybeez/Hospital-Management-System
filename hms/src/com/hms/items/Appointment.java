@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import com.hms.ItemsService;
 import com.hms.enums.AppointmentStatus;
-import com.hms.users.UserManager;
+
 
 public class Appointment implements Comparable<Appointment> {
 

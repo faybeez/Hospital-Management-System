@@ -1,15 +1,7 @@
 package com.hms.users;
 
-import com.hms.items.AppointmentManager;
-import com.hms.items.Prescription;
+
 import com.hms.enums.*;
-import com.hms.items.Appointment;
-import com.hms.items.Inventory;
-
-import java.util.Scanner;
-
-
-import java.util.ArrayList;
 
 public class Pharmacist extends User {
     

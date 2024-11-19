@@ -64,9 +64,26 @@ public class DoctorActions implements UserActions {
         return false;
     }
 
-    //TODO not complete
     void viewPatientMedicalRecords() {
+        try {
+            itemsService.printSubUsers("Patient");
 
+            System.out.println("Name of patient to view:");
+
+            String name = App.sc.nextLine();
+
+            User u = itemsService.getUserFromName(name);
+
+            if(u == null || !(u instanceof Patient)) {
+                throw new NullPointerException("Patient doesn't exist!");
+            }
+
+            System.out.println("Printing medical record of Patient " + name);
+
+            itemsService.getMedicalRecordofPatient(u.getID()).printMedicalRecord(itemsService);
+        } catch (Exception e) {
+            System.err.println("View patient medical records: ");
+        }
     }
 
     //TODO not complete

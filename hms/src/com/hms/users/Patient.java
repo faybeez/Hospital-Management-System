@@ -1,7 +1,6 @@
 package com.hms.users;
 
 import com.hms.items.Appointment;
-import com.hms.items.AppointmentManager;
 import com.hms.enums.*;
 
 import java.util.Scanner;

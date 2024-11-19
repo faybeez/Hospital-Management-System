@@ -18,7 +18,7 @@ public enum Gender {
 
     public static Gender getByValue(String value) {
         for(final Gender element : EnumSet.allOf(Gender.class)) {
-            if(element.toString().equals(value)) {
+            if(element.toString().equalsIgnoreCase(value)) {
                 return element;
             }
         }

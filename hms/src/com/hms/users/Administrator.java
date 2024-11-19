@@ -1,15 +1,6 @@
 package com.hms.users;
 
-import java.time.LocalDate;
-import java.util.Scanner;
-import java.util.ArrayList;
-
-import com.hms.items.AppointmentManager;
-import com.hms.items.Inventory;
 import com.hms.enums.*;
-import com.hms.items.Appointment;
-
-import java.util.List;
 
 public class Administrator extends User{
     private static final int idPrefix = 1000000000;

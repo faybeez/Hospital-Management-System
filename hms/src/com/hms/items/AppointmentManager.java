@@ -9,7 +9,6 @@ import com.hms.ItemsService;
 import com.hms.dao.AppointmentDao;
 import com.hms.dao.Dao;
 import com.hms.enums.AppointmentStatus;
-import com.hms.users.UserManager;
 
 public class AppointmentManager {
     private Map<Integer, Appointment> Appts = new HashMap<>();

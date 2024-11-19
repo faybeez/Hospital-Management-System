@@ -1,7 +1,7 @@
 package com.hms.users;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 import com.hms.ItemsService;
 import com.hms.enums.AppointmentStatus;

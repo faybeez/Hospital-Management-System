@@ -33,6 +33,8 @@ public class MedicalRecordDao extends ItemDao implements Dao<MedicalRecord> {
             MedicalRecord md;
             int i;
             ArrayList<Integer> appt = new ArrayList<Integer>();
+            ArrayList<String> diagnoses = new ArrayList<String>();
+            ArrayList<String> treatments = new ArrayList<String>();
             String st = sc.nextLine();
             // get individual 'fields' of the string separated by SEPARATOR
             StringTokenizer star = new StringTokenizer(st, SEPARATOR); // pass in the string to the string tokenizer
@@ -48,12 +50,19 @@ public class MedicalRecordDao extends ItemDao implements Dao<MedicalRecord> {
             i = Integer.parseInt(star.nextToken().trim());
 
             for (; i > 0; i--) {
+                diagnoses.add(star.nextToken().trim());
+                treatments.add(star.nextToken().trim());
+            }
+
+            i = Integer.parseInt(star.nextToken().trim());
+
+            for (; i > 0; i--) {
                 appt.add(Integer.parseInt(star.nextToken().trim()));
             }
 
             // create new user --> depending on first 3 numbers of id
             // depends on id config
-            md = new MedicalRecord(id, name, dateOfBirth, gender, bloodType, phoneNum, email, appt);
+            md = new MedicalRecord(id, name, dateOfBirth, gender, bloodType, phoneNum, email, appt, diagnoses, treatments);
 
             // add to medical array map
             mdMap.put(id, md);
@@ -74,6 +83,8 @@ public class MedicalRecordDao extends ItemDao implements Dao<MedicalRecord> {
         Iterator<MedicalRecord> i = all.iterator();// iterator
         List<String> alw = new ArrayList<>();
         ArrayList<Integer> aptID = new ArrayList<Integer>();
+        ArrayList<String> diagnoses = new ArrayList<String>();
+        ArrayList<String> treatments = new ArrayList<String>();
         while (i.hasNext()) {
             MedicalRecord mr = i.next();
 
@@ -92,6 +103,16 @@ public class MedicalRecordDao extends ItemDao implements Dao<MedicalRecord> {
             st.append(SEPARATOR);
             st.append(mr.getContactNumber().toString().trim()); // password
             st.append(SEPARATOR);
+            diagnoses = mr.getDiagnoses();
+            treatments = mr.getTreatmentPlans();
+            st.append(Integer.toString(diagnoses.size()).trim());
+            for (int j = diagnoses.size(); j > 0; j--) {
+                st.append(SEPARATOR);
+                st.append(diagnoses.remove(j - 1));
+                st.append(SEPARATOR);
+                st.append(treatments.remove(j - 1));
+            }
+
             aptID = mr.getAppointmentIDs();
             st.append(Integer.toString(aptID.size()).trim()); // appt id size
 
