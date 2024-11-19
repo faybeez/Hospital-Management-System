@@ -1,10 +1,10 @@
 package com.hms.items;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Scanner;
 
 import com.hms.ItemsService;
 import com.hms.enums.AppointmentStatus;
+import com.hms.App;
 
 
 public class Appointment implements Comparable<Appointment> {
@@ -141,8 +141,10 @@ public class Appointment implements Comparable<Appointment> {
         System.out.println("Scheduled Time: " + time);
         String doctorName = itemsService.getName(doctorID);
         System.out.println("Doctor: " + doctorName);
+        System.out.println("Doctor ID: " + doctorID);
         String patientName = itemsService.getName(patientID);
         System.out.println("Patient: " + patientName);
+        System.out.println("Patient ID: " + patientID);
         if(status == AppointmentStatus.Completed) {
             System.out.println("Type of Service: " + typeOfService);
             System.out.println("Diagnosis: " + diagnosis);
@@ -157,23 +159,22 @@ public class Appointment implements Comparable<Appointment> {
     }
 
     public void recordAppointment(ItemsService itemsService) {
-        Scanner sc = new Scanner(System.in);
         String medName, notes;
         int medamt;
 
         status = AppointmentStatus.Completed;
         System.out.println("Type of Service: ");
-        typeOfService = sc.nextLine();
+        typeOfService = App.sc.nextLine();
         System.out.println("Diagnosis: ");
-        diagnosis = sc.nextLine();
+        diagnosis = App.sc.nextLine();
         System.out.println("Treatment: ");
-        treatment = sc.nextLine();
+        treatment = App.sc.nextLine();
         System.out.println("Consult Notes: ");
-        consultNotes = sc.nextLine();
+        consultNotes = App.sc.nextLine();
         System.out.println("Recording prescriptions...");
         while(true) {
             System.out.println("Medicine name (to exit, write 000): ");
-            medName = sc.nextLine();
+            medName = App.sc.nextLine();
             if(!itemsService.checkIfMedicineExists(medName)) {
                 System.out.println("Medicine name doesn't exist! Try again...");
                 continue;
@@ -182,13 +183,12 @@ public class Appointment implements Comparable<Appointment> {
                 break;
             }
             System.out.println("Amount of medicine prescribed (tablets): ");
-            medamt = sc.nextInt();
-            sc.nextLine();
+            medamt = App.sc.nextInt();
+            App.sc.nextLine();
             System.out.println("Notes:");
-            notes = sc.nextLine();
+            notes = App.sc.nextLine();
 
             prescription.addMedicine(medName, medamt, notes);
-            sc.close();
         }
     }
 }
