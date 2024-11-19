@@ -46,7 +46,7 @@ public class ItemsService {
         return userManager.getName(id);
     }
 
-    public ArrayList<Appointment> getPatientAppts(int id, AppointmentStatus s) {
+    public ArrayList<Appointment> getPatientAppts(int id, AppointmentStatus s) throws Exception {
         return apptManager.getPatientAppts(id, s);
     }
 
