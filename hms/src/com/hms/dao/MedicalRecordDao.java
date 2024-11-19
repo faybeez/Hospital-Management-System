@@ -112,7 +112,7 @@ public class MedicalRecordDao extends ItemDao implements Dao<MedicalRecord> {
                 st.append(SEPARATOR);
                 st.append(treatments.remove(j - 1));
             }
-
+            st.append(SEPARATOR);
             aptID = mr.getAppointmentIDs();
             st.append(Integer.toString(aptID.size()).trim()); // appt id size
 

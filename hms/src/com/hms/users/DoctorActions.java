@@ -66,19 +66,9 @@ public class DoctorActions implements UserActions {
 
     void viewPatientMedicalRecords() {
         try {
-            itemsService.printSubUsers("Patient");
+            User u = getPatient();
 
-            System.out.println("Name of patient to view:");
-
-            String name = App.sc.nextLine();
-
-            User u = itemsService.getUserFromName(name);
-
-            if(u == null || !(u instanceof Patient)) {
-                throw new NullPointerException("Patient doesn't exist!");
-            }
-
-            System.out.println("Printing medical record of Patient " + name);
+            System.out.println("Printing medical record of Patient " + u.getName());
 
             itemsService.getMedicalRecordofPatient(u.getID()).printMedicalRecord(itemsService);
         } catch (Exception e) {
@@ -86,35 +76,22 @@ public class DoctorActions implements UserActions {
         }
     }
 
-    //TODO not complete
     void updatePatientMedicalRecord() {
         
-
-        System.out.println("What would you like to update?");
-        System.out.println("1. Add new diagnoses");
-        System.out.println("2. Add new pescription");
-        System.out.println("3. Add new treatment plans");
-        System.out.println("Key in your choice: ");
-
         try {
-            int choice2 = Integer.valueOf(App.sc.nextLine()); 
-        switch (choice2) {
-            case 1:
-                System.out.println("add new diagnoses");
-                break;
-            case 2:
-                System.out.println("add new description");
-            case 3:
-                System.out.println("add new treatment plans");
-        }
+            User u = getPatient();
+
+            System.out.println("Key in new diagnosis:");
+            String d = App.sc.nextLine();
+            System.out.println("Key in new treatment plan:");
+            String t = App.sc.nextLine();
+
+            itemsService.getMedicalRecordofPatient(u.getID()).addDiagnosisTreatment(d, t);
+            System.out.println("Diagnosis " + d + " and Treatment " + t + " were added!");
         } catch (Exception e) {
-            System.err.println("Update Patient Medical Record Error " + e);
+            System.err.println("Update Patient Medical Record error: " + e);
         }
-        finally {
-            
-        }
-        
-        
+
     }
 
     void viewPersonalSchedule() {
@@ -206,5 +183,20 @@ public class DoctorActions implements UserActions {
             
         }
         
+    }
+
+    User getPatient() {
+        itemsService.printSubUsers("Patient");
+
+        System.out.println("Name of patient to view:");
+
+        String name = App.sc.nextLine();
+
+        User u = itemsService.getUserFromName(name);
+
+        if(u == null || !(u instanceof Patient)) {
+            throw new NullPointerException("Patient doesn't exist!");
+        }
+        return u;
     }
 }

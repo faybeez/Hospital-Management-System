@@ -170,7 +170,10 @@ public class AppointmentManager {
         }
     }
 
-    public ArrayList<Appointment> getDoctorAppts(int id, AppointmentStatus s) {
+    public ArrayList<Appointment> getDoctorAppts(int id, AppointmentStatus s) throws Exception {
+        if(!(DoctorAppt.containsKey(id))) {
+            throw new Exception("Doctor has no appointments listed!");
+        }
         Iterator<Integer> temp = DoctorAppt.get(id).iterator();
         ArrayList<Appointment> appts = new ArrayList<Appointment>();
         int a;

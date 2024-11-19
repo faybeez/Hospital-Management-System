@@ -16,7 +16,6 @@ import com.hms.users.AdministratorActions;
 import com.hms.users.Doctor;
 import com.hms.users.DoctorActions;
 
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class App {    
@@ -34,39 +33,23 @@ public class App {
         MedicalRecordManager medicalrecordmanager = new MedicalRecordManager();
         SchedulerManager schedulermanager = new SchedulerManager(usermanager);
         Inventory inventory = new Inventory();
+        AppSystem appSystem = new AppSystem();
 
         ItemsService itemsService = new ItemsService(apptmanager, medicalrecordmanager, inventory, usermanager);
         UserActions userActions = null;
 
-        String username;
-        String password;
+            
         int c;
-        User u = new User();
+        User u = null;
         Boolean cont = false;
 
-        //START login
-        while(true) { 
-            System.out.println("Enter your username: ");
-            username = sc.nextLine();
-            try {
-                u = usermanager.getUserFromUsername(username);
-                break;
-            } catch (NoSuchElementException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-
-        System.out.println("Enter your password: ");
-        password = sc.nextLine();
-
-        if(password.compareTo(u.getPassword()) != 0) {
-            System.out.println("Wrong password!");
-            sc.close();
+        try {
+            u = appSystem.Login(usermanager);
+        } catch (Exception e) {
+            System.err.println("Login failed: " + e);
             return;
         }
-
-        //END login
-        System.out.println("Welcome " + u.getDesignation() + " " + u.getName() + "!");
+        
         
         switch (u.getDesignation()) {
             case "Patient":

@@ -235,7 +235,7 @@ public class AdministratorActions implements UserActions {
                     break;
             }
         } catch (Exception e) {
-            System.err.println("view Appointment details error " + e);
+            System.err.println("View Appointment details error: " + e.getMessage());
         } finally {
 
         }

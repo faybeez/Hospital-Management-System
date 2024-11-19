@@ -34,7 +34,7 @@ public class ItemsService {
         return inventory.checkIfMedicineExists(medName);
     }
 
-    public ArrayList<Appointment> getDoctorAppts(int id, AppointmentStatus s) {
+    public ArrayList<Appointment> getDoctorAppts(int id, AppointmentStatus s) throws Exception {
         return apptManager.getDoctorAppts(id, s);
     }
 
@@ -129,5 +129,4 @@ public class ItemsService {
     public void submitRequest(int medID, int quantity){
         inventory.submitRequest(medID, quantity);
     }
-
 }
