@@ -3,8 +3,8 @@ package com.hms.users;
 import com.hms.items.Scheduler;
 import com.hms.items.Appointment;
 import com.hms.enums.*;
+import com.hms.App;
 
-import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -80,45 +80,40 @@ public class Doctor extends User{
 
         LocalDate dStart, dEnd;
         LocalTime tStart, tEnd;
-        Scanner sc = new Scanner(System.in);
 
         System.out.print("Start Date (YYYY-MM-DD): ");
 
         try {
-            dStart = LocalDate.parse(sc.nextLine());
+            dStart = LocalDate.parse(App.sc.nextLine());
         } catch (Exception e) {
             System.out.println(e);
-            sc.close();
             return;
         }
 
         System.out.print("Start Time (HH:MM in intervals of 30 minutes): ");
 
         try {
-            tStart = LocalTime.parse(sc.nextLine());
+            tStart = LocalTime.parse(App.sc.nextLine());
         } catch (Exception e) {
             System.out.println(e);
-            sc.close();
             return;
         }
 
         System.out.print("End Date (YYYY-MM-DD): ");
 
         try {
-            dEnd = LocalDate.parse(sc.nextLine());
+            dEnd = LocalDate.parse(App.sc.nextLine());
         } catch (Exception e) {
             System.out.println(e);
-            sc.close();
             return;
         }
 
         System.out.print("End Time (HH:MM in intervals of 30 minutes): ");
 
         try {
-            tEnd = LocalTime.parse(sc.nextLine());
+            tEnd = LocalTime.parse(App.sc.nextLine());
         } catch (Exception e) {
             System.out.println(e);
-            sc.close();
             return;
         }
 
@@ -136,7 +131,6 @@ public class Doctor extends User{
             tStart = tStart.plusMinutes(30);
         }
 
-        sc.close();
     }
 
 }
