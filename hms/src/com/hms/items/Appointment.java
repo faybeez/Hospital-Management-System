@@ -1,23 +1,18 @@
 package com.hms.items;
-import com.hms.users.UserManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Comparator;
 import java.util.Scanner;
 
+import com.hms.ItemsService;
+import com.hms.enums.AppointmentStatus;
+import com.hms.users.UserManager;
+
 public class Appointment implements Comparable<Appointment> {
-    //enum
-    public enum Status {
-        Pending,
-        Confirmed,
-        Cancelled,
-        Completed;
-    }
 
     public static int AppointmentNumber = 0;
     public static final int AppointmentIdentifier = 2000000000;
     private int id;
-    private Status status;
+    private AppointmentStatus status;
     private LocalDate date;
     private LocalTime time;
     private int patientID;
@@ -38,7 +33,7 @@ public class Appointment implements Comparable<Appointment> {
         doctorID = dID;
         this.date = date;
         this.time = time;
-        status = Status.Pending;
+        status = AppointmentStatus.Pending;
         prescription = new Prescription();
     }
 
@@ -51,8 +46,6 @@ public class Appointment implements Comparable<Appointment> {
             return (time.compareTo(o.getTime()));
         }
     }
-
-    //public Appointment(int i, Status s, LocalDate d, LocalTime t, int pid, int did, String tos, )
 
     public String getTypeofService() {
         return typeOfService;
@@ -78,7 +71,7 @@ public class Appointment implements Comparable<Appointment> {
         return prescription;
     }
 
-    public Status getStatus() {
+    public AppointmentStatus getStatus() {
         return status;
     }
     
@@ -102,7 +95,7 @@ public class Appointment implements Comparable<Appointment> {
         id = i;
     }
 
-    public void setStatus(Status s) {
+    public void setStatus(AppointmentStatus s) {
         status = s;
     }
 
@@ -141,16 +134,16 @@ public class Appointment implements Comparable<Appointment> {
         this.prescription = prescription;
     }
 
-    public void printAppointmentDetails(UserManager userManager, boolean note) {
+    public void printAppointmentDetails(ItemsService itemsService, boolean note) {
         //System.out.println("ID: " + id);
         System.out.println("Status: " + status);
         System.out.println("Scheduled Date: " + date);
         System.out.println("Scheduled Time: " + time);
-        String doctorName = userManager.getName(doctorID);
+        String doctorName = itemsService.getName(doctorID);
         System.out.println("Doctor: " + doctorName);
-        String patientName = userManager.getName(patientID);
+        String patientName = itemsService.getName(patientID);
         System.out.println("Patient: " + patientName);
-        if(status == Status.Completed) {
+        if(status == AppointmentStatus.Completed) {
             System.out.println("Type of Service: " + typeOfService);
             System.out.println("Diagnosis: " + diagnosis);
             System.out.println("Treatment: " + treatment);
@@ -163,10 +156,12 @@ public class Appointment implements Comparable<Appointment> {
          
     }
 
-    public void recordAppointment(Scanner sc, Inventory inventory) {
+    public void recordAppointment(ItemsService itemsService) {
+        Scanner sc = new Scanner(System.in);
         String medName, notes;
         int medamt;
-        status = Status.Completed;
+
+        status = AppointmentStatus.Completed;
         System.out.println("Type of Service: ");
         typeOfService = sc.nextLine();
         System.out.println("Diagnosis: ");
@@ -179,7 +174,7 @@ public class Appointment implements Comparable<Appointment> {
         while(true) {
             System.out.println("Medicine name (to exit, write 000): ");
             medName = sc.nextLine();
-            if(!inventory.checkIfMedicineExists(medName)) {
+            if(!itemsService.checkIfMedicineExists(medName)) {
                 System.out.println("Medicine name doesn't exist! Try again...");
                 continue;
             }
@@ -193,6 +188,7 @@ public class Appointment implements Comparable<Appointment> {
             notes = sc.nextLine();
 
             prescription.addMedicine(medName, medamt, notes);
+            sc.close();
         }
     }
 }

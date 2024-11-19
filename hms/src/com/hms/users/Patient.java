@@ -2,7 +2,7 @@ package com.hms.users;
 
 import com.hms.items.Appointment;
 import com.hms.items.AppointmentManager;
-import com.hms.items.Appointment.Status;
+import com.hms.enums.*;
 
 import java.util.Scanner;
 import java.time.LocalDate;
@@ -24,8 +24,8 @@ public class Patient extends User {
         super(id, name, dateOfBirth, gender, bloodType, userName, password);
     }
 
-    public void viewAppointments(AppointmentManager m) {
-        m.PrintAppointmentsFromPatientID(id);
+    public void viewAppointments(AppointmentManager m, UserManager usermanager) {
+        m.printAppts(m.getPatientAppts(id, null), usermanager);
     }
 
     public Appointment makeAppointmentRequest(Doctor doctor, Scanner sc){
@@ -133,7 +133,7 @@ public class Patient extends User {
                 a.setTime(time);
                 doctor.changeScheduleSlot(date, time, -1, null);
                 doctor.changeScheduleSlot(date, time, -2, a);
-                a.setStatus(Status.Pending);
+                a.setStatus(AppointmentStatus.Pending);
                 break;
             case "N":
                 System.out.println("Appointment date and time unchanged.");

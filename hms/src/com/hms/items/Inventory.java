@@ -1,39 +1,33 @@
 package com.hms.items;
 
 import java.io.IOException;
-
-
-
-import java.util.ArrayList;
+import java.util.Map;
 import java.util.Iterator;
-
-import com.hms.App;
-import com.hms.items.Medicine;
-import com.hms.*;
-import com.hms.readwrite.*;
-
 import java.util.Scanner;
 
+import com.hms.dao.*;
 
 public class Inventory {
-	private ArrayList<Medicine> medicineList;
-	private ArrayList<Replenishment> replenishment;
-	//private Map<Integer, Medicine> medicineList; use this << (integer is the medicine id)
-	//private Map<Integer, Replenishment> replenishmentRequests (integer is medicine id that is requested);
+
+	private Map<Integer, Medicine> medicineList;
+	private Map<Integer, Replenishment> replenishmentRequests;
+	private static final String medicineDB = "hms/resources/medicinedb.txt";
+	private static final String replenishmentDB = "hms/resources/replenishmentdb.txt";
 
 
 	public Inventory()
 	{
-		TextDB reader = new TextDB();
+		Dao<Medicine> medReader = new MedicineDao();
+		Dao<Replenishment> repReader = new ReplenishmentDao();
 
 		try {
-            medicineList = reader.readMedicines(App.medicineDB);
+            medicineList = medReader.read(medicineDB);
         } catch (Exception e) {
             System.out.println("Inventory Manager " + e);
         }
 
 		try {
-            replenishment = reader.readReplenishments(App.replenishmentDB);
+            replenishmentRequests = repReader.read(replenishmentDB);
         } catch (Exception e) {
             System.out.println("Inventory Manager " + e);
         }
@@ -42,7 +36,7 @@ public class Inventory {
 	
 	public void checkstock(int medID)
 	{
-		for (Medicine medicine:medicineList)
+		for (Medicine medicine:medicineList.values())
 		{
 			if(medicine.getMed_id()==medID)
 			{
@@ -54,7 +48,7 @@ public class Inventory {
 	}
 
 	public boolean checkIfMedicineExists(String medName) {
-		for (Medicine m : medicineList) {
+		for (Medicine m : medicineList.values()) {
 			if(m.getMedname().equalsIgnoreCase(medName)) {
 				return true;
 			}
@@ -64,7 +58,7 @@ public class Inventory {
 
 	public void checkstock(String medName)
 	{
-		for (Medicine medicine:medicineList)
+		for (Medicine medicine:medicineList.values())
 		{
 			if(medicine.getMedname().equalsIgnoreCase(medName))
 			{
@@ -76,7 +70,7 @@ public class Inventory {
 	}
 
 	public boolean checkIfStockEnough(String medName, int amount) {
-		for (Medicine medicine:medicineList)
+		for (Medicine medicine:medicineList.values())
 			{
 				if(medicine.getMedname().equalsIgnoreCase(medName))
 				{
@@ -95,7 +89,7 @@ public class Inventory {
 	
 	public boolean reducestock(int medID,int amount) //success return true
 	{
-		for (Medicine medicine:medicineList)
+		for (Medicine medicine:medicineList.values())
 			{
 				if(medicine.getMed_id()==medID)
 				{
@@ -118,7 +112,7 @@ public class Inventory {
 
 	public boolean reduceStockFromName(String medName,int amount)
 	{
-		for (Medicine medicine:medicineList)
+		for (Medicine medicine:medicineList.values())
 			{
 				if(medicine.getMedname().equalsIgnoreCase(medName))
 				{
@@ -142,14 +136,14 @@ public class Inventory {
 	
 	public void displayMedications() {
 			System.out.println("Medication Inventory:");
-			for (Medicine medicine : medicineList) {
+			for (Medicine medicine : medicineList.values()) {
 				System.out.println("ID: " + medicine.getMed_id() + " Name:  " + medicine.getMedname() + " Stock:  " + medicine.getStock());
 			}
 		
 	}
 	public void addMedicine(Scanner sc) {
 		
-
+		//TODO check if unique
 		System.out.println("Enter the medicine ID: ");
 		int medId = sc.nextInt();  
 		sc.nextLine(); 
@@ -168,7 +162,7 @@ public class Inventory {
 
 		Medicine newMed = new Medicine(medName, medId, stock, lowStock, price);
 
-		medicineList.add(newMed);
+		medicineList.put(medId, newMed);
 
 		System.out.println("New medicine added successfully");
 
@@ -176,7 +170,7 @@ public class Inventory {
 	}
 	public void removeMedicine(int medID)
 	{
-		Iterator<Medicine> iterator = medicineList.iterator();
+		Iterator<Medicine> iterator = medicineList.values().iterator();
 		while (iterator.hasNext()) {
 			Medicine medicine = iterator.next();
 			if (medicine.getMed_id() == medID) {
@@ -190,7 +184,7 @@ public class Inventory {
 	}
 
 	public void updateInitialStock(int medID, int stock) {
-		for (Medicine medicine : medicineList) {
+		for (Medicine medicine : medicineList.values()) {
 			if (medicine.getMed_id() == medID) {
 				medicine.setStock(stock); 
 				System.out.println("Stock updated successfully");
@@ -201,7 +195,7 @@ public class Inventory {
 	}
 	
 	public void updateLowStock(int medID, int lowstock) {
-		for (Medicine medicine : medicineList) {
+		for (Medicine medicine : medicineList.values()) {
 			if (medicine.getMed_id() == medID) {
 				medicine.setLowstock(lowstock); 
 				System.out.println("Low Stock level updated successfully");
@@ -212,11 +206,11 @@ public class Inventory {
 	}
 	
 	public void submitRequest(int medID, int quantity) {
-		for (Medicine medicine : medicineList) {
+		for (Medicine medicine : medicineList.values()) {
 			if (medicine.getMed_id() == medID) {
 				String status = "Pending";
 				Replenishment newRequest = new Replenishment(medID, quantity,status);
-				replenishment.add(newRequest); 
+				replenishmentRequests.put(medID, newRequest); 
 				System.out.println("Request submitted for Medicine ID: " + medID);
 				return; 
 			}
@@ -227,7 +221,7 @@ public class Inventory {
 	public void displayRequests() {	
 	int success=0;
 	System.out.println("Pending Replenishment Requests:");
-		for (Replenishment request : replenishment) {
+		for (Replenishment request : replenishmentRequests.values()) {
 			
 			if (request.getStatus().equals("Pending")) {
 				System.out.println("Medicine ID: " + request.getMedID() + 
@@ -247,11 +241,11 @@ public class Inventory {
 	
 	public void approveRequest(int medID) {
 		
-		for (Replenishment request : replenishment) {
+		for (Replenishment request : replenishmentRequests.values()) {
 
 			if (request.getMedID() == medID && request.getStatus().equals("Pending")) {
 				
-				for (Medicine medicine : medicineList) {
+				for (Medicine medicine : medicineList.values()) {
 
 					if (medicine.getMed_id() == medID) {
 						
@@ -274,14 +268,15 @@ public class Inventory {
 	}
 	public void saveInventory() {
 	    try {
-	        TextDB writer = new TextDB();
+	        Dao<Medicine> medwriter = new MedicineDao();
+			Dao<Replenishment> replenishmentwriter = new ReplenishmentDao();
 	        // save medicines
-	        writer.saveMedicines(App.medicineDB, medicineList);
+	        medwriter.save(medicineDB, medicineList.values());
 	        
 	        // save replenishment
-	        writer.saveReplenishments(App.replenishmentDB, replenishment);
+	        replenishmentwriter.save(replenishmentDB, replenishmentRequests.values());
 	    } catch (IOException e) {
-	        System.out.println("Error: " + e);
+	        System.out.println("Inventory saving error: " + e);
 	    }
 	}
 	

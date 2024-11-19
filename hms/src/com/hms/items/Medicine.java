@@ -1,19 +1,31 @@
 package com.hms.items;
 
 public class Medicine {
+	private static int totalMedicine = 0;
+	private static final int idPrefix = 2010000000;
 	private String medname;
-	private int med_id;
+	private int medId;
 	private int stock;
-	private int lowstock; // threshold
+	private int lowStock; // threshold
 	private double price;  
 
 
-	public Medicine(String medname, int med_id, int stock, int lowstock, double price) {	
+	public Medicine(String medname, int stock, int lowStock, double price) {	
 		this.medname = medname;
-		this.med_id = med_id;
+		this.medId = idPrefix + ++totalMedicine;
 		this.stock = stock;
-		this.lowstock = lowstock;
+		this.lowStock = lowStock;
 		this.price = price;
+		totalMedicine++;
+	}
+
+	public Medicine(String medname, int medId, int stock, int lowStock, double price) {	
+		this.medname = medname;
+		this.medId = medId;
+		this.stock = stock;
+		this.lowStock = lowStock;
+		this.price = price;
+		totalMedicine++;
 	}
 
 
@@ -23,7 +35,7 @@ public class Medicine {
 
 	
 	public int getMed_id() {
-		return med_id;
+		return medId;
 	}
 
 
@@ -37,11 +49,11 @@ public class Medicine {
 
 	
 	public int getLowstock() {
-		return lowstock;
+		return lowStock;
 	}
 
-	public void setLowstock(int lowstock) {
-		this.lowstock = lowstock;
+	public void setLowstock(int lowStock) {
+		this.lowStock = lowStock;
 	}
 
 	

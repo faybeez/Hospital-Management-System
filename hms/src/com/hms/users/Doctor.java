@@ -2,6 +2,7 @@ package com.hms.users;
 
 import com.hms.items.Scheduler;
 import com.hms.items.Appointment;
+import com.hms.enums.*;
 
 import java.util.Scanner;
 import java.time.LocalDate;
@@ -65,6 +66,9 @@ public class Doctor extends User{
     }
 
     public void printSchedule() {
+        if (schedule == null) {
+            throw new NullPointerException("Doctor's schedule not found");
+        }
         schedule.printSchedule();
     }
 
@@ -72,10 +76,11 @@ public class Doctor extends User{
         schedule.updateLastSaved();
     }
 
-    public void UpdateUnavailable(Scanner sc) {
+    public void UpdateUnavailable() {
 
         LocalDate dStart, dEnd;
         LocalTime tStart, tEnd;
+        Scanner sc = new Scanner(System.in);
 
         System.out.print("Start Date (YYYY-MM-DD): ");
 
@@ -98,6 +103,7 @@ public class Doctor extends User{
         }
 
         System.out.print("End Date (YYYY-MM-DD): ");
+
         try {
             dEnd = LocalDate.parse(sc.nextLine());
         } catch (Exception e) {
@@ -107,7 +113,6 @@ public class Doctor extends User{
         }
 
         System.out.print("End Time (HH:MM in intervals of 30 minutes): ");
-
 
         try {
             tEnd = LocalTime.parse(sc.nextLine());

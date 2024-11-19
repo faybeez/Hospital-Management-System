@@ -1,23 +1,19 @@
 package com.hms.items;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Map;
 
-import com.hms.App;
-import com.hms.readwrite.TextDB;
+import com.hms.dao.MedicalRecordDao;
+import com.hms.dao.Dao;
 
 public class MedicalRecordManager {
     //private ArrayList<MedicalRecord> medicalRecordList = new ArrayList<MedicalRecord>();
     private Map<Integer, MedicalRecord> medicalRecordList = new HashMap<>();
-    private static final int stripPrefix = 100;
-
+    private static final String medrecordDB = "hms/resources/medicalrecorddb.txt";
     public MedicalRecordManager() {
-        TextDB reader = new TextDB();
+        Dao<MedicalRecord> reader = new MedicalRecordDao();
         try {
-            this.medicalRecordList = reader.readMedicalRecord(App.medrecordDB);
+            this.medicalRecordList = reader.read(medrecordDB);
         } catch (Exception e) {
             System.out.println("Med record manager " + e);
         }
@@ -31,10 +27,10 @@ public class MedicalRecordManager {
     }
 
     public void saveMedicalRecords() {
-        TextDB writer = new TextDB();
+        Dao<MedicalRecord> writer = new MedicalRecordDao();
         
         try {
-            writer.saveMedicalRecords(App.medrecordDB, medicalRecordList.values());
+            writer.save(medrecordDB, medicalRecordList.values());
         } catch (Exception e) {
             System.out.println("Medical Record Manager " + e);
         }

@@ -1,29 +1,24 @@
 package com.hms.users;
 
 import java.util.List;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-import java.util.Collections;
-import java.util.ArrayList;
-
 
 import java.util.Map;
-import com.hms.App;
-
-import com.hms.readwrite.TextDB;
-import com.hms.users.User.Gender;
+import com.hms.dao.Dao;
+import com.hms.dao.UserDao;
+import com.hms.enums.*;
 
 public class UserManager {
-    // private ArrayList<User> UsersList = new ArrayList<User>();
     private Map<Integer, User> UsersList = new HashMap<>();
+    private static final String userDB = "hms/resources/userlogindb.txt";
 
     public UserManager() {
-        TextDB reader = new TextDB();
+        Dao<User> reader = new UserDao();
         try {
-            this.UsersList = reader.readUsers(App.userDB);
+            this.UsersList = reader.read(userDB);
         } catch (Exception e) {
             System.out.println("user manager " + e);
         }
@@ -56,7 +51,7 @@ public class UserManager {
         throw new NoSuchElementException("Username " + username + " not found.");
     }
 
-    public User getUserFromName(String n) {
+    public User getUserFromName(String n) throws NoSuchElementException{
         User u = new User();
         Iterator<User> i = UsersList.values().iterator();
         while(i.hasNext()) {
@@ -133,7 +128,7 @@ public class UserManager {
 
     public void addUser(User u) {
         if(UsersList.containsKey(u.getID())) {
-            System.out.println("User ID is not unique! Unable to add user. Error.");
+            System.out.println("User ID " + u.getID() +" is not unique! Unable to add user. Error.");
             return;
         }
         UsersList.put(u.getID(), u);
@@ -174,12 +169,12 @@ public class UserManager {
     }
 
     public void saveUsers() {
-        TextDB writer = new TextDB();
+        Dao<User> writer = new UserDao();
         try {
             //Collections.sort(UsersList.values());
-            writer.saveUsers(App.userDB, UsersList.values());           
+            writer.save(userDB, UsersList.values());           
         } catch (Exception e) {
-            // TODO: handle exception
+            System.err.println("User manager saving error: " + e);
         }
 
     }

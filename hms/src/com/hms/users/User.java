@@ -1,101 +1,11 @@
 package com.hms.users;
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.EnumSet;
 
-import com.hms.items.Appointment;
+import com.hms.enums.*;
 
 public class User implements Comparable<User>  {
-    // enums
-
-    public enum BloodType {
-        OPLUS {
-            @Override
-            public String toString() {
-                return "O+";
-            }
-        },
-        OMINUS {
-            @Override
-            public String toString() {
-                return "O-";
-            }
-        },
-        APLUS {
-            @Override
-            public String toString() {
-                return "A+";
-            }
-        },
-        AMINUS {
-            @Override
-            public String toString() {
-                return "A-";
-            }
-        },
-        BPLUS {
-            @Override
-            public String toString() {
-                return "B+";
-            }
-        },
-        BMINUS {
-            @Override
-            public String toString() {
-                return "B-";
-            }
-        },
-        ABPLUS {
-            @Override
-            public String toString() {
-                return "AB+";
-            }
-        },
-        ABMINUS {
-            @Override
-            public String toString() {
-                return "AB-";
-            }
-        };
-
-        public static BloodType getByValue(String value) {
-            for(final BloodType element : EnumSet.allOf(BloodType.class)) {
-                if(element.toString().equals(value)) {
-                    return element;
-                }
-            }
-            return null;
-        }
-    };
-    
-    //missing javadoc
-    public enum Gender {
-        FEMALE {
-            @Override
-            public String toString() {
-                return "Female";
-            }
-        },
-        MALE {
-            @Override
-            public String toString() {
-                return "Male";
-            }
-        };
-
-        public static Gender getByValue(String value) {
-            for(final Gender element : EnumSet.allOf(Gender.class)) {
-                if(element.toString().equals(value)) {
-                    return element;
-                }
-            }
-            return null;
-        }
-    };
-
     //userCount
-    public int userCount = 0;
+    protected static int userCount = 0;
     private static final int stripPrefix = 10000000;
 
     protected int id;
@@ -116,6 +26,7 @@ public class User implements Comparable<User>  {
         this.userName = userName;
         this.password = password;
         userCount++;
+        System.out.println("User count: " + userCount);
     }
 
     //for LocalDate, string in format of YEAR-MONTH-DAY eg "2024-01-12";
@@ -188,7 +99,6 @@ public class User implements Comparable<User>  {
 	}
 
 
-    //print details method NOT DONE -- RECHANGE
     public void printUserDetails() {
         System.out.println("Name: " + name);
         System.out.println("Date of Birth: " + dateOfBirth.toString());
@@ -216,10 +126,6 @@ public class User implements Comparable<User>  {
 
     }
 
-    // consider implementing in an interface instead?
-    public void viewAppointmentRecords(int id) {
-
-    }
 	public void setBloodType(BloodType b) {
 		bloodType = b;
 		

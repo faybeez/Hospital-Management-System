@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import com.hms.items.AppointmentManager;
 import com.hms.items.Inventory;
-import com.hms.items.Appointment.Status;
+import com.hms.enums.*;
 import com.hms.items.Appointment;
 
 import java.util.List;
@@ -34,8 +34,10 @@ public class Administrator extends User{
         User u;
 
         if (secondChoice == 1) {
-            u = createUser(sc);
-            usermanager.addUser(u);
+            u = createUser(usermanager, sc);
+            if (u != null) {
+                usermanager.addUser(u);
+            }
         } else if (secondChoice == 2) {
             System.out.print("Using ID (1) or Name (2): ");
             int choice3 = sc.nextInt();
@@ -76,7 +78,10 @@ public class Administrator extends User{
                     System.out.print("Enter name: ");
                     String n = sc.nextLine();
                     u = usermanager.getUserFromName(n);
-                    updateUser(u, usermanager, sc);
+                    System.out.print("Are you sure you want to delete this user? This action is irreversible! (Y/N)");
+                    if(sc.nextLine().toLowerCase().compareTo("y") == 0) {
+                        deleteUser(u);
+                    }
                     break;
             }
         }
@@ -91,13 +96,14 @@ public class Administrator extends User{
         u.setPassword(null);
     }
 
-    public User createUser(Scanner sc) {
+    public User createUser(UserManager usermanager, Scanner sc) {
         String[] d = {"doctor", "patient", "administrator", "pharmacist"}; 
         Boolean check = false;
+        Boolean usernameCheck = true;
         System.out.println("Enter Designation (Doctor, Patient, Administrator, Pharmacist): ");
         String designation = sc.nextLine();
         for(String s : d) {
-            if(designation.toLowerCase() == s) {
+            if(designation.toLowerCase().equals(s)) {
                 check = true;
                 break;
             }
@@ -118,6 +124,21 @@ public class Administrator extends User{
         BloodType bloodType = BloodType.valueOf(sc.nextLine().toUpperCase());
         System.out.println("Enter username: ");
         String username = sc.nextLine();
+
+        try {
+            usermanager.getUserFromUsername(username).printUserDetails();;
+        } catch (Exception e) {
+            System.err.println(e);
+            usernameCheck = false;
+        }
+
+        System.out.println(usernameCheck);
+
+        if(usernameCheck) {
+            System.out.println("Username must be unique! Exiting...");
+            return null;
+        }
+
         System.out.println("Enter password: ");
         String password = sc.nextLine();
 
@@ -343,7 +364,7 @@ public class Administrator extends User{
                 System.out.println("Which status would you like to check (Pending, Confirmed, Completed, Cancelled):");
                 temp = sc.nextLine();
                 try {
-                    apptmanager.printAppts(apptmanager.getAllAppointmentsFromStatus(Status.valueOf((temp))), usermanager);
+                    apptmanager.printAppts(apptmanager.getAllAppointmentsFromStatus(AppointmentStatus.valueOf((temp))), usermanager);
                 } catch (Exception e) {
                     System.out.println("Error! Exiting...");
                 }

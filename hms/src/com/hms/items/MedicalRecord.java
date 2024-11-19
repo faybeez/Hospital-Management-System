@@ -1,8 +1,8 @@
 package com.hms.items;
 
-import com.hms.items.Appointment.Status;
-import com.hms.users.User.BloodType;
-import com.hms.users.User.Gender;
+import com.hms.enums.AppointmentStatus;
+import com.hms.enums.BloodType;
+import com.hms.enums.Gender;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -98,7 +98,7 @@ public class MedicalRecord {
         System.out.println("Email Address: " + emailAddress);
         System.out.println("Contact Number: " + contactNumber);
 
-        ArrayList<Appointment> apts = aptm.getPatientAppts(id, Status.Completed);
+        ArrayList<Appointment> apts = aptm.getPatientAppts(id, AppointmentStatus.Completed);
         Iterator<Appointment> i = apts.iterator();
         Appointment a;
         System.out.println("------------------PAST DIAGNOSES------------------");
