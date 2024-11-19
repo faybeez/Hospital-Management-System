@@ -19,131 +19,146 @@ public class Patient extends User {
         super.setID(i);
     }
 
-
     public Patient(int id, String name, String dateOfBirth, Gender gender, BloodType bloodType, String userName, String password) {
         super(id, name, dateOfBirth, gender, bloodType, userName, password);
     }
 
-    public void viewAppointments(AppointmentManager m, UserManager usermanager) {
-        m.printAppts(m.getPatientAppts(id, null), usermanager);
+    public Appointment makeAppointmentRequest(Doctor doctor){
+        Scanner sc = new Scanner(System.in);
+        try {
+            LocalDate date = LocalDate.of(1990,1,1); //dummy value
+            LocalTime time = LocalTime.of(1,1); //dummy value
+            Boolean test = true;
+
+            System.out.println("Printing Doctor's Schedule...");
+
+            doctor.getSchedule().printSchedule();
+
+            while(test) {
+                test = false;
+                System.out.print("Date of Appointment (maximum 6 days from current date in YYYY-MM-DD):");
+                try {
+                    date = LocalDate.parse(sc.nextLine());
+                } catch (Exception e) {
+                    System.out.println("Invalid text! Try again.");
+                    test = true;
+                }
+                if(date.compareTo(LocalDate.now()) > 6 || date.compareTo(LocalDate.now()) < 0) {
+                    System.out.println("Invalid date! Try again.");
+                    test = true;
+                }
+            }
+            
+            test = true;
+            
+            while(test) {
+                test = false;
+                System.out.print("Time of Appointment (08:00 - 18:00 in HH:MM - 30 minute intervals): ");
+                try {
+                    time = LocalTime.parse(sc.nextLine());
+                } catch (Exception e) {
+                    System.out.println("Invalid text! Try again.");
+                    test = true;
+                }
+                if(time.compareTo(LocalTime.of(8,0)) < 0 || time.compareTo(LocalTime.of(18,0)) > 0 || (time.getMinute() % 30) != 0) {
+                    System.out.println("Invalid time! Try again.");
+                    test = true;
+                }
+            }
+
+            Appointment a = new Appointment(this.id, doctor.getID(), date, time);
+
+            if(!doctor.getSchedule().checkIfFree(a)) {
+                System.out.println("You selected a time that is invalid. Please try again.");
+                sc.close();
+                return null;
+            }
+            doctor.getSchedule().addAppointmentToSchedule(a);
+            System.out.println("Appointment Created!");
+            sc.close();
+            return a;
+        } catch (Exception e) {
+            throw e;
+        }finally {
+            sc.close();
+        }
+        
     }
 
-    public Appointment makeAppointmentRequest(Doctor doctor, Scanner sc){
-        LocalDate date = LocalDate.of(1990,1,1); //dummy value
-        LocalTime time = LocalTime.of(1,1); //dummy value
-        Boolean test = true;
+    public int rescheduleAppointment(Appointment a, Doctor doctor) {
+        Scanner sc = new Scanner(System.in);
 
-        System.out.println("Printing Doctor's Schedule...");
+        try {
+            LocalDate date = LocalDate.of(1990,1,1); //dummy value
+            LocalTime time = LocalTime.of(1,1); //dummy value
+            String c;
+            Boolean test = true;
 
-        doctor.getSchedule().printSchedule();
+            System.out.println("Printing Doctor's Schedule...");
 
-        while(test) {
-            test = false;
-            System.out.print("Date of Appointment (maximum 6 days from current date in YYYY-MM-DD):");
-            try {
-                date = LocalDate.parse(sc.nextLine());
-            } catch (Exception e) {
-                System.out.println("Invalid text! Try again.");
-                test = true;
+            doctor.getSchedule().printSchedule();
+            
+            while(test) {
+                test = false;
+                System.out.print("Date of Appointment (maximum 6 days from current date in YYYY-MM-DD):");
+                try {
+                    date = LocalDate.parse(sc.nextLine());
+                } catch (Exception e) {
+                    System.out.println("Invalid text! Try again.");
+                    test = true;
+                }
+                if(date.compareTo(LocalDate.now()) > 6 || date.compareTo(LocalDate.now()) < 0) {
+                    System.out.println("Invalid date! Try again.");
+                    test = true;
+                }
             }
-            if(date.compareTo(LocalDate.now()) > 6 || date.compareTo(LocalDate.now()) < 0) {
-                System.out.println("Invalid date! Try again.");
-                test = true;
+            
+            test = true;
+            
+            while(test) {
+                test = false;
+                System.out.print("Time of Appointment (08:00 - 18:00 in HH:MM - 30 minute intervals): ");
+                try {
+                    time = LocalTime.parse(sc.nextLine());
+                } catch (Exception e) {
+                    System.out.println("Invalid text! Try again.");
+                    test = true;
+                }
+                if(time.compareTo(LocalTime.of(8,0)) < 0 || time.compareTo(LocalTime.of(18,0)) > 0 || time.getMinute() % 30 != 0) {
+                    System.out.println("Invalid time! Try again.");
+                    test = true;
+                }
             }
+
+            System.out.println("Old date and time: " + a.getDate().toString() + " - " + a.getTime().toString());
+            System.out.println("New date and time " + date.toString() + " - " + time.toString());
+            System.out.println("Reschedule appointment? (Y/N)");
+            c = sc.nextLine().toUpperCase();
+
+            switch (c) {
+                case "Y":
+                    a.setDate(date);
+                    a.setTime(time);
+                    doctor.changeScheduleSlot(date, time, -1, null);
+                    doctor.changeScheduleSlot(date, time, -2, a);
+                    a.setStatus(AppointmentStatus.Pending);
+                    break;
+                case "N":
+                    System.out.println("Appointment date and time unchanged.");
+                    break;
+                default:
+                    System.out.println("Choice invalid.");
+                    sc.close();
+                    return -2;
+            }
+            sc.close();
+            return 1;
+    
+        } catch (Exception e) {
+            throw e;
+        } finally{
+            sc.close();
         }
-        
-        test = true;
-        
-        while(test) {
-            test = false;
-            System.out.print("Time of Appointment (08:00 - 18:00 in HH:MM - 30 minute intervals): ");
-            try {
-                time = LocalTime.parse(sc.nextLine());
-            } catch (Exception e) {
-                System.out.println("Invalid text! Try again.");
-                test = true;
-            }
-            if(time.compareTo(LocalTime.of(8,0)) < 0 || time.compareTo(LocalTime.of(18,0)) > 0 || (time.getMinute() % 30) != 0) {
-                System.out.println("Invalid time! Try again.");
-                test = true;
-            }
-        }
-
-        Appointment a = new Appointment(this.id, doctor.getID(), date, time);
-
-        if(!doctor.getSchedule().checkIfFree(a)) {
-            System.out.println("You selected a time that is invalid. Please try again.");
-            return null;
-        }
-        doctor.getSchedule().addAppointmentToSchedule(a);
-        System.out.println("Appointment Created!");
-        return a;
-    }
-
-    public int rescheduleAppointment(Appointment a, Doctor doctor, Scanner sc) {
-        LocalDate date = LocalDate.of(1990,1,1); //dummy value
-        LocalTime time = LocalTime.of(1,1); //dummy value
-        String c;
-        Boolean test = true;
-
-        System.out.println("Printing Doctor's Schedule...");
-
-        doctor.getSchedule().printSchedule();
-        
-        while(test) {
-            test = false;
-            System.out.print("Date of Appointment (maximum 6 days from current date in YYYY-MM-DD):");
-            try {
-                date = LocalDate.parse(sc.nextLine());
-            } catch (Exception e) {
-                System.out.println("Invalid text! Try again.");
-                test = true;
-            }
-            if(date.compareTo(LocalDate.now()) > 6 || date.compareTo(LocalDate.now()) < 0) {
-                System.out.println("Invalid date! Try again.");
-                test = true;
-            }
-        }
-        
-        test = true;
-        
-        while(test) {
-            test = false;
-            System.out.print("Time of Appointment (08:00 - 18:00 in HH:MM - 30 minute intervals): ");
-            try {
-                time = LocalTime.parse(sc.nextLine());
-            } catch (Exception e) {
-                System.out.println("Invalid text! Try again.");
-                test = true;
-            }
-            if(time.compareTo(LocalTime.of(8,0)) < 0 || time.compareTo(LocalTime.of(18,0)) > 0 || time.getMinute() % 30 != 0) {
-                System.out.println("Invalid time! Try again.");
-                test = true;
-            }
-        }
-
-        System.out.println("Old date and time: " + a.getDate().toString() + " - " + a.getTime().toString());
-        System.out.println("New date and time " + date.toString() + " - " + time.toString());
-        System.out.println("Reschedule appointment? (Y/N)");
-        c = sc.nextLine().toUpperCase();
-
-        switch (c) {
-            case "Y":
-                a.setDate(date);
-                a.setTime(time);
-                doctor.changeScheduleSlot(date, time, -1, null);
-                doctor.changeScheduleSlot(date, time, -2, a);
-                a.setStatus(AppointmentStatus.Pending);
-                break;
-            case "N":
-                System.out.println("Appointment date and time unchanged.");
-                break;
-            default:
-                System.out.println("Choice invalid.");
-                return -2;
-        }
-
-        return 1;
-    }
+    } 
 
 }

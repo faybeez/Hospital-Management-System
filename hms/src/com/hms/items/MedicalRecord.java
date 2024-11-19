@@ -1,5 +1,6 @@
 package com.hms.items;
 
+import com.hms.ItemsService;
 import com.hms.enums.AppointmentStatus;
 import com.hms.enums.BloodType;
 import com.hms.enums.Gender;
@@ -88,7 +89,7 @@ public class MedicalRecord {
         appointmentIDs.add(aid);
     }
 
-    public void printMedicalRecord(AppointmentManager aptm) {
+    public void printMedicalRecord(ItemsService itemsService) {
 
         //print top part of medical record
         System.out.println("Name: " + name);
@@ -98,7 +99,7 @@ public class MedicalRecord {
         System.out.println("Email Address: " + emailAddress);
         System.out.println("Contact Number: " + contactNumber);
 
-        ArrayList<Appointment> apts = aptm.getPatientAppts(id, AppointmentStatus.Completed);
+        ArrayList<Appointment> apts = itemsService.getPatientAppts(id, AppointmentStatus.Completed);
         Iterator<Appointment> i = apts.iterator();
         Appointment a;
         System.out.println("------------------PAST DIAGNOSES------------------");

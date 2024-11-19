@@ -56,6 +56,15 @@ public class Inventory {
 		return false;
 	}
 
+	public boolean checkIfMedicineIDExists(int id) {
+		try {
+			medicineList.get(id);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
 	public void checkstock(String medName)
 	{
 		for (Medicine medicine:medicineList.values())
@@ -141,46 +150,16 @@ public class Inventory {
 			}
 		
 	}
-	public void addMedicine(Scanner sc) {
-		
-		//TODO check if unique
-		System.out.println("Enter the medicine ID: ");
-		int medId = sc.nextInt();  
-		sc.nextLine(); 
 
-		System.out.println("Enter the medicine name: ");
-		String medName = sc.nextLine();  
 
-		System.out.println("Enter the initial stock quantity: ");
-		int stock = sc.nextInt();  
-
-		System.out.println("Enter the low stock quantity: ");
-		int lowStock = sc.nextInt();  
-
-		System.out.println("Enter the price of the medicine: ");
-		double price = sc.nextDouble();
-
-		Medicine newMed = new Medicine(medName, medId, stock, lowStock, price);
-
-		medicineList.put(medId, newMed);
+	public void addMedicine(Medicine newMed) {
+		medicineList.put(newMed.getMed_id(), newMed);
 
 		System.out.println("New medicine added successfully");
-
-		
 	}
 	public void removeMedicine(int medID)
 	{
-		Iterator<Medicine> iterator = medicineList.values().iterator();
-		while (iterator.hasNext()) {
-			Medicine medicine = iterator.next();
-			if (medicine.getMed_id() == medID) {
-				iterator.remove();  
-				System.out.println("Medicine removed successfully");
-				return;
-			}
-		}
-
-		System.out.println("Medicine does not exist");
+		medicineList.remove(medID);
 	}
 
 	public void updateInitialStock(int medID, int stock) {
@@ -191,7 +170,8 @@ public class Inventory {
 				return;
 			}
 		}
-		System.out.println("Medicine does not exist");
+		
+		throw new NullPointerException("Medicine not found.");
 	}
 	
 	public void updateLowStock(int medID, int lowstock) {
